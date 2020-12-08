@@ -12,14 +12,22 @@ public class Mock {
                 LocalTime.of(12, 0),
                 LocalTime.of(13, 30),
                 "Majchrowski");
+        Group group2 = new Group(1,
+                1,
+                LocalTime.of(12, 0),
+                LocalTime.of(13, 30),
+                "Majchrowski");
         Class class1 = new Class(0,
                 "ZTB",
+                new Group[]{group1, group2});
+        Class class2 = new Class(1,
+                "ZPW",
                 new Group[]{group1});
         this.schedules = new Schedule[]{
                 new Schedule(0,
                         "this_one",
                         2,
-                        new Class[]{class1})
+                        new Class[]{class1, class2})
         };
     }
 

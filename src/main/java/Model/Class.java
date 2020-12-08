@@ -16,7 +16,7 @@ public class Class {
     @Override
     public String toString() {
         return "{\"classId\":" + classId +
-                ", \"name\":\"" + name + 
+                ", \"name\":\"" + name +
                 "\", \"groups\":" + Arrays.toString(groups) +
                 "}";
     }
