@@ -8,9 +8,12 @@ import java.util.Arrays;
 
 public class EnrollHttpHandler implements HttpHandler {
     Mock mock;
+    String context;
+
 
     public EnrollHttpHandler(){
         this.mock = new Mock();
+        this.context = "/enroll/admin/";
     }
 
     @Override
@@ -29,18 +32,23 @@ public class EnrollHttpHandler implements HttpHandler {
 
     private String handleGetRequest(HttpExchange httpExchange) {
         String htmlResponse=null;
-        String[] uri = httpExchange.getRequestURI()
-                .toString()
-                .split("/");
-        if(uri[3].equals("schedules")){
+        String uri = httpExchange.getRequestURI()
+                .toString().replace(this.context,"");
+//                .split("/");
+
+        System.out.println(uri);
+        if(uri.equals("schedules")){
             htmlResponse = this.mock.getSchedules();
+            System.out.println(htmlResponse);
+        } else if(uri.matches("schedules/[0-9]+")){
+            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
             System.out.println(htmlResponse);
         }
 //        System.out.println(uri);
         return htmlResponse;
     }
 
-    private String handlePostRequest(HttpExchange httpExchange) throws IOException {
+    private String handlePostRequest(HttpExchange httpExchange) {
         // Get request Header
         Headers reqHeaders = httpExchange.getRequestHeaders();
         reqHeaders.forEach((key, value) -> System.out.println(key + ": " + value));
@@ -98,3 +106,4 @@ public class EnrollHttpHandler implements HttpHandler {
 
 
 }
+

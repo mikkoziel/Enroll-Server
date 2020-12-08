@@ -26,4 +26,9 @@ public class Mock {
     public String getSchedules() {
         return "{\"schedules\":" + Arrays.toString(schedules) + "}";
     }
+
+    public String getSchedule(String i){
+        int id = Integer.parseInt(i);
+        return this.schedules[id].toString();
+    }
 }
