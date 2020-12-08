@@ -1,6 +1,7 @@
 package Model;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Mock {
@@ -27,8 +28,13 @@ public class Mock {
                 new Schedule(0,
                         "this_one",
                         2,
-                        new Class[]{class1, class2})
+                        "Something Something",
+                        Status.CREATED,
+                        new ArrayList<Class>())
+//                        new Class[]{class1, class2})
         };
+        this.schedules[0].addClass(class1);
+        this.schedules[0].addClass(class2);
     }
 
     public String getSchedules() {

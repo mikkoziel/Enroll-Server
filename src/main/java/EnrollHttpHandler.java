@@ -1,3 +1,4 @@
+import AdminHandler.AdminHandler;
 import Model.Mock;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -9,11 +10,13 @@ import java.util.Arrays;
 public class EnrollHttpHandler implements HttpHandler {
     Mock mock;
     String context;
+    AdminHandler admin;
 
 
     public EnrollHttpHandler(){
         this.mock = new Mock();
         this.context = "/enroll/admin/";
+        this.admin = new AdminHandler();
     }
 
     @Override
