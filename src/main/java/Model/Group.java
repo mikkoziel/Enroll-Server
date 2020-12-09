@@ -17,6 +17,13 @@ public class Group {
         this.professor_id = professor_id;
     }
 
+    public Group(int day, LocalTime start, LocalTime end, int professor_id){
+        this.day = day;
+        this.start = start;
+        this.end = end;
+        this.professor_id = professor_id;
+    }
+
     public int getGroupId() {
         return groupId;
     }

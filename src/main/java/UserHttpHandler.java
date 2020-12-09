@@ -62,26 +62,18 @@ public class UserHttpHandler implements HttpHandler {
     }
 
     private String handlePostRequest(HttpExchange httpExchange) {
-        // Get request Header
+        String htmlResponse = null;
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context, "");
 
-        // Get request body
         String msg = this.parseMsg(httpExchange);
 
-        String htmlResponse;
         boolean success = false;
 
-        // Get outcome response
-        if (success) {
-            htmlResponse = "{ \"response\" : \"success\" }";
-        } else {
-            htmlResponse = "{ \" response\" : \"failure\" }";
-        }
-        System.out.println("Outcome: " + htmlResponse);
+
         return htmlResponse;
     }
 

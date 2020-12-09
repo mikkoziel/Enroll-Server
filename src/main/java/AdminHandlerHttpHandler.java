@@ -1,11 +1,15 @@
 import AdminHandler.AdminHandler;
-import Model.Mock;
+import Model.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.*;
-import java.util.Arrays;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class AdminHandlerHttpHandler implements HttpHandler {
     Mock mock;
@@ -50,7 +54,6 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
 
-//        System.out.println(uri);
         if(uri.equals("schedules")){
 //            htmlResponse = this.mock.getSchedules();
             htmlResponse = this.admin.getSchedules(id);
@@ -58,7 +61,6 @@ public class AdminHandlerHttpHandler implements HttpHandler {
 //            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
             htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
         }
-//        System.out.println(uri);
         return htmlResponse;
     }
 
@@ -73,16 +75,14 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         // Get request body
         String msg = this.parseMsg(httpExchange);
 
-        String htmlResponse;
-        boolean success = false;
-
-        // Get outcome response
-        if(success) {
-            htmlResponse = "{ \"response\" : \"success\" }";
-        } else {
-            htmlResponse = "{ \" response\" : \"failure\" }";
+        String htmlResponse = null;
+        if(uri.equals("schedules")){
+            htmlResponse = this.admin.postSchedule(uri, msg, id);
+        } else if(uri.matches("schedules/[0-9]+")){
+            htmlResponse = this.admin.postClass(uri, msg, id);
+        } else if(uri.matches("schedules/[0-9]+/[0-9]+")){
+            htmlResponse = this.admin.postGroup(uri, msg, id);
         }
-        System.out.println("Outcome: " + htmlResponse);
         return htmlResponse;
     }
 
@@ -127,6 +127,7 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         }
         return message;
     }
+
 
 }
 
