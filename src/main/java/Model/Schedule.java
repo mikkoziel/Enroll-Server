@@ -70,6 +70,8 @@ public class Schedule {
         return "{\"scheduleID\":" + scheduleID +
                 ", \"name\":\"" + name +
                 "\", \"semester\":\"" + semester +
+                "\", \"description\":\"" + description +
+                "\", \"status\":\"" + status.label +
                 "\", \"classes\":" + classes.toString() +
                 "}";
     }

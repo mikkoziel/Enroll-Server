@@ -5,7 +5,6 @@ import Model.Schedule;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class AdminHandler {
      DBHandler db;

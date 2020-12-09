@@ -16,8 +16,8 @@ public class DBHandler {
     public DBHandler() {
         this.url = "jdbc:mysql://mysql.agh.edu.pl:3306" +
                 "/" +
-                "mkoziel1" +
-                "?characterEncoding=utf8";
+                "mkoziel1"; // +
+//                "?characterEncoding=utf8";
         this.user = "mkoziel1";
         this.password = "NNY0J0kYBP6TmSUi";
         this.driverClass = "com.mysql.cj.jdbc.Driver";
