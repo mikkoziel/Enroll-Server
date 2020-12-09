@@ -32,6 +32,17 @@ public class Class_obj {
         this.groups = groups;
     }
 
+    public int getClassId() {
+        return classId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
 
     @Override
     public String toString() {

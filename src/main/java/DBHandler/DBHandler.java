@@ -76,7 +76,7 @@ public class DBHandler {
         return schedules;
     }
 
-    public long addSchedule(Schedule schedule) throws SQLException {
+    public long addSchedule(int admin_id, Schedule schedule) throws SQLException {
         String SQL_INSERT = "INSERT INTO Schedule(name, semester, description, status)" +
                 " VALUES (?, ?, ?, ?)";
 
@@ -163,6 +163,32 @@ public class DBHandler {
         return classes;
     }
 
+    public long addClass(int admin_id, Class_obj class_, int schedule_id) throws SQLException {
+        String SQL_INSERT = "INSERT INTO Class(name, schedule_id)" +
+                " VALUES (?, ?)";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setString(1, class_.getName());
+        statement.setInt(2, schedule_id);
+
+        int affectedRows = statement.executeUpdate();
+
+        if (affectedRows == 0) {
+            throw new SQLException("Creating schedule failed, no rows affected.");
+        }
+
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                return (generatedKeys.getLong(1));
+            }
+            else {
+                throw new SQLException("Creating schedule failed, no ID obtained.");
+            }
+        }
+    }
+
     public ArrayList<Group> getGroups(int class_id) throws SQLException {
         String SQL_SELECT = "SELECT * FROM Groups WHERE class_id =? ";
 
@@ -186,5 +212,34 @@ public class DBHandler {
             groups.add(tmp);
         }
         return groups;
+    }
+
+    public long addGroup(int admin_id, Group group, int class_id) throws SQLException {
+        String SQL_INSERT = "INSERT INTO Group(day, start, end, class_id, professor_id)" +
+                " VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setInt(1, group.getDay());
+        statement.setString(2, group.getStart().toString());
+        statement.setString(3, group.getEnd().toString());
+        statement.setInt(4, class_id);
+        statement.setInt(5, group.getProfessor_id());
+
+        int affectedRows = statement.executeUpdate();
+
+        if (affectedRows == 0) {
+            throw new SQLException("Creating schedule failed, no rows affected.");
+        }
+
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                return (generatedKeys.getLong(1));
+            }
+            else {
+                throw new SQLException("Creating schedule failed, no ID obtained.");
+            }
+        }
     }
 }

@@ -17,6 +17,26 @@ public class Group {
         this.professor_id = professor_id;
     }
 
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public LocalTime getStart() {
+        return start;
+    }
+
+    public LocalTime getEnd() {
+        return end;
+    }
+
+    public int getProfessor_id() {
+        return professor_id;
+    }
+
     @Override
     public String toString() {
         return "{\"groupId\":" + groupId +
