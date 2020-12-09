@@ -7,14 +7,14 @@ public class Group {
     int day;
     LocalTime start;
     LocalTime end;
-    String professor;
+    int professor_id;
 
-    public Group(int groupId, int day, LocalTime start, LocalTime end, String professor){
+    public Group(int groupId, int day, LocalTime start, LocalTime end, int professor_id){
         this.groupId = groupId;
         this.day = day;
         this.start = start;
         this.end = end;
-        this.professor = professor;
+        this.professor_id = professor_id;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Group {
                 ", \"day\":" + day +
                 ", \"start\":\"" + start.toString() +
                 "\", \"end\":\"" + end.toString() +
-                "\", \"professor\":\"" + professor +
+                "\", \"professor_id\":\"" + professor_id +
                 "\"}";
     }
 }

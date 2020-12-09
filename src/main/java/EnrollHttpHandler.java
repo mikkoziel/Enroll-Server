@@ -60,7 +60,8 @@ public class EnrollHttpHandler implements HttpHandler {
             htmlResponse = this.admin.getSchedules(id);
             System.out.println(htmlResponse);
         } else if(uri.matches("schedules/[0-9]+")){
-            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
+//            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
+            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
             System.out.println(htmlResponse);
         }
 //        System.out.println(uri);

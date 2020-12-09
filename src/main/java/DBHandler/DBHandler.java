@@ -1,9 +1,12 @@
 package DBHandler;
 
+import Model.Class_obj;
+import Model.Group;
 import Model.Schedule;
 import Model.Status;
 
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class DBHandler {
@@ -35,27 +38,31 @@ public class DBHandler {
         }
     }
 
-    public ArrayList<Schedule> getSchedules(int id) throws SQLException {
+    public ArrayList<Schedule> getSchedules(int user_id) throws SQLException {
         String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
                 "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND admin=1)";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
                 Statement.RETURN_GENERATED_KEYS);
 
-        statement.setInt(1, id);
+        statement.setInt(1, user_id);
 
         ResultSet result = statement.executeQuery();
         ArrayList<Schedule> schedules = new ArrayList<>();
 
         while (result.next()) {
-
-            schedules.add(new Schedule(
-                    result.getInt("schedule_id"),
+            int schedule_id = result.getInt("schedule_id");
+            Schedule tmp = new Schedule(
+                    schedule_id,
                     result.getString("name"),
                     result.getInt("semester"),
                     result.getString("description"),
                     Status.valueOf(result.getString("status"))
-            ));
+            );
+            tmp.setClasses(this.getClasses(schedule_id));
+
+            schedules.add(tmp);
+
         }
         return schedules;
     }
@@ -86,5 +93,80 @@ public class DBHandler {
                 throw new SQLException("Creating schedule failed, no ID obtained.");
             }
         }
+    }
+
+    public Schedule getSchedule(int user_id, int schedule_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
+                "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND admin=1 AND schedule_id=?)";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setInt(1, user_id);
+        statement.setInt(2, schedule_id);
+
+        ResultSet result = statement.executeQuery();
+        Schedule schedule = null;
+
+        if (result.next()) {
+            int schedule_id_ = result.getInt("schedule_id");
+            schedule = new Schedule(
+                    schedule_id_,
+                    result.getString("name"),
+                    result.getInt("semester"),
+                    result.getString("description"),
+                    Status.valueOf(result.getString("status"))
+            );
+            schedule.setClasses(this.getClasses(schedule_id_));
+        }
+        return schedule;
+    }
+
+    public ArrayList<Class_obj> getClasses(int schedule_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM Class WHERE schedule_id =? ";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setInt(1, schedule_id);
+
+        ResultSet result = statement.executeQuery();
+        ArrayList<Class_obj> classes = new ArrayList<>();
+
+        while (result.next()) {
+            int class_id = result.getInt("class_id");
+            Class_obj tmp = new Class_obj(
+                    class_id,
+                    result.getString("name")
+            );
+            tmp.setGroups(this.getGroups(class_id));
+            classes.add(tmp);
+        }
+        return classes;
+    }
+
+    public ArrayList<Group> getGroups(int class_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM Groups WHERE class_id =? ";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setInt(1, class_id);
+
+        ResultSet result = statement.executeQuery();
+        ArrayList<Group> groups = new ArrayList<>();
+
+        while (result.next()) {
+            int group_id = result.getInt("group_id");
+            Group tmp = new Group(
+                    group_id,
+                    result.getInt("day"),
+                    LocalTime.parse(result.getString("start")),
+                    LocalTime.parse(result.getString("end")),
+                    result.getInt("professor_id")
+            );
+            groups.add(tmp);
+        }
+        return groups;
     }
 }

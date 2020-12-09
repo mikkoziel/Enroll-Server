@@ -1,7 +1,6 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Schedule {
     int scheduleID;
@@ -9,9 +8,9 @@ public class Schedule {
     int semester;
     String description;
     Status status;
-    ArrayList<Class> classes;
+    ArrayList<Class_obj> classes;
 
-    public Schedule(int scheduleID, String name, int semester, String desc, Status status, ArrayList<Class> classes){
+    public Schedule(int scheduleID, String name, int semester, String desc, Status status, ArrayList<Class_obj> classes){
         this.scheduleID = scheduleID;
         this.name = name;
         this.semester = semester;
@@ -20,7 +19,7 @@ public class Schedule {
         this.classes = classes;
     }
 
-    public Schedule(String name, int semester, String desc, Status status, ArrayList<Class> classes){
+    public Schedule(String name, int semester, String desc, Status status, ArrayList<Class_obj> classes){
         this.name = name;
         this.semester = semester;
         this.description = desc;
@@ -34,7 +33,7 @@ public class Schedule {
         this.semester = semester;
         this.description = desc;
         this.status = status;
-        this.classes = new ArrayList<Class>();
+        this.classes = new ArrayList<Class_obj>();
     }
 
     public int getScheduleID() {
@@ -57,14 +56,17 @@ public class Schedule {
         return status;
     }
 
-    public ArrayList<Class> getClasses() {
+    public ArrayList<Class_obj> getClasses() {
         return classes;
     }
 
-    public void addClass(Class class_) {
-        this.classes.add(class_);
+    public void addClass(Class_obj class_obj) {
+        this.classes.add(class_obj);
     }
 
+    public void setClasses(ArrayList<Class_obj> classes){
+        this.classes = classes;
+    }
     @Override
     public String toString() {
         return "{\"scheduleID\":" + scheduleID +

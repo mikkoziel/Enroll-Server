@@ -23,4 +23,16 @@ public class AdminHandler {
             return "";
         }
     }
+
+    public String getSchedule(int user_id, String schedule_id){
+        int schedule_id_int = Integer.parseInt(schedule_id);
+        Schedule schedule = null;
+        try{
+            schedule = this.db.getSchedule(user_id, schedule_id_int);
+            return schedule.toString();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }
