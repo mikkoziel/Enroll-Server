@@ -1,9 +1,6 @@
 package DBHandler;
 
-import Model.Class_obj;
-import Model.Group;
-import Model.Schedule;
-import Model.Status;
+import Model.*;
 
 import java.sql.*;
 import java.time.LocalTime;
@@ -241,5 +238,23 @@ public class DBHandler {
                 throw new SQLException("Creating schedule failed, no ID obtained.");
             }
         }
+    }
+
+    public ArrayList<Professor> getProfessors() throws SQLException {
+        String SQL_SELECT = "SELECT * FROM Professor";
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        ResultSet result = statement.executeQuery();
+        ArrayList<Professor> professors = new ArrayList<>();
+
+        while (result.next()) {
+            professors.add(new Professor(
+                    result.getInt("professor_id"),
+                    result.getString("name"),
+                    result.getString("surname")
+            ));
+        }
+        return professors;
     }
 }

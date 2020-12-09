@@ -1,10 +1,7 @@
 package AdminHandler;
 
 import DBHandler.DBHandler;
-import Model.Class_obj;
-import Model.Group;
-import Model.Schedule;
-import Model.Status;
+import Model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -37,6 +34,17 @@ public class AdminHandler {
         try{
             schedule = this.db.getScheduleAdmin(admin_id, schedule_id_int);
             return schedule.toString();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String getProfessors(){
+        ArrayList<Professor> professors = null;
+        try {
+            professors = this.db.getProfessors();
+            return professors.toString();
         } catch (SQLException e) {
             e.printStackTrace();
             return "";

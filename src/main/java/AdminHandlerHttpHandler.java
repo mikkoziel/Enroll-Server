@@ -60,6 +60,8 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         } else if(uri.matches("schedules/[0-9]+")){
 //            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
             htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
+        } else if(uri.equals("professors")){
+            htmlResponse = this.admin.getProfessors();
         }
         return htmlResponse;
     }
@@ -80,7 +82,7 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.postSchedule(uri, msg, id);
         } else if(uri.matches("schedules/[0-9]+")){
             htmlResponse = this.admin.postClass(uri, msg, id);
-        } else if(uri.matches("schedules/[0-9]+/[0-9]+")){
+        } else if(uri.matches("classes/[0-9]+")){
             htmlResponse = this.admin.postGroup(uri, msg, id);
         }
         return htmlResponse;
