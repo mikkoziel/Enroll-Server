@@ -1,30 +1,43 @@
 import Model.Mock;
+import UserHandler.UserHandler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
-import java.util.Arrays;
 
-public class EnrollHttpHandler implements HttpHandler {
+public class UserEnrollHttpHandler implements HttpHandler {
     Mock mock;
     String context;
+    UserHandler user;
 
 
-    public EnrollHttpHandler(){
+    public UserEnrollHttpHandler(){
         this.mock = new Mock();
-        this.context = "/enroll/admin/";
+        this.context = "/enroll/user/";
+        this.user = new UserHandler();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         // Handler for Http requests
         String htmlResponse=null;
-        if("GET".equals(httpExchange.getRequestMethod())) {
-            htmlResponse = handleGetRequest(httpExchange);
-        }else if("POST".equals(httpExchange.getRequestMethod())) {
-            htmlResponse = handlePostRequest(httpExchange);
+        switch(httpExchange.getRequestMethod()){
+            case "GET":
+                htmlResponse = handleGetRequest(httpExchange);
+                break;
+            case "POST":
+                htmlResponse = handlePostRequest(httpExchange);
+                break;
+            case "OPTIONS":
+                htmlResponse = handleOptionsRequest(httpExchange);
+                break;
         }
+//        if("GET".equals(httpExchange.getRequestMethod())) {
+//            htmlResponse = handleGetRequest(httpExchange);
+//        }else if("POST".equals(httpExchange.getRequestMethod())) {
+//            htmlResponse = handlePostRequest(httpExchange);
+//        }else if("OPTIONS")
         System.out.println(htmlResponse);
         assert htmlResponse != null;
         handleResponse(httpExchange,htmlResponse);
@@ -32,17 +45,25 @@ public class EnrollHttpHandler implements HttpHandler {
 
     private String handleGetRequest(HttpExchange httpExchange) {
         String htmlResponse=null;
+
+        Headers reqHeaders = httpExchange.getRequestHeaders();
+        int id = Integer.parseInt(reqHeaders.getFirst("id"));
+//        reqHeaders.forEach((key, value) -> System.out.println(key + ": " + value));
+
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
-//                .split("/");
 
-        System.out.println(uri);
+//        System.out.println(uri);
         if(uri.equals("schedules")){
-            htmlResponse = this.mock.getSchedules();
-            System.out.println(htmlResponse);
+            htmlResponse = "";
+//            htmlResponse = this.mock.getSchedules();
+//            htmlResponse = this.admin.getSchedules(id);
+//            System.out.println(htmlResponse);
         } else if(uri.matches("schedules/[0-9]+")){
-            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
-            System.out.println(htmlResponse);
+            htmlResponse = "";
+//            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
+//            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
+//            System.out.println(htmlResponse);
         }
 //        System.out.println(uri);
         return htmlResponse;
@@ -54,7 +75,7 @@ public class EnrollHttpHandler implements HttpHandler {
         reqHeaders.forEach((key, value) -> System.out.println(key + ": " + value));
 
         // Get request body
-        String mssg = this.parseMsg(httpExchange);
+        String msg = this.parseMsg(httpExchange);
 
         String htmlResponse;
         boolean success = false;
@@ -69,10 +90,14 @@ public class EnrollHttpHandler implements HttpHandler {
         return htmlResponse;
     }
 
+    private String handleOptionsRequest(HttpExchange httpExchange) {
+        return "";
+    }
+
     private void handleResponse(HttpExchange httpExchange, String htmlResponse)  throws  IOException {
 
 
-//        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers","Origin, Content-Type");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers","Origin, Content-Type");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin","*");
 
@@ -85,7 +110,7 @@ public class EnrollHttpHandler implements HttpHandler {
         outputStream.close();
     }
 
-    private String parseMsg(HttpExchange httpExchange){
+    private String parseMsg(HttpExchange httpExchange) {
         String message = null;
         try (InputStream in = httpExchange.getRequestBody()) {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -103,7 +128,4 @@ public class EnrollHttpHandler implements HttpHandler {
         return message;
     }
 
-
-
 }
-
