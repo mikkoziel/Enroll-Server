@@ -1,69 +1,61 @@
+import AdminHandler.AdminHandler;
 import Model.Mock;
-import UserHandler.UserHandler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
 
-public class UserEnrollHttpHandler implements HttpHandler {
+public class UserHttpHandler implements HttpHandler {
     Mock mock;
     String context;
-    UserHandler user;
 
-
-    public UserEnrollHttpHandler(){
+    public UserHttpHandler() {
         this.mock = new Mock();
-        this.context = "/enroll/user/";
-        this.user = new UserHandler();
+        this.context = "/user/";
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         // Handler for Http requests
-        String htmlResponse=null;
-        switch(httpExchange.getRequestMethod()){
+        String htmlResponse = null;
+        switch (httpExchange.getRequestMethod()) {
             case "GET":
                 htmlResponse = handleGetRequest(httpExchange);
                 break;
             case "POST":
                 htmlResponse = handlePostRequest(httpExchange);
                 break;
+            case "PUT":
+                htmlResponse = handlePutRequest(httpExchange);
+                break;
             case "OPTIONS":
                 htmlResponse = handleOptionsRequest(httpExchange);
                 break;
         }
-//        if("GET".equals(httpExchange.getRequestMethod())) {
-//            htmlResponse = handleGetRequest(httpExchange);
-//        }else if("POST".equals(httpExchange.getRequestMethod())) {
-//            htmlResponse = handlePostRequest(httpExchange);
-//        }else if("OPTIONS")
         System.out.println(htmlResponse);
         assert htmlResponse != null;
-        handleResponse(httpExchange,htmlResponse);
+        handleResponse(httpExchange, htmlResponse);
     }
 
     private String handleGetRequest(HttpExchange httpExchange) {
-        String htmlResponse=null;
-
+        String htmlResponse = null;
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
-//        reqHeaders.forEach((key, value) -> System.out.println(key + ": " + value));
 
         String uri = httpExchange.getRequestURI()
-                .toString().replace(this.context,"");
+                .toString().replace(this.context, "");
 
 //        System.out.println(uri);
-        if(uri.equals("schedules")){
+        if (uri.equals("schedules")) {
             htmlResponse = "";
+
 //            htmlResponse = this.mock.getSchedules();
 //            htmlResponse = this.admin.getSchedules(id);
-//            System.out.println(htmlResponse);
-        } else if(uri.matches("schedules/[0-9]+")){
+        } else if (uri.matches("schedules/[0-9]+")) {
             htmlResponse = "";
 //            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
 //            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
-//            System.out.println(htmlResponse);
         }
 //        System.out.println(uri);
         return htmlResponse;
@@ -72,7 +64,10 @@ public class UserEnrollHttpHandler implements HttpHandler {
     private String handlePostRequest(HttpExchange httpExchange) {
         // Get request Header
         Headers reqHeaders = httpExchange.getRequestHeaders();
-        reqHeaders.forEach((key, value) -> System.out.println(key + ": " + value));
+        int id = Integer.parseInt(reqHeaders.getFirst("id"));
+
+        String uri = httpExchange.getRequestURI()
+                .toString().replace(this.context, "");
 
         // Get request body
         String msg = this.parseMsg(httpExchange);
@@ -81,7 +76,7 @@ public class UserEnrollHttpHandler implements HttpHandler {
         boolean success = false;
 
         // Get outcome response
-        if(success) {
+        if (success) {
             htmlResponse = "{ \"response\" : \"success\" }";
         } else {
             htmlResponse = "{ \" response\" : \"failure\" }";
@@ -90,16 +85,20 @@ public class UserEnrollHttpHandler implements HttpHandler {
         return htmlResponse;
     }
 
+    private String handlePutRequest(HttpExchange httpExchange) {
+        return "";
+    }
+
     private String handleOptionsRequest(HttpExchange httpExchange) {
         return "";
     }
 
-    private void handleResponse(HttpExchange httpExchange, String htmlResponse)  throws  IOException {
+    private void handleResponse(HttpExchange httpExchange, String htmlResponse) throws IOException {
 
 
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers","Origin, Content-Type");
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE");
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin","*");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Origin, Content-Type");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
 
         // Create http response
         httpExchange.sendResponseHeaders(200, htmlResponse.length());
@@ -127,5 +126,4 @@ public class UserEnrollHttpHandler implements HttpHandler {
         }
         return message;
     }
-
 }

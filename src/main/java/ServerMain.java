@@ -19,8 +19,9 @@ public class ServerMain {
             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
 
-            server.createContext("/enroll/admin", new AdminEnrollHttpHandler());
-            server.createContext("/enroll/user", new UserEnrollHttpHandler());
+            server.createContext("/admin-handler", new AdminHandlerHttpHandler());
+            server.createContext("/user-handler", new UserHandlerHttpHandler());
+            server.createContext("/user", new UserHandlerHttpHandler());
             server.setExecutor(threadPoolExecutor);
 
             //Start HttpServer
