@@ -1,22 +1,21 @@
-import AdminHandler.AdminHandler;
 import Model.Mock;
+import UserHandler.UserHandler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
-import java.util.Arrays;
 
-public class EnrollHttpHandler implements HttpHandler {
+public class UserEnrollHttpHandler implements HttpHandler {
     Mock mock;
     String context;
-    AdminHandler admin;
+    UserHandler user;
 
 
-    public EnrollHttpHandler(){
+    public UserEnrollHttpHandler(){
         this.mock = new Mock();
-        this.context = "/enroll/admin/";
-        this.admin = new AdminHandler();
+        this.context = "/enroll/user/";
+        this.user = new UserHandler();
     }
 
     @Override
@@ -56,12 +55,14 @@ public class EnrollHttpHandler implements HttpHandler {
 
 //        System.out.println(uri);
         if(uri.equals("schedules")){
+            htmlResponse = "";
 //            htmlResponse = this.mock.getSchedules();
-            htmlResponse = this.admin.getSchedules(id);
+//            htmlResponse = this.admin.getSchedules(id);
 //            System.out.println(htmlResponse);
         } else if(uri.matches("schedules/[0-9]+")){
+            htmlResponse = "";
 //            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
-            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
+//            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
 //            System.out.println(htmlResponse);
         }
 //        System.out.println(uri);
@@ -109,7 +110,7 @@ public class EnrollHttpHandler implements HttpHandler {
         outputStream.close();
     }
 
-    private String parseMsg(HttpExchange httpExchange){
+    private String parseMsg(HttpExchange httpExchange) {
         String message = null;
         try (InputStream in = httpExchange.getRequestBody()) {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -127,7 +128,4 @@ public class EnrollHttpHandler implements HttpHandler {
         return message;
     }
 
-
-
 }
-

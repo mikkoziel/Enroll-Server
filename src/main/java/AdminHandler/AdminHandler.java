@@ -12,7 +12,7 @@ public class AdminHandler {
      DBHandler db;
 
     public AdminHandler() {
-    this.db = new DBHandler();
+        this.db = new DBHandler();
     }
 
     public String getSchedules(int admin_id){
