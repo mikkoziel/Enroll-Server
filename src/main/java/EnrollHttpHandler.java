@@ -54,15 +54,15 @@ public class EnrollHttpHandler implements HttpHandler {
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
 
-        System.out.println(uri);
+//        System.out.println(uri);
         if(uri.equals("schedules")){
 //            htmlResponse = this.mock.getSchedules();
             htmlResponse = this.admin.getSchedules(id);
-            System.out.println(htmlResponse);
+//            System.out.println(htmlResponse);
         } else if(uri.matches("schedules/[0-9]+")){
 //            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
             htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
-            System.out.println(htmlResponse);
+//            System.out.println(htmlResponse);
         }
 //        System.out.println(uri);
         return htmlResponse;
