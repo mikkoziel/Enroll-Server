@@ -38,10 +38,19 @@ public class DBHandler {
         }
     }
 
-    public ArrayList<Schedule> getSchedules(int user_id) throws SQLException {
+    public ArrayList<Schedule> getSchedulesUser(int user_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
+                "(SELECT schedule_id FROM UserSchedule WHERE user_id=?)";
+        return this.getSchedules(user_id, SQL_SELECT);
+    }
+
+    public ArrayList<Schedule> getSchedulesAdmin(int admin_id) throws SQLException {
         String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
                 "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND admin=1)";
+        return this.getSchedules(admin_id, SQL_SELECT);
+    }
 
+    public ArrayList<Schedule> getSchedules(int user_id, String SQL_SELECT) throws SQLException {
         PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
                 Statement.RETURN_GENERATED_KEYS);
 
@@ -95,10 +104,19 @@ public class DBHandler {
         }
     }
 
-    public Schedule getSchedule(int user_id, int schedule_id) throws SQLException {
+    public Schedule getScheduleUser(int user_id, int schedule_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
+                "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND schedule_id=?)";
+        return this.getSchedule(user_id, schedule_id, SQL_SELECT);
+    }
+
+    public Schedule getScheduleAdmin(int user_id, int schedule_id) throws SQLException {
         String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
                 "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND admin=1 AND schedule_id=?)";
+        return this.getSchedule(user_id, schedule_id, SQL_SELECT);
+    }
 
+    public Schedule getSchedule(int user_id, int schedule_id, String SQL_SELECT) throws SQLException {
         PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
                 Statement.RETURN_GENERATED_KEYS);
 

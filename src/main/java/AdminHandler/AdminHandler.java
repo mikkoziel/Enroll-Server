@@ -16,7 +16,7 @@ public class AdminHandler {
     public String getSchedules(int id){
         ArrayList<Schedule> schedules = null;
         try{
-            schedules = this.db.getSchedules(id);
+            schedules = this.db.getSchedulesAdmin(id);
             return "{\"schedules\":" + schedules.toString() + "}";
         } catch (SQLException e) {
             e.printStackTrace();
@@ -28,7 +28,7 @@ public class AdminHandler {
         int schedule_id_int = Integer.parseInt(schedule_id);
         Schedule schedule = null;
         try{
-            schedule = this.db.getSchedule(user_id, schedule_id_int);
+            schedule = this.db.getScheduleAdmin(user_id, schedule_id_int);
             return schedule.toString();
         } catch (SQLException e) {
             e.printStackTrace();
