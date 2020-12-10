@@ -93,7 +93,9 @@ public class DBHandler {
 
         try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
-                return (generatedKeys.getLong(1));
+                long key = generatedKeys.getLong(1);
+                this.addUserSchedule(admin_id, (int)key, 1);
+                return key;
             }
             else {
                 throw new SQLException("Creating schedule failed, no ID obtained.");
@@ -257,4 +259,18 @@ public class DBHandler {
         }
         return professors;
     }
+
+    public void addUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
+        String SQL_INSERT = "INSERT INTO UserSchedule(user_id, schedule_id, admin)" +
+                " VALUES (?, ?, ?)";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT);
+
+        statement.setInt(1, user_id);
+        statement.setInt(2, schedule_id);
+        statement.setInt(3, admin);
+
+        int i = statement.executeUpdate();
+        System.out.println(i+ " records inserted");
+    };
 }

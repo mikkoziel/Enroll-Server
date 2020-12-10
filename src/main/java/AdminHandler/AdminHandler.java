@@ -116,6 +116,14 @@ public class AdminHandler {
         }
     }
 
+    public void addUserSchedule(int user_id, int schedule_id, int admin){
+        try {
+            this.db.addUserSchedule(user_id, schedule_id, admin);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     //----PARSER-------------------------------------------------------
 
     private Schedule parseStringToSchedule(String msg){
