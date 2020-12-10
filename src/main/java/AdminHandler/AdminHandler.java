@@ -44,7 +44,7 @@ public class AdminHandler {
         ArrayList<Professor> professors = null;
         try {
             professors = this.db.getProfessors();
-            return professors.toString();
+            return "{\"professors\":" + professors.toString() + "}";
         } catch (SQLException e) {
             e.printStackTrace();
             return "";
