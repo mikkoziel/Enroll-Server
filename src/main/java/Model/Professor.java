@@ -27,7 +27,7 @@ public class Professor {
     public String toString() {
         return "{\"professor_id\":" + professor_id +
                 ", \"name\":\"" + name +
-                ", \"surname\":\"" + surname +
+                "\", \"surname\":\"" + surname +
                 "\"}";
     }
 }

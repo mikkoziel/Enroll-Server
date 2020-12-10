@@ -1,9 +1,6 @@
 package DBHandler;
 
-import Model.Class_obj;
-import Model.Group;
-import Model.Schedule;
-import Model.Status;
+import Model.*;
 
 import java.sql.*;
 import java.time.LocalTime;
@@ -96,7 +93,9 @@ public class DBHandler {
 
         try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
-                return (generatedKeys.getLong(1));
+                long key = generatedKeys.getLong(1);
+                this.addUserSchedule(admin_id, (int)key, 1);
+                return key;
             }
             else {
                 throw new SQLException("Creating schedule failed, no ID obtained.");
@@ -242,4 +241,36 @@ public class DBHandler {
             }
         }
     }
+
+    public ArrayList<Professor> getProfessors() throws SQLException {
+        String SQL_SELECT = "SELECT * FROM Professor";
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        ResultSet result = statement.executeQuery();
+        ArrayList<Professor> professors = new ArrayList<>();
+
+        while (result.next()) {
+            professors.add(new Professor(
+                    result.getInt("professor_id"),
+                    result.getString("name"),
+                    result.getString("surname")
+            ));
+        }
+        return professors;
+    }
+
+    public void addUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
+        String SQL_INSERT = "INSERT INTO UserSchedule(user_id, schedule_id, admin)" +
+                " VALUES (?, ?, ?)";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT);
+
+        statement.setInt(1, user_id);
+        statement.setInt(2, schedule_id);
+        statement.setInt(3, admin);
+
+        int i = statement.executeUpdate();
+        System.out.println(i+ " records inserted");
+    };
 }

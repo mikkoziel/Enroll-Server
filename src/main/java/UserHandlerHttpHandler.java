@@ -1,22 +1,21 @@
-import AdminHandler.AdminHandler;
 import Model.Mock;
+import UserHandler.UserHandler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
-import java.util.Arrays;
 
-public class AdminEnrollHttpHandler implements HttpHandler {
+public class UserHandlerHttpHandler implements HttpHandler {
     Mock mock;
     String context;
-    AdminHandler admin;
+    UserHandler user;
 
 
-    public AdminEnrollHttpHandler(){
+    public UserHandlerHttpHandler(){
         this.mock = new Mock();
-        this.context = "/enroll/admin/";
-        this.admin = new AdminHandler();
+        this.context = "/user-handler/";
+        this.user = new UserHandler();
     }
 
     @Override
@@ -56,12 +55,14 @@ public class AdminEnrollHttpHandler implements HttpHandler {
 
 //        System.out.println(uri);
         if(uri.equals("schedules")){
+            htmlResponse = "";
 //            htmlResponse = this.mock.getSchedules();
-            htmlResponse = this.admin.getSchedules(id);
+//            htmlResponse = this.admin.getSchedules(id);
 //            System.out.println(htmlResponse);
         } else if(uri.matches("schedules/[0-9]+")){
+            htmlResponse = "";
 //            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
-            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
+//            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
 //            System.out.println(htmlResponse);
         }
 //        System.out.println(uri);
@@ -128,4 +129,3 @@ public class AdminEnrollHttpHandler implements HttpHandler {
     }
 
 }
-
