@@ -66,8 +66,23 @@ public class AdminParser {
 
     public Professor parseStringToProf(JSONObject prof_json){
         return new Professor(
-                prof_json.getInt("professor_id"),
                 prof_json.getString("name"),
                 prof_json.getString("surname"));
+    }
+
+    public UserPreference parseStringToUP(JSONObject up_json){
+        return new UserPreference(
+                up_json.getInt("user_id"),
+                up_json.getInt("group_id"),
+                up_json.getInt("points"));
+    }
+
+    public User parseStringToUser(JSONObject user_json){
+        return new User(
+                user_json.getString("name"),
+                user_json.getString("surname"),
+                user_json.getString("password"),
+                user_json.getString("mail"),
+                user_json.getBoolean("admin"));
     }
 }

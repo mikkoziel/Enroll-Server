@@ -26,12 +26,11 @@ public class DbUserSchedule {
         return i;
     }
 
-
     public int updateUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
-        String SQL_INSERT = "INSERT INTO UserSchedule(admin)" +
+        String SQL_UPDATE = "UPDATE UserSchedule(admin)" +
                 " VALUES (?) WHERE user_id=? AND schedule_id=?";
 
-        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT);
+        PreparedStatement statement = this.conn.prepareStatement(SQL_UPDATE);
 
         statement.setInt(1, admin);
         statement.setInt(2, user_id);

@@ -9,13 +9,11 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 
 public class AdminHandlerHttpHandler implements HttpHandler {
-    Mock mock;
     String context;
     AdminHandler admin;
 
 
     public AdminHandlerHttpHandler(){
-        this.mock = new Mock();
         this.context = "/admin-handler/";
         this.admin = new AdminHandler();
     }
@@ -59,6 +57,8 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
         } else if(uri.equals("professors")){
             htmlResponse = this.admin.getProfessors();
+        } else if(uri.matches("users/[0-9]+")){
+            htmlResponse = this.admin.getUsersForSchedule(uri.replace("users/", ""));
         }
         return htmlResponse;
     }
@@ -79,15 +79,21 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.postClass(uri, msg, id);
         } else if(uri.matches("classes/[0-9]+")){
             htmlResponse = this.admin.postGroup(uri, msg, id);
-        } else if(uri.equals("userSchedule")){
+        } else if(uri.equals("user-sch")){
             htmlResponse = this.admin.postUserSchedule(msg);
+        } else if(uri.equals("prof")){
+            htmlResponse = this.admin.postProfessor(msg);
+        } else if(uri.equals("user-pref")){
+            htmlResponse = this.admin.postUserPreference(msg);
+        } else if(uri.equals("user")){
+            htmlResponse = this.admin.postUser(msg);
         }
         return htmlResponse;
     }
 
     private String handlePutRequest(HttpExchange httpExchange) {
-        Headers reqHeaders = httpExchange.getRequestHeaders();
-        int id = Integer.parseInt(reqHeaders.getFirst("id"));
+//        Headers reqHeaders = httpExchange.getRequestHeaders();
+//        int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
@@ -97,8 +103,10 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         String htmlResponse = "";
         if(uri.matches("schedules/[0-9]+")){
             htmlResponse = this.admin.putSchedule(msg);
-        }else if(uri.equals("userSchedule")){
+        } else if(uri.equals("user-sch")){
             htmlResponse = this.admin.putUserSchedule(msg);
+        } else if(uri.equals("user")){
+            htmlResponse = this.admin.putUser(msg);
         }
 
         return htmlResponse;
@@ -111,6 +119,10 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         String htmlResponse = "";
         if(uri.matches("schedules/[0-9]+")) {
             htmlResponse = this.admin.deleteSchedule(uri);
+        } else if(uri.matches("classes/[0-9]+")) {
+            htmlResponse = this.admin.deleteClass(uri);
+        } else if(uri.matches("groups/[0-9]+")) {
+            htmlResponse = this.admin.deleteGroup(uri);
         }
         return htmlResponse;
     }
@@ -120,8 +132,8 @@ public class AdminHandlerHttpHandler implements HttpHandler {
     }
 
     private void handleResponse(HttpExchange httpExchange, String htmlResponse)  throws  IOException {
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers","Origin, Content-Type");
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers","*");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin","*");
 
         // Create http response

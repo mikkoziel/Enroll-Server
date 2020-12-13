@@ -30,4 +30,30 @@ public class DbProfessors {
         return professors;
     }
 
+    public int addProfessor(Professor prof) throws SQLException{
+        String SQL_INSERT = "INSERT INTO Professor(name, surname)" +
+                " VALUES (?, ?)";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setString(1, prof.getName());
+        statement.setString(2, prof.getSurname());
+
+        int affectedRows = statement.executeUpdate();
+
+        if (affectedRows == 0) {
+            throw new SQLException("Creating schedule failed, no rows affected.");
+        }
+
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                return (int) generatedKeys.getLong(1);
+            }
+            else {
+                throw new SQLException("Creating schedule failed, no ID obtained.");
+            }
+        }
+    }
+
 }

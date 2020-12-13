@@ -2,6 +2,7 @@ package AdminHandler;
 
 import DBHandler.DBHandler;
 import Model.Schedule;
+import Model.User;
 import Model.UserSchedule;
 import org.json.JSONObject;
 
@@ -30,6 +31,13 @@ public class AdminPut {
                 this.updateUserSchedule(us.getUser_id(), us.getSchedule_int(), admin) +
                 "}";
     }
+
+    public String putUser(String msg){
+        User user = this.parser.parseStringToUser(new JSONObject(msg));
+        return "{\"updated\": " +
+                this.updateUser(user) +
+                "}";
+    }
     //-------UPDATE--------------------------------------------------------
     public int updateSchedule(Schedule schedule){
         try {
@@ -43,6 +51,15 @@ public class AdminPut {
     public int updateUserSchedule(int user_id, int schedule_id, int admin){
         try {
             return this.db.updateUserSchedule(user_id, schedule_id, admin);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateUser(User user){
+        try {
+            return this.db.updateUser(user);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;

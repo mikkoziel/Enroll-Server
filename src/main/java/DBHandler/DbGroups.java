@@ -38,8 +38,8 @@ public class DbGroups {
         return groups;
     }
 
-    public long addGroup(int admin_id, Group group, int class_id) throws SQLException {
-        String SQL_INSERT = "INSERT INTO Group(day, start, end, class_id, professor_id)" +
+    public long addGroup(Group group, int class_id) throws SQLException {
+        String SQL_INSERT = "INSERT INTO Groups(day, start, end, class_id, professor_id)" +
                 " VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
@@ -65,6 +65,18 @@ public class DbGroups {
                 throw new SQLException("Creating schedule failed, no ID obtained.");
             }
         }
+    }
+
+    public int deleteGroup(int group_id) throws SQLException {
+        String SQL_DELETE = "DELETE FROM Groups WHERE group_id=?";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_DELETE);
+
+        statement.setInt(1, group_id);
+
+        int i = statement.executeUpdate();
+        System.out.println(i+ " records deleted");
+        return i;
     }
 
 }

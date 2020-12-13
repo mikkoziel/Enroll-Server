@@ -37,7 +37,7 @@ public class DbClasses {
         return classes;
     }
 
-    public long addClass(int admin_id, Class_obj class_, int schedule_id) throws SQLException {
+    public long addClass(Class_obj class_, int schedule_id) throws SQLException {
         String SQL_INSERT = "INSERT INTO Class(name, schedule_id)" +
                 " VALUES (?, ?)";
 
@@ -61,6 +61,18 @@ public class DbClasses {
                 throw new SQLException("Creating schedule failed, no ID obtained.");
             }
         }
+    }
+
+    public int deleteClass(int class_id) throws SQLException {
+        String SQL_DELETE = "DELETE FROM Class WHERE class_id=?";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_DELETE);
+
+        statement.setInt(1, class_id);
+
+        int i = statement.executeUpdate();
+        System.out.println(i+ " records deleted");
+        return i;
     }
 
 }

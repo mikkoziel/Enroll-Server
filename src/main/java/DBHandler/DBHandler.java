@@ -18,6 +18,8 @@ public class DBHandler {
     private DbGroups dbGroups;
     private DbProfessors dbProfessors;
     private DbUserSchedule dbUserSchedule;
+    private DbUserPreference dbUserPreference;
+    private DbUsers dbUsers;
 
     public DBHandler() {
         this.url = "jdbc:mysql://mysql.agh.edu.pl:3306" +
@@ -35,6 +37,8 @@ public class DBHandler {
         this.dbClasses = new DbClasses(this.conn, this.dbGroups);
         this.dbSchedules = new DbSchedules(this.conn, this.dbClasses, this.dbUserSchedule);
         this.dbProfessors = new DbProfessors(this.conn);
+        this.dbUserPreference = new DbUserPreference(this.conn);
+        this.dbUsers = new DbUsers(this.conn);
     }
 
     public void connectToDB(){
@@ -55,7 +59,7 @@ public class DBHandler {
     public ArrayList<Schedule> getSchedulesAdmin(int admin_id) throws SQLException {
         return this.dbSchedules.getSchedulesAdmin(admin_id);
     }
-    
+
     //----SCHEDULE-------------------------------------------------------
     public long addSchedule(int admin_id, Schedule schedule) throws SQLException {
         return this.dbSchedules.addSchedule(admin_id, schedule);
@@ -82,8 +86,12 @@ public class DBHandler {
         return this.dbClasses.getClasses(schedule_id);
     }
 
-    public long addClass(int admin_id, Class_obj class_, int schedule_id) throws SQLException {
-        return this.dbClasses.addClass(admin_id, class_, schedule_id);
+    public long addClass(Class_obj class_, int schedule_id) throws SQLException {
+        return this.dbClasses.addClass(class_, schedule_id);
+    }
+
+    public int deleteClass(int class_id) throws SQLException {
+        return this.dbClasses.deleteClass(class_id);
     }
 
     //----GROUPS-------------------------------------------------------
@@ -91,15 +99,23 @@ public class DBHandler {
         return this.dbGroups.getGroups(class_id);
     }
 
-    public long addGroup(int admin_id, Group group, int class_id) throws SQLException {
-        return this.dbGroups.addGroup(admin_id, group, class_id);
+    public long addGroup(Group group, int class_id) throws SQLException {
+        return this.dbGroups.addGroup(group, class_id);
+    }
+
+    public int deleteGroup(int group_id) throws SQLException {
+        return this.dbGroups.deleteGroup(group_id);
     }
 
     //----PROFESSORS-------------------------------------------------------
-
     public ArrayList<Professor> getProfessors() throws SQLException {
         return this.dbProfessors.getProfessors();
     }
+
+    public int addProfessor(Professor prof) throws SQLException{
+        return this.dbProfessors.addProfessor(prof);
+    }
+
     //----USER SCHEDULE-------------------------------------------------------
     public int addUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
         return this.dbUserSchedule.addUserSchedule(user_id, schedule_id, admin);
@@ -108,4 +124,40 @@ public class DBHandler {
     public int updateUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
         return this.dbUserSchedule.updateUserSchedule(user_id, schedule_id, admin);
     }
+
+    //----USER PREFERENCE-------------------------------------------------------
+    public int addUserPreference(UserPreference up) throws SQLException {
+        return this.dbUserPreference.addUserPreference(up);
+    }
+
+    public int updateUserPreference(UserPreference up) throws SQLException {
+        return this.dbUserPreference.updateUserPreference(up);
+    }
+
+    public ArrayList<UserPreference> getUPForSchedule(int schedule_id) throws SQLException {
+        return this.dbUserPreference.getUPForSchedule(schedule_id);
+    }
+
+    public ArrayList<UserPreference> getUPForGroup(int group_id) throws SQLException {
+        return this.dbUserPreference.getUPForGroup(group_id);
+    }
+
+    public ArrayList<UserPreference> getUPForUser(int user_id) throws SQLException {
+        return this.dbUserPreference.getUPForUser(user_id);
+    }
+
+    //----USERS --------------------------------------------------------------
+    public ArrayList<User> getUsersForSchedule(int schedule_id)  throws SQLException {
+        return this.dbUsers.getUsersForSchedule(schedule_id);
+    }
+
+    public int addUser(User user) throws SQLException {
+        return this.dbUsers.addUser(user);
+    }
+
+    public int updateUser(User user) throws SQLException {
+        return this.dbUsers.updateUser(user);
+    }
+
+
 }

@@ -30,6 +30,10 @@ public class AdminHandler {
         return this.adminGet.getProfessors();
     }
 
+    public String getUsersForSchedule(String schedule_id){
+        return this.adminGet.getUsersForSchedule(schedule_id);
+    }
+
     //----------POST----------------------------------------------------
     public String postSchedule(String msg, int id){
         return this.adminPost.postSchedule(msg, id);
@@ -47,6 +51,18 @@ public class AdminHandler {
         return this.adminPost.postUserSchedule(msg);
     }
 
+    public String postProfessor(String msg){
+        return this.adminPost.postProfessor(msg);
+    }
+
+    public String postUserPreference(String msg) {
+        return this.adminPost.postUserPreference(msg);
+    }
+
+    public String postUser(String msg) {
+        return  this.adminPost.postUser(msg);
+    }
+
     //----UPDATE-------------------------------------------------------
     public String putSchedule(String msg){
         return this.adminPut.putSchedule(msg);
@@ -56,10 +72,20 @@ public class AdminHandler {
         return this.adminPut.putUserSchedule(msg);
     }
 
+    public String putUser(String msg){
+        return this.adminPut.putUser(msg);
+    }
+
     //----DELETE-------------------------------------------------------
     public String deleteSchedule(String uri){
-        return "{\"deleted\": " +
-                this.adminDelete.deleteSchedule(uri) +
-                "}";
+        return this.adminDelete.deleteSchedule(uri);
+    }
+
+    public String deleteClass(String uri){
+        return this.adminDelete.deleteClass(uri);
+    }
+
+    public String deleteGroup(String uri){
+        return this.adminDelete.deleteGroup(uri);
     }
 }

@@ -1,6 +1,5 @@
 package HttpHandlers;
 
-import Model.Mock;
 import UserHandler.UserHandler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
@@ -9,13 +8,11 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 
 public class UserHandlerHttpHandler implements HttpHandler {
-    Mock mock;
     String context;
     UserHandler user;
 
 
     public UserHandlerHttpHandler(){
-        this.mock = new Mock();
         this.context = "/user-handler/";
         this.user = new UserHandler();
     }
