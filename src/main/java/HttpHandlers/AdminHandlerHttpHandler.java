@@ -22,7 +22,6 @@ public class AdminHandlerHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        // Handler for Http requests
         String htmlResponse=null;
         switch(httpExchange.getRequestMethod()){
             case "GET":
@@ -38,27 +37,25 @@ public class AdminHandlerHttpHandler implements HttpHandler {
                 htmlResponse = handleDeleteRequest(httpExchange);
                 break;
             case "OPTIONS":
-                htmlResponse = handleOptionsRequest(httpExchange);
+                htmlResponse = handleOptionsRequest();
                 break;
         }
         System.out.println(htmlResponse);
         assert htmlResponse != null;
-        handleResponse(httpExchange,htmlResponse);
+        handleResponse(httpExchange, htmlResponse);
     }
 
     private String handleGetRequest(HttpExchange httpExchange) {
-        String htmlResponse=null;
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
 
+        String htmlResponse="";
         if(uri.equals("schedules")){
-//            htmlResponse = this.mock.getSchedules();
             htmlResponse = this.admin.getSchedules(id);
         } else if(uri.matches("schedules/[0-9]+")){
-//            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
             htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
         } else if(uri.equals("professors")){
             htmlResponse = this.admin.getProfessors();
@@ -67,42 +64,62 @@ public class AdminHandlerHttpHandler implements HttpHandler {
     }
 
     private String handlePostRequest(HttpExchange httpExchange) {
-        // Get request Header
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
 
-        // Get request body
         String msg = this.parseMsg(httpExchange);
 
-        String htmlResponse = null;
+        String htmlResponse = "";
         if(uri.equals("schedules")){
-            htmlResponse = this.admin.postSchedule(uri, msg, id);
+            htmlResponse = this.admin.postSchedule(msg, id);
         } else if(uri.matches("schedules/[0-9]+")){
             htmlResponse = this.admin.postClass(uri, msg, id);
         } else if(uri.matches("classes/[0-9]+")){
             htmlResponse = this.admin.postGroup(uri, msg, id);
+        } else if(uri.equals("userSchedule")){
+            htmlResponse = this.admin.postUserSchedule(msg);
         }
         return htmlResponse;
     }
 
     private String handlePutRequest(HttpExchange httpExchange) {
-        return "";
+        Headers reqHeaders = httpExchange.getRequestHeaders();
+        int id = Integer.parseInt(reqHeaders.getFirst("id"));
+
+        String uri = httpExchange.getRequestURI()
+                .toString().replace(this.context,"");
+
+        String msg = this.parseMsg(httpExchange);
+
+        String htmlResponse = "";
+        if(uri.matches("schedules/[0-9]+")){
+            htmlResponse = this.admin.putSchedule(msg);
+        }else if(uri.equals("userSchedule")){
+            htmlResponse = this.admin.putUserSchedule(msg);
+        }
+
+        return htmlResponse;
     }
 
     private String handleDeleteRequest(HttpExchange httpExchange) {
-        return "";
+        String uri = httpExchange.getRequestURI()
+                .toString().replace(this.context,"");
+
+        String htmlResponse = "";
+        if(uri.matches("schedules/[0-9]+")) {
+            htmlResponse = this.admin.deleteSchedule(uri);
+        }
+        return htmlResponse;
     }
 
-    private String handleOptionsRequest(HttpExchange httpExchange) {
+    private String handleOptionsRequest() {
         return "";
     }
 
     private void handleResponse(HttpExchange httpExchange, String htmlResponse)  throws  IOException {
-
-
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers","Origin, Content-Type");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin","*");
@@ -133,7 +150,6 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         }
         return message;
     }
-
 
 }
 

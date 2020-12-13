@@ -4,6 +4,7 @@ import DBHandler.DBHandler;
 import Model.Class_obj;
 import Model.Group;
 import Model.Schedule;
+import Model.UserSchedule;
 import org.json.JSONObject;
 
 import java.sql.SQLException;
@@ -17,7 +18,7 @@ public class AdminPost {
         this.parser = new AdminParser();
     }
 
-    public String postSchedule(String uri, String msg, int id){
+    public String postSchedule(String msg, int id){
         Schedule schedule = this.parser.parseStringToSchedule(msg);
         long schedule_id = this.addSchedule(id, schedule);
         if(!schedule.getClasses().isEmpty()){
@@ -50,6 +51,14 @@ public class AdminPost {
         return "{\"group_id\": " + group_id + "}";
     }
 
+    public String postUserSchedule(String msg) {
+        UserSchedule us = this.parser.parseStringToUS(new JSONObject(msg));
+        int admin = us.isAdmin() ? 1 : 0;
+        return "{\"changed\": " +
+                this.addUserSchedule(us.getUser_id(), us.getSchedule_int(), admin) +
+                "}";
+    }
+
     //-------ADD--------------------------------------------------------
     public long addSchedule(int admin_id, Schedule schedule){
         try {
@@ -80,11 +89,12 @@ public class AdminPost {
     }
 
 
-    public void addUserSchedule(int user_id, int schedule_id, int admin){
+    public int addUserSchedule(int user_id, int schedule_id, int admin){
         try {
-            this.db.addUserSchedule(user_id, schedule_id, admin);
+            return this.db.addUserSchedule(user_id, schedule_id, admin);
         } catch (SQLException e) {
             e.printStackTrace();
+            return 0;
         }
     }
 }

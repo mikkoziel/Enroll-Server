@@ -11,7 +11,7 @@ public class DbUserSchedule {
         this.conn = conn;
     }
 
-    public void addUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
+    public int addUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
         String SQL_INSERT = "INSERT INTO UserSchedule(user_id, schedule_id, admin)" +
                 " VALUES (?, ?, ?)";
 
@@ -23,10 +23,11 @@ public class DbUserSchedule {
 
         int i = statement.executeUpdate();
         System.out.println(i+ " records inserted");
-    };
+        return i;
+    }
 
 
-    public void updateUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
+    public int updateUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
         String SQL_INSERT = "INSERT INTO UserSchedule(admin)" +
                 " VALUES (?) WHERE user_id=? AND schedule_id=?";
 
@@ -38,5 +39,6 @@ public class DbUserSchedule {
 
         int i = statement.executeUpdate();
         System.out.println(i+ " records updated");
-    };
+        return i;
+    }
 }

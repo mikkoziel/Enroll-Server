@@ -1,9 +1,7 @@
 package AdminHandler;
 
-import Model.Class_obj;
-import Model.Group;
-import Model.Schedule;
-import Model.Status;
+import Model.*;
+import com.mysql.cj.xdevapi.JsonArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -57,5 +55,19 @@ public class AdminParser {
                 LocalTime.parse(group_json.getString("end")),
                 group_json.getInt("professor_id")
         );
+    }
+
+    public UserSchedule parseStringToUS(JSONObject us_json){
+        return new UserSchedule(
+                us_json.getInt("user_id"),
+                us_json.getInt("schedule_int"),
+                us_json.getBoolean("admin"));
+    }
+
+    public Professor parseStringToProf(JSONObject prof_json){
+        return new Professor(
+                prof_json.getInt("professor_id"),
+                prof_json.getString("name"),
+                prof_json.getString("surname"));
     }
 }

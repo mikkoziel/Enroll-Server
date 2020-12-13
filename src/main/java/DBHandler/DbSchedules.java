@@ -123,7 +123,7 @@ public class DbSchedules {
         return schedule;
     }
 
-    public void updateSchedule(Schedule schedule) throws SQLException {
+    public int updateSchedule(Schedule schedule) throws SQLException {
         String SQL_INSERT = "INSERT INTO Schedule(name, semester, description, status)" +
                 " VALUES (?, ?, ?, ?) WHERE schedule_id=?";
 
@@ -138,5 +138,19 @@ public class DbSchedules {
 
         int i = statement.executeUpdate();
         System.out.println(i+ " records updated");
+        return i;
+    }
+
+    public int deleteSchedule(int schedule_int) throws SQLException {
+        String SQL_INSERT = "DELETE FROM Schedule WHERE schedule_id=?";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT);
+
+        statement.setInt(1, schedule_int);
+
+
+        int i = statement.executeUpdate();
+        System.out.println(i+ " records deleted");
+        return i;
     }
 }

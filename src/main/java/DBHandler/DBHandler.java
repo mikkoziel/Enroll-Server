@@ -55,8 +55,7 @@ public class DBHandler {
     public ArrayList<Schedule> getSchedulesAdmin(int admin_id) throws SQLException {
         return this.dbSchedules.getSchedulesAdmin(admin_id);
     }
-
-
+    
     //----SCHEDULE-------------------------------------------------------
     public long addSchedule(int admin_id, Schedule schedule) throws SQLException {
         return this.dbSchedules.addSchedule(admin_id, schedule);
@@ -70,8 +69,12 @@ public class DBHandler {
         return this.dbSchedules.getScheduleAdmin(user_id, schedule_id);
     }
 
-    public void updateSchedule(Schedule schedule) throws SQLException {
-        this.dbSchedules.updateSchedule(schedule);
+    public int updateSchedule(Schedule schedule) throws SQLException {
+        return this.dbSchedules.updateSchedule(schedule);
+    }
+
+    public int deleteSchedule(int schedule_id) throws SQLException {
+        return this.dbSchedules.deleteSchedule(schedule_id);
     }
 
     //----CLASSES-------------------------------------------------------
@@ -98,11 +101,11 @@ public class DBHandler {
         return this.dbProfessors.getProfessors();
     }
     //----USER SCHEDULE-------------------------------------------------------
-    public void addUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
-        this.dbUserSchedule.addUserSchedule(user_id, schedule_id, admin);
+    public int addUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
+        return this.dbUserSchedule.addUserSchedule(user_id, schedule_id, admin);
     }
 
-    public void updateUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
-        this.dbUserSchedule.updateUserSchedule(user_id, schedule_id, admin);
+    public int updateUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
+        return this.dbUserSchedule.updateUserSchedule(user_id, schedule_id, admin);
     }
 }

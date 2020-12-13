@@ -1,25 +1,20 @@
 package AdminHandler;
 
 import DBHandler.DBHandler;
-import Model.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.sql.SQLException;
-import java.time.LocalTime;
-import java.util.ArrayList;
 
 public class AdminHandler {
      DBHandler db;
      AdminGet adminGet;
      AdminPost adminPost;
      AdminPut adminPut;
+     AdminDelete adminDelete;
 
     public AdminHandler() {
         this.db = new DBHandler();
         this.adminGet = new AdminGet(this.db);
         this.adminPost = new AdminPost(this.db);
         this.adminPut = new AdminPut(this.db);
+        this.adminDelete = new AdminDelete(this.db);
     }
 
     //-----------GET----------------------------------------------------
@@ -36,8 +31,8 @@ public class AdminHandler {
     }
 
     //----------POST----------------------------------------------------
-    public String postSchedule(String uri, String msg, int id){
-        return this.adminPost.postSchedule(uri, msg, id);
+    public String postSchedule(String msg, int id){
+        return this.adminPost.postSchedule(msg, id);
     }
 
     public String postClass(String uri, String msg, int id){
@@ -48,17 +43,23 @@ public class AdminHandler {
         return this.adminPost.postGroup(uri, msg, id);
     }
 
-    public void postUserSchedule(int user_id, int schedule_id, int admin){
-        this.adminPost.addUserSchedule(user_id, schedule_id, admin);
+    public String postUserSchedule(String msg){
+        return this.adminPost.postUserSchedule(msg);
     }
 
     //----UPDATE-------------------------------------------------------
-    public void putSchedule(Schedule schedule){
-        this.adminPut.putSchedule(schedule);
+    public String putSchedule(String msg){
+        return this.adminPut.putSchedule(msg);
     }
 
-    public void putUserSchedule(int user_id, int schedule_id, int admin){
-        this.adminPut.putUserSchedule(user_id, schedule_id, admin);
+    public String putUserSchedule(String msg){
+        return this.adminPut.putUserSchedule(msg);
     }
 
+    //----DELETE-------------------------------------------------------
+    public String deleteSchedule(String uri){
+        return "{\"deleted\": " +
+                this.adminDelete.deleteSchedule(uri) +
+                "}";
+    }
 }
