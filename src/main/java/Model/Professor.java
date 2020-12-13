@@ -11,6 +11,11 @@ public class Professor {
         this.surname = surname;
     }
 
+    public Professor(String name, String surname){
+        this.name = name;
+        this.surname = surname;
+    }
+
     public int getProfessor_id() {
         return professor_id;
     }
@@ -21,6 +26,10 @@ public class Professor {
 
     public String getSurname() {
         return surname;
+    }
+
+    public void setProfessor_id(int professor_id) {
+        this.professor_id = professor_id;
     }
 
     @Override

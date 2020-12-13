@@ -3,11 +3,11 @@ package Model;
 import java.time.LocalTime;
 
 public class Group {
-    int groupId;
-    int day;
-    LocalTime start;
-    LocalTime end;
-    int professor_id;
+    private int groupId;
+    private int day;
+    private LocalTime start;
+    private LocalTime end;
+    private int professor_id;
 
     public Group(int groupId, int day, LocalTime start, LocalTime end, int professor_id){
         this.groupId = groupId;

@@ -13,6 +13,14 @@ public class DBHandler {
     private String password;
     private String driverClass;
 
+    private DbSchedules dbSchedules;
+    private DbClasses dbClasses;
+    private DbGroups dbGroups;
+    private DbProfessors dbProfessors;
+    private DbUserSchedule dbUserSchedule;
+    private DbUserPreference dbUserPreference;
+    private DbUsers dbUsers;
+
     public DBHandler() {
         this.url = "jdbc:mysql://mysql.agh.edu.pl:3306" +
                 "/" +
@@ -23,6 +31,14 @@ public class DBHandler {
         this.driverClass = "com.mysql.cj.jdbc.Driver";
 
         this.connectToDB();
+
+        this.dbUserSchedule = new DbUserSchedule(this.conn);
+        this.dbGroups = new DbGroups(this.conn);
+        this.dbClasses = new DbClasses(this.conn, this.dbGroups);
+        this.dbSchedules = new DbSchedules(this.conn, this.dbClasses, this.dbUserSchedule);
+        this.dbProfessors = new DbProfessors(this.conn);
+        this.dbUserPreference = new DbUserPreference(this.conn);
+        this.dbUsers = new DbUsers(this.conn);
     }
 
     public void connectToDB(){
@@ -35,242 +51,113 @@ public class DBHandler {
         }
     }
 
+    //----SCHEDULES-------------------------------------------------------
     public ArrayList<Schedule> getSchedulesUser(int user_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
-                "(SELECT schedule_id FROM UserSchedule WHERE user_id=?)";
-        return this.getSchedules(user_id, SQL_SELECT);
+        return this.dbSchedules.getSchedulesUser(user_id);
     }
 
     public ArrayList<Schedule> getSchedulesAdmin(int admin_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
-                "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND admin=1)";
-        return this.getSchedules(admin_id, SQL_SELECT);
+        return this.dbSchedules.getSchedulesAdmin(admin_id);
     }
 
-    public ArrayList<Schedule> getSchedules(int user_id, String SQL_SELECT) throws SQLException {
-        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
-                Statement.RETURN_GENERATED_KEYS);
-
-        statement.setInt(1, user_id);
-
-        ResultSet result = statement.executeQuery();
-        ArrayList<Schedule> schedules = new ArrayList<>();
-
-        while (result.next()) {
-            int schedule_id = result.getInt("schedule_id");
-            Schedule tmp = new Schedule(
-                    schedule_id,
-                    result.getString("name"),
-                    result.getInt("semester"),
-                    result.getString("description"),
-                    Status.valueOf(result.getString("status"))
-            );
-            tmp.setClasses(this.getClasses(schedule_id));
-
-            schedules.add(tmp);
-
-        }
-        return schedules;
-    }
-
+    //----SCHEDULE-------------------------------------------------------
     public long addSchedule(int admin_id, Schedule schedule) throws SQLException {
-        String SQL_INSERT = "INSERT INTO Schedule(name, semester, description, status)" +
-                " VALUES (?, ?, ?, ?)";
-
-        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
-                        Statement.RETURN_GENERATED_KEYS);
-
-        statement.setString(1, schedule.getName());
-        statement.setInt(2, schedule.getSemester());
-        statement.setString(3, schedule.getDescription());
-        statement.setString(4, String.valueOf(schedule.getStatus()));
-
-        int affectedRows = statement.executeUpdate();
-
-        if (affectedRows == 0) {
-            throw new SQLException("Creating schedule failed, no rows affected.");
-        }
-
-        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-            if (generatedKeys.next()) {
-                long key = generatedKeys.getLong(1);
-                this.addUserSchedule(admin_id, (int)key, 1);
-                return key;
-            }
-            else {
-                throw new SQLException("Creating schedule failed, no ID obtained.");
-            }
-        }
+        return this.dbSchedules.addSchedule(admin_id, schedule);
     }
 
     public Schedule getScheduleUser(int user_id, int schedule_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
-                "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND schedule_id=?)";
-        return this.getSchedule(user_id, schedule_id, SQL_SELECT);
+        return this.dbSchedules.getScheduleUser(user_id, schedule_id);
     }
 
     public Schedule getScheduleAdmin(int user_id, int schedule_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
-                "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND admin=1 AND schedule_id=?)";
-        return this.getSchedule(user_id, schedule_id, SQL_SELECT);
+        return this.dbSchedules.getScheduleAdmin(user_id, schedule_id);
     }
 
-    public Schedule getSchedule(int user_id, int schedule_id, String SQL_SELECT) throws SQLException {
-        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
-                Statement.RETURN_GENERATED_KEYS);
-
-        statement.setInt(1, user_id);
-        statement.setInt(2, schedule_id);
-
-        ResultSet result = statement.executeQuery();
-        Schedule schedule = null;
-
-        if (result.next()) {
-            int schedule_id_ = result.getInt("schedule_id");
-            schedule = new Schedule(
-                    schedule_id_,
-                    result.getString("name"),
-                    result.getInt("semester"),
-                    result.getString("description"),
-                    Status.valueOf(result.getString("status"))
-            );
-            schedule.setClasses(this.getClasses(schedule_id_));
-        }
-        return schedule;
+    public int updateSchedule(Schedule schedule) throws SQLException {
+        return this.dbSchedules.updateSchedule(schedule);
     }
 
+    public int deleteSchedule(int schedule_id) throws SQLException {
+        return this.dbSchedules.deleteSchedule(schedule_id);
+    }
+
+    //----CLASSES-------------------------------------------------------
     public ArrayList<Class_obj> getClasses(int schedule_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM Class WHERE schedule_id =? ";
-
-        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
-                Statement.RETURN_GENERATED_KEYS);
-
-        statement.setInt(1, schedule_id);
-
-        ResultSet result = statement.executeQuery();
-        ArrayList<Class_obj> classes = new ArrayList<>();
-
-        while (result.next()) {
-            int class_id = result.getInt("class_id");
-            Class_obj tmp = new Class_obj(
-                    class_id,
-                    result.getString("name")
-            );
-            tmp.setGroups(this.getGroups(class_id));
-            classes.add(tmp);
-        }
-        return classes;
+        return this.dbClasses.getClasses(schedule_id);
     }
 
-    public long addClass(int admin_id, Class_obj class_, int schedule_id) throws SQLException {
-        String SQL_INSERT = "INSERT INTO Class(name, schedule_id)" +
-                " VALUES (?, ?)";
-
-        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
-                Statement.RETURN_GENERATED_KEYS);
-
-        statement.setString(1, class_.getName());
-        statement.setInt(2, schedule_id);
-
-        int affectedRows = statement.executeUpdate();
-
-        if (affectedRows == 0) {
-            throw new SQLException("Creating schedule failed, no rows affected.");
-        }
-
-        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-            if (generatedKeys.next()) {
-                return (generatedKeys.getLong(1));
-            }
-            else {
-                throw new SQLException("Creating schedule failed, no ID obtained.");
-            }
-        }
+    public long addClass(Class_obj class_, int schedule_id) throws SQLException {
+        return this.dbClasses.addClass(class_, schedule_id);
     }
 
+    public int deleteClass(int class_id) throws SQLException {
+        return this.dbClasses.deleteClass(class_id);
+    }
+
+    //----GROUPS-------------------------------------------------------
     public ArrayList<Group> getGroups(int class_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM Groups WHERE class_id =? ";
-
-        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
-                Statement.RETURN_GENERATED_KEYS);
-
-        statement.setInt(1, class_id);
-
-        ResultSet result = statement.executeQuery();
-        ArrayList<Group> groups = new ArrayList<>();
-
-        while (result.next()) {
-            int group_id = result.getInt("group_id");
-            Group tmp = new Group(
-                    group_id,
-                    result.getInt("day"),
-                    LocalTime.parse(result.getString("start")),
-                    LocalTime.parse(result.getString("end")),
-                    result.getInt("professor_id")
-            );
-            groups.add(tmp);
-        }
-        return groups;
+        return this.dbGroups.getGroups(class_id);
     }
 
-    public long addGroup(int admin_id, Group group, int class_id) throws SQLException {
-        String SQL_INSERT = "INSERT INTO Group(day, start, end, class_id, professor_id)" +
-                " VALUES (?, ?, ?, ?, ?)";
-
-        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
-                Statement.RETURN_GENERATED_KEYS);
-
-        statement.setInt(1, group.getDay());
-        statement.setString(2, group.getStart().toString());
-        statement.setString(3, group.getEnd().toString());
-        statement.setInt(4, class_id);
-        statement.setInt(5, group.getProfessor_id());
-
-        int affectedRows = statement.executeUpdate();
-
-        if (affectedRows == 0) {
-            throw new SQLException("Creating schedule failed, no rows affected.");
-        }
-
-        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-            if (generatedKeys.next()) {
-                return (generatedKeys.getLong(1));
-            }
-            else {
-                throw new SQLException("Creating schedule failed, no ID obtained.");
-            }
-        }
+    public long addGroup(Group group, int class_id) throws SQLException {
+        return this.dbGroups.addGroup(group, class_id);
     }
 
+    public int deleteGroup(int group_id) throws SQLException {
+        return this.dbGroups.deleteGroup(group_id);
+    }
+
+    //----PROFESSORS-------------------------------------------------------
     public ArrayList<Professor> getProfessors() throws SQLException {
-        String SQL_SELECT = "SELECT * FROM Professor";
-        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
-                Statement.RETURN_GENERATED_KEYS);
-
-        ResultSet result = statement.executeQuery();
-        ArrayList<Professor> professors = new ArrayList<>();
-
-        while (result.next()) {
-            professors.add(new Professor(
-                    result.getInt("professor_id"),
-                    result.getString("name"),
-                    result.getString("surname")
-            ));
-        }
-        return professors;
+        return this.dbProfessors.getProfessors();
     }
 
-    public void addUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
-        String SQL_INSERT = "INSERT INTO UserSchedule(user_id, schedule_id, admin)" +
-                " VALUES (?, ?, ?)";
+    public int addProfessor(Professor prof) throws SQLException{
+        return this.dbProfessors.addProfessor(prof);
+    }
 
-        PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT);
+    //----USER SCHEDULE-------------------------------------------------------
+    public int addUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
+        return this.dbUserSchedule.addUserSchedule(user_id, schedule_id, admin);
+    }
 
-        statement.setInt(1, user_id);
-        statement.setInt(2, schedule_id);
-        statement.setInt(3, admin);
+    public int updateUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
+        return this.dbUserSchedule.updateUserSchedule(user_id, schedule_id, admin);
+    }
 
-        int i = statement.executeUpdate();
-        System.out.println(i+ " records inserted");
-    };
+    //----USER PREFERENCE-------------------------------------------------------
+    public int addUserPreference(UserPreference up) throws SQLException {
+        return this.dbUserPreference.addUserPreference(up);
+    }
+
+    public int updateUserPreference(UserPreference up) throws SQLException {
+        return this.dbUserPreference.updateUserPreference(up);
+    }
+
+    public ArrayList<UserPreference> getUPForSchedule(int schedule_id) throws SQLException {
+        return this.dbUserPreference.getUPForSchedule(schedule_id);
+    }
+
+    public ArrayList<UserPreference> getUPForGroup(int group_id) throws SQLException {
+        return this.dbUserPreference.getUPForGroup(group_id);
+    }
+
+    public ArrayList<UserPreference> getUPForUser(int user_id) throws SQLException {
+        return this.dbUserPreference.getUPForUser(user_id);
+    }
+
+    //----USERS --------------------------------------------------------------
+    public ArrayList<User> getUsersForSchedule(int schedule_id)  throws SQLException {
+        return this.dbUsers.getUsersForSchedule(schedule_id);
+    }
+
+    public int addUser(User user) throws SQLException {
+        return this.dbUsers.addUser(user);
+    }
+
+    public int updateUser(User user) throws SQLException {
+        return this.dbUsers.updateUser(user);
+    }
+
+
 }

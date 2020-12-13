@@ -1,5 +1,5 @@
-import AdminHandler.AdminHandler;
-import Model.Mock;
+package HttpHandlers;
+
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -7,11 +7,9 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 
 public class UserHttpHandler implements HttpHandler {
-    Mock mock;
     String context;
 
     public UserHttpHandler() {
-        this.mock = new Mock();
         this.context = "/user/";
     }
 

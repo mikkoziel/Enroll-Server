@@ -1,31 +1,25 @@
+package HttpHandlers;
+
 import AdminHandler.AdminHandler;
 import Model.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.*;
-import java.time.LocalTime;
-import java.util.ArrayList;
 
 public class AdminHandlerHttpHandler implements HttpHandler {
-    Mock mock;
     String context;
     AdminHandler admin;
 
 
     public AdminHandlerHttpHandler(){
-        this.mock = new Mock();
         this.context = "/admin-handler/";
         this.admin = new AdminHandler();
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        // Handler for Http requests
         String htmlResponse=null;
         switch(httpExchange.getRequestMethod()){
             case "GET":
@@ -37,70 +31,109 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             case "PUT":
                 htmlResponse = handlePutRequest(httpExchange);
                 break;
+            case "DELETE":
+                htmlResponse = handleDeleteRequest(httpExchange);
+                break;
             case "OPTIONS":
-                htmlResponse = handleOptionsRequest(httpExchange);
+                htmlResponse = handleOptionsRequest();
                 break;
         }
         System.out.println(htmlResponse);
         assert htmlResponse != null;
-        handleResponse(httpExchange,htmlResponse);
+        handleResponse(httpExchange, htmlResponse);
     }
 
     private String handleGetRequest(HttpExchange httpExchange) {
-        String htmlResponse=null;
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
 
+        String htmlResponse="";
         if(uri.equals("schedules")){
-//            htmlResponse = this.mock.getSchedules();
             htmlResponse = this.admin.getSchedules(id);
         } else if(uri.matches("schedules/[0-9]+")){
-//            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
             htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
         } else if(uri.equals("professors")){
             htmlResponse = this.admin.getProfessors();
+        } else if(uri.matches("users/[0-9]+")){
+            htmlResponse = this.admin.getUsersForSchedule(uri.replace("users/", ""));
         }
         return htmlResponse;
     }
 
     private String handlePostRequest(HttpExchange httpExchange) {
-        // Get request Header
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
 
-        // Get request body
         String msg = this.parseMsg(httpExchange);
 
-        String htmlResponse = null;
+        String htmlResponse = "";
         if(uri.equals("schedules")){
-            htmlResponse = this.admin.postSchedule(uri, msg, id);
+            htmlResponse = this.admin.postSchedule(msg, id);
         } else if(uri.matches("schedules/[0-9]+")){
             htmlResponse = this.admin.postClass(uri, msg, id);
         } else if(uri.matches("classes/[0-9]+")){
             htmlResponse = this.admin.postGroup(uri, msg, id);
+        } else if(uri.equals("user-sch")){
+            htmlResponse = this.admin.postUserSchedule(msg);
+        } else if(uri.equals("prof")){
+            htmlResponse = this.admin.postProfessor(msg);
+        } else if(uri.equals("user-pref")){
+            htmlResponse = this.admin.postUserPreference(msg);
+        } else if(uri.equals("user")){
+            htmlResponse = this.admin.postUser(msg);
         }
         return htmlResponse;
     }
 
     private String handlePutRequest(HttpExchange httpExchange) {
-        return "";
+//        Headers reqHeaders = httpExchange.getRequestHeaders();
+//        int id = Integer.parseInt(reqHeaders.getFirst("id"));
+
+        String uri = httpExchange.getRequestURI()
+                .toString().replace(this.context,"");
+
+        String msg = this.parseMsg(httpExchange);
+
+        String htmlResponse = "";
+        if(uri.matches("schedules/[0-9]+")){
+            htmlResponse = this.admin.putSchedule(msg);
+        } else if(uri.equals("user-sch")){
+            htmlResponse = this.admin.putUserSchedule(msg);
+        } else if(uri.equals("user")){
+            htmlResponse = this.admin.putUser(msg);
+        }
+
+        return htmlResponse;
     }
 
-    private String handleOptionsRequest(HttpExchange httpExchange) {
+    private String handleDeleteRequest(HttpExchange httpExchange) {
+        String uri = httpExchange.getRequestURI()
+                .toString().replace(this.context,"");
+
+        String htmlResponse = "";
+        if(uri.matches("schedules/[0-9]+")) {
+            htmlResponse = this.admin.deleteSchedule(uri);
+        } else if(uri.matches("classes/[0-9]+")) {
+            htmlResponse = this.admin.deleteClass(uri);
+        } else if(uri.matches("groups/[0-9]+")) {
+            htmlResponse = this.admin.deleteGroup(uri);
+        }
+        return htmlResponse;
+    }
+
+    private String handleOptionsRequest() {
         return "";
     }
 
     private void handleResponse(HttpExchange httpExchange, String htmlResponse)  throws  IOException {
-
-
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers","Origin, Content-Type");
-        httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers","*");
+        httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin","*");
 
         // Create http response
@@ -129,7 +162,6 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         }
         return message;
     }
-
 
 }
 
