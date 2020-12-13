@@ -1,4 +1,4 @@
-package AdminHandler;
+package Tools;
 
 import Model.*;
 import org.json.JSONArray;
@@ -7,9 +7,9 @@ import org.json.JSONObject;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class AdminParser {
+public class Parser {
 
-    public AdminParser(){}
+    public Parser(){}
 
     public Schedule parseStringToSchedule(String msg){
         JSONObject jo = new JSONObject(msg);

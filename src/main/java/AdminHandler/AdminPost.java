@@ -2,17 +2,18 @@ package AdminHandler;
 
 import DBHandler.DBHandler;
 import Model.*;
+import Tools.Parser;
 import org.json.JSONObject;
 
 import java.sql.SQLException;
 
 public class AdminPost {
     DBHandler db;
-    AdminParser parser;
+    Parser parser;
 
     public AdminPost(DBHandler db) {
         this.db = db;
-        this.parser = new AdminParser();
+        this.parser = new Parser();
     }
 
     public String postSchedule(String msg, int id){

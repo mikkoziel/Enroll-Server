@@ -28,6 +28,9 @@ public class UserHandlerHttpHandler implements HttpHandler {
             case "POST":
                 htmlResponse = handlePostRequest(httpExchange);
                 break;
+            case "PUT":
+                htmlResponse = handlePutRequest(httpExchange);
+                break;
             case "OPTIONS":
                 htmlResponse = handleOptionsRequest(httpExchange);
                 break;
@@ -60,9 +63,29 @@ public class UserHandlerHttpHandler implements HttpHandler {
         Headers reqHeaders = httpExchange.getRequestHeaders();
         reqHeaders.forEach((key, value) -> System.out.println(key + ": " + value));
 
+        String uri = httpExchange.getRequestURI()
+                .toString().replace(this.context,"");
+
         // Get request body
         String msg = this.parseMsg(httpExchange);
 
+        if(uri.equals("user-pref")){
+            htmlResponse = this.user.postUserPreference(msg);
+        }
+
+        return htmlResponse;
+    }
+
+    private String handlePutRequest(HttpExchange httpExchange) {
+        String uri = httpExchange.getRequestURI()
+                .toString().replace(this.context,"");
+
+        String msg = this.parseMsg(httpExchange);
+
+        String htmlResponse = "";
+        if(uri.equals("user-sch")){
+            htmlResponse = this.user.putUserPreference(msg);
+        }
 
         return htmlResponse;
     }

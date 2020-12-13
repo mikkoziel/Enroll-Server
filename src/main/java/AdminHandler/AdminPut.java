@@ -4,17 +4,18 @@ import DBHandler.DBHandler;
 import Model.Schedule;
 import Model.User;
 import Model.UserSchedule;
+import Tools.Parser;
 import org.json.JSONObject;
 
 import java.sql.SQLException;
 
 public class AdminPut {
     DBHandler db;
-    AdminParser parser;
+    Parser parser;
 
     public AdminPut(DBHandler db) {
         this.db = db;
-        this.parser = new AdminParser();
+        this.parser = new Parser();
     }
 
     public String putSchedule(String msg){

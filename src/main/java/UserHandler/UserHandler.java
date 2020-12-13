@@ -27,9 +27,14 @@ public class UserHandler {
     }
 
     //----------POST----------------------------------------------------
-
+    public String postUserPreference(String msg) {
+        return this.userPost.postUserPreference(msg);
+    }
 
     //----PUT-------------------------------------------------------
+    public String putUserPreference(String msg){
+        return this.userPut.putUserPreference(msg);
+    }
 
 
     //----DELETE-------------------------------------------------------
