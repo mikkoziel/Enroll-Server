@@ -1,7 +1,6 @@
 package HttpHandlers;
 
 import AdminHandler.AdminHandler;
-import Model.*;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;

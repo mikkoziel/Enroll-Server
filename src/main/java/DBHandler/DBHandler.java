@@ -3,7 +3,6 @@ package DBHandler;
 import Model.*;
 
 import java.sql.*;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class DBHandler {
@@ -42,7 +41,6 @@ public class DBHandler {
     }
 
     public void connectToDB(){
-        // Create connection with database
         try {
             Class.forName(this.driverClass);
             this.conn = DriverManager.getConnection(this.url, this.user, this.password);

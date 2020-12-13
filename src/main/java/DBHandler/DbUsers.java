@@ -1,7 +1,5 @@
 package DBHandler;
 
-import Model.Schedule;
-import Model.Status;
 import Model.User;
 
 import java.sql.*;

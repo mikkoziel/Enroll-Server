@@ -23,7 +23,7 @@ public class AdminPost {
                 long class_id = this.addClass(class_, (int)schedule_id);
                 if(!class_.getGroups().isEmpty()){
                     class_.getGroups().forEach((group ->
-                            this.addGroup(id, group, (int)class_id)));
+                            this.addGroup(group, (int)class_id)));
                 }
             });
         }
@@ -36,7 +36,7 @@ public class AdminPost {
         long class_id = this.addClass(class_, schedule_id);
         if(!class_.getGroups().isEmpty()){
             class_.getGroups().forEach((group ->
-                    this.addGroup(id, group, (int)class_id)));
+                    this.addGroup(group, (int)class_id)));
         }
         return "{\"class_id\": " + class_id + "}";
     }
@@ -44,7 +44,7 @@ public class AdminPost {
     public String postGroup(String uri, String msg, int id){
         int class_id = Integer.parseInt(uri.split("/")[2]);
         Group group = this.parser.parseStringToGroup(new JSONObject(msg));
-        long group_id = this.addGroup(id, group, class_id);
+        long group_id = this.addGroup(group, class_id);
         return "{\"group_id\": " + group_id + "}";
     }
 
@@ -96,9 +96,9 @@ public class AdminPost {
     }
 
 
-    public long addGroup(int admin_id, Group group, int class_id){
+    public long addGroup(Group group, int class_id){
         try {
-            return this.db.addGroup(admin_id, group, class_id);
+            return this.db.addGroup(group, class_id);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
