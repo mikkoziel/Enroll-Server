@@ -1,3 +1,5 @@
+package HttpHandlers;
+
 import AdminHandler.AdminHandler;
 import Model.Mock;
 import com.sun.net.httpserver.Headers;

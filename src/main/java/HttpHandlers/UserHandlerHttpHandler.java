@@ -1,26 +1,23 @@
-import AdminHandler.AdminHandler;
-import Model.*;
+package HttpHandlers;
+
+import Model.Mock;
+import UserHandler.UserHandler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.*;
-import java.time.LocalTime;
-import java.util.ArrayList;
 
-public class AdminHandlerHttpHandler implements HttpHandler {
+public class UserHandlerHttpHandler implements HttpHandler {
     Mock mock;
     String context;
-    AdminHandler admin;
+    UserHandler user;
 
 
-    public AdminHandlerHttpHandler(){
+    public UserHandlerHttpHandler(){
         this.mock = new Mock();
-        this.context = "/admin-handler/";
-        this.admin = new AdminHandler();
+        this.context = "/user-handler/";
+        this.user = new UserHandler();
     }
 
     @Override
@@ -34,13 +31,15 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             case "POST":
                 htmlResponse = handlePostRequest(httpExchange);
                 break;
-            case "PUT":
-                htmlResponse = handlePutRequest(httpExchange);
-                break;
             case "OPTIONS":
                 htmlResponse = handleOptionsRequest(httpExchange);
                 break;
         }
+//        if("GET".equals(httpExchange.getRequestMethod())) {
+//            htmlResponse = handleGetRequest(httpExchange);
+//        }else if("POST".equals(httpExchange.getRequestMethod())) {
+//            htmlResponse = handlePostRequest(httpExchange);
+//        }else if("OPTIONS")
         System.out.println(htmlResponse);
         assert htmlResponse != null;
         handleResponse(httpExchange,htmlResponse);
@@ -48,48 +47,49 @@ public class AdminHandlerHttpHandler implements HttpHandler {
 
     private String handleGetRequest(HttpExchange httpExchange) {
         String htmlResponse=null;
+
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
+//        reqHeaders.forEach((key, value) -> System.out.println(key + ": " + value));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
 
+//        System.out.println(uri);
         if(uri.equals("schedules")){
+            htmlResponse = "";
 //            htmlResponse = this.mock.getSchedules();
-            htmlResponse = this.admin.getSchedules(id);
+//            htmlResponse = this.admin.getSchedules(id);
+//            System.out.println(htmlResponse);
         } else if(uri.matches("schedules/[0-9]+")){
+            htmlResponse = "";
 //            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
-            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
-        } else if(uri.equals("professors")){
-            htmlResponse = this.admin.getProfessors();
+//            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
+//            System.out.println(htmlResponse);
         }
+//        System.out.println(uri);
         return htmlResponse;
     }
 
     private String handlePostRequest(HttpExchange httpExchange) {
         // Get request Header
         Headers reqHeaders = httpExchange.getRequestHeaders();
-        int id = Integer.parseInt(reqHeaders.getFirst("id"));
-
-        String uri = httpExchange.getRequestURI()
-                .toString().replace(this.context,"");
+        reqHeaders.forEach((key, value) -> System.out.println(key + ": " + value));
 
         // Get request body
         String msg = this.parseMsg(httpExchange);
 
-        String htmlResponse = null;
-        if(uri.equals("schedules")){
-            htmlResponse = this.admin.postSchedule(uri, msg, id);
-        } else if(uri.matches("schedules/[0-9]+")){
-            htmlResponse = this.admin.postClass(uri, msg, id);
-        } else if(uri.matches("classes/[0-9]+")){
-            htmlResponse = this.admin.postGroup(uri, msg, id);
-        }
-        return htmlResponse;
-    }
+        String htmlResponse;
+        boolean success = false;
 
-    private String handlePutRequest(HttpExchange httpExchange) {
-        return "";
+        // Get outcome response
+        if(success) {
+            htmlResponse = "{ \"response\" : \"success\" }";
+        } else {
+            htmlResponse = "{ \" response\" : \"failure\" }";
+        }
+        System.out.println("Outcome: " + htmlResponse);
+        return htmlResponse;
     }
 
     private String handleOptionsRequest(HttpExchange httpExchange) {
@@ -130,6 +130,4 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         return message;
     }
 
-
 }
-
