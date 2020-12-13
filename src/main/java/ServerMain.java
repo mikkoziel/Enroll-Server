@@ -1,6 +1,7 @@
 
 import HttpHandlers.AdminHandlerHttpHandler;
 import HttpHandlers.UserHandlerHttpHandler;
+import HttpHandlers.UserHttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class ServerMain {
 
             server.createContext("/admin-handler", new AdminHandlerHttpHandler());
             server.createContext("/user-handler", new UserHandlerHttpHandler());
-            server.createContext("/user", new UserHandlerHttpHandler());
+            server.createContext("/user", new UserHttpHandler());
             server.setExecutor(threadPoolExecutor);
 
             //Start HttpServer

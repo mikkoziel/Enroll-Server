@@ -32,11 +32,6 @@ public class UserHandlerHttpHandler implements HttpHandler {
                 htmlResponse = handleOptionsRequest(httpExchange);
                 break;
         }
-//        if("GET".equals(httpExchange.getRequestMethod())) {
-//            htmlResponse = handleGetRequest(httpExchange);
-//        }else if("POST".equals(httpExchange.getRequestMethod())) {
-//            htmlResponse = handlePostRequest(httpExchange);
-//        }else if("OPTIONS")
         System.out.println(htmlResponse);
         assert htmlResponse != null;
         handleResponse(httpExchange, htmlResponse);
@@ -47,22 +42,15 @@ public class UserHandlerHttpHandler implements HttpHandler {
 
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
-//        reqHeaders.forEach((key, value) -> System.out.println(key + ": " + value));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
 
-//        System.out.println(uri);
         if(uri.equals("schedules")){
-//            htmlResponse = this.mock.getSchedules();
-//            htmlResponse = this.admin.getSchedules(id);
-//            System.out.println(htmlResponse);
+            htmlResponse = this.user.getSchedules(id);
         } else if(uri.matches("schedules/[0-9]+")){
-//            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
-//            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
-//            System.out.println(htmlResponse);
+            htmlResponse = this.user.getSchedule(id, uri.replace("schedules/", ""));
         }
-//        System.out.println(uri);
         return htmlResponse;
     }
 

@@ -63,7 +63,7 @@ public class AdminHandler {
         return  this.adminPost.postUser(msg);
     }
 
-    //----UPDATE-------------------------------------------------------
+    //----PUT-------------------------------------------------------
     public String putSchedule(String msg){
         return this.adminPut.putSchedule(msg);
     }

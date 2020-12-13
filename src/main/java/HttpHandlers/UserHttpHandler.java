@@ -1,5 +1,6 @@
 package HttpHandlers;
 
+import UserHandler.UserHandler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -44,13 +45,9 @@ public class UserHttpHandler implements HttpHandler {
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context, "");
 
-//        System.out.println(uri);
         if (uri.equals("schedules")) {
-
-//            htmlResponse = this.mock.getSchedules();
-//            htmlResponse = this.admin.getSchedules(id);
+//            htmlResponse = this.user.getSchedules(id);
         } else if (uri.matches("schedules/[0-9]+")) {
-//            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
 //            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
         }
 //        System.out.println(uri);
