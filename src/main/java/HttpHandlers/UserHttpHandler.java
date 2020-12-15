@@ -1,5 +1,6 @@
 package HttpHandlers;
 
+import UserHandler.UserHandler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -37,22 +38,16 @@ public class UserHttpHandler implements HttpHandler {
     }
 
     private String handleGetRequest(HttpExchange httpExchange) {
-        String htmlResponse = null;
+        String htmlResponse = "";
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context, "");
 
-//        System.out.println(uri);
         if (uri.equals("schedules")) {
-            htmlResponse = "";
-
-//            htmlResponse = this.mock.getSchedules();
-//            htmlResponse = this.admin.getSchedules(id);
+//            htmlResponse = this.user.getSchedules(id);
         } else if (uri.matches("schedules/[0-9]+")) {
-            htmlResponse = "";
-//            htmlResponse = this.mock.getSchedule(uri.replace("schedules/", ""));
 //            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
         }
 //        System.out.println(uri);
@@ -60,7 +55,7 @@ public class UserHttpHandler implements HttpHandler {
     }
 
     private String handlePostRequest(HttpExchange httpExchange) {
-        String htmlResponse = null;
+        String htmlResponse = "";
         Headers reqHeaders = httpExchange.getRequestHeaders();
         int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
@@ -68,9 +63,6 @@ public class UserHttpHandler implements HttpHandler {
                 .toString().replace(this.context, "");
 
         String msg = this.parseMsg(httpExchange);
-
-        boolean success = false;
-
 
         return htmlResponse;
     }
@@ -84,8 +76,6 @@ public class UserHttpHandler implements HttpHandler {
     }
 
     private void handleResponse(HttpExchange httpExchange, String htmlResponse) throws IOException {
-
-
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Headers", "Origin, Content-Type");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");

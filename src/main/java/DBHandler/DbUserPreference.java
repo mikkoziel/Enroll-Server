@@ -1,10 +1,8 @@
 package DBHandler;
 
-import Model.Group;
 import Model.UserPreference;
 
 import java.sql.*;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class DbUserPreference {

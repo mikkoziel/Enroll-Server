@@ -1,23 +1,23 @@
-package AdminHandler;
+package UserHandler;
 
 import DBHandler.DBHandler;
 import Model.Professor;
 import Model.Schedule;
-import Model.User;
+import Model.UserPreference;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class AdminGet {
+public class UserGet {
     DBHandler db;
 
-    public AdminGet(DBHandler db) {
+    public UserGet(DBHandler db) {
         this.db = db;
     }
 
-    public String getSchedules(int admin_id){
+    public String getSchedules(int user_id){
         try{
-            ArrayList<Schedule> schedules = this.db.getSchedulesAdmin(admin_id);
+            ArrayList<Schedule> schedules = this.db.getSchedulesUser(user_id);
             return "{\"schedules\":" + schedules.toString() + "}";
         } catch (SQLException e) {
             e.printStackTrace();
@@ -25,10 +25,10 @@ public class AdminGet {
         }
     }
 
-    public String getSchedule(int admin_id, String schedule_id){
+    public String getSchedule(int user_id, String schedule_id){
         int schedule_id_int = Integer.parseInt(schedule_id);
         try{
-            Schedule schedule = this.db.getScheduleAdmin(admin_id, schedule_id_int);
+            Schedule schedule = this.db.getScheduleUser(user_id, schedule_id_int);
             return schedule.toString();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,11 +46,11 @@ public class AdminGet {
         }
     }
 
-    public String getUsersForSchedule(String schedule_id){
-        int schedule_id_int = Integer.parseInt(schedule_id);
+    public String getUPForUser(String user_id){
+        int user_id_int = Integer.parseInt(user_id);
         try {
-            ArrayList<User> users = this.db.getUsersForSchedule(schedule_id_int);
-            return "{\"users\":" + users.toString() + "}";
+            ArrayList<UserPreference> ups = this.db.getUPForUser(user_id_int);
+            return "{\"user_preferences\":" + ups.toString() + "}";
         } catch (SQLException e) {
             e.printStackTrace();
             return "";

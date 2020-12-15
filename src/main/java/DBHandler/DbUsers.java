@@ -1,7 +1,5 @@
 package DBHandler;
 
-import Model.Schedule;
-import Model.Status;
 import Model.User;
 
 import java.sql.*;
@@ -27,7 +25,7 @@ public class DbUsers {
 
         while (result.next()) {
             users.add(new User(
-                    result.getInt("userId"),
+                    result.getInt("user_id"),
                     result.getString("name"),
                     result.getString("surname"),
                     result.getString("password"),
