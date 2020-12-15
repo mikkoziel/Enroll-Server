@@ -56,4 +56,22 @@ public class UserGet {
             return "";
         }
     }
+
+    public String getScheduleProfUP(String schedule_id, int user_id){
+//        int user_id_int = Integer.parseInt(user_id);
+        int schedule_id_int = Integer.parseInt(schedule_id);
+
+        try {
+            Schedule schedule = this.db.getScheduleUser(user_id, schedule_id_int);
+            ArrayList<Professor> professors = this.db.getProfessors();
+            ArrayList<UserPreference> ups = this.db.getUPForUser(user_id);
+            return "{\"schedule\":" + schedule.toString() +
+                    ", \"professors\":" + professors.toString() +
+                    ", \"user_preferences\":" + ups.toString() +
+                    "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

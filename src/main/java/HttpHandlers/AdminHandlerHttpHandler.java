@@ -58,6 +58,8 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.getProfessors();
         } else if(uri.matches("users/[0-9]+")){
             htmlResponse = this.admin.getUsersForSchedule(uri.replace("users/", ""));
+        } else if(uri.matches("combine/[0-9]+")){
+            htmlResponse = this.admin.getScheduleProfUS(uri.replace("combine/", ""), id);
         }
         return htmlResponse;
     }
