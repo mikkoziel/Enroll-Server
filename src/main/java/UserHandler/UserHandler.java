@@ -26,6 +26,13 @@ public class UserHandler {
         return this.userGet.getSchedule(user_id, schedule_id);
     }
 
+    public String getProfessors(){
+        return this.userGet.getProfessors();
+    }
+
+    public String getUPForUser(String user_id){
+        return this.userGet.getUPForUser(user_id);
+    }
     //----------POST----------------------------------------------------
     public String postUserPreference(String msg) {
         return this.userPost.postUserPreference(msg);

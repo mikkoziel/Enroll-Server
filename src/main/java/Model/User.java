@@ -76,4 +76,15 @@ public class User {
     public void setAdmin(boolean admin) {
         this.admin = admin;
     }
+
+    @Override
+    public String toString() {
+        return "{\"user_id\": " + userId +
+                ", \"name\": \"" + name +
+                "\", \"surname\": \"" + surname +
+                "\", \"password\": \"" + password +
+                "\", \"mail\": \"" + mail +
+                "\", \"admin\": \"" + admin +
+                "\"}";
+    }
 }
