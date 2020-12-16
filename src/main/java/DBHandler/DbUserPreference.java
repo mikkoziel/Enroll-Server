@@ -43,20 +43,20 @@ public class DbUserPreference {
     }
 
     public ArrayList<UserPreference> getUPForSchedule(int schedule_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM UserPreference WHERE group_id IN" +
-                "(SELECT group_id FROM Groups WHERE class_id IN" +
+        String SQL_SELECT = "SELECT * FROM UserPreference WHERE group_id IN " +
+                "(SELECT group_id FROM Groups WHERE class_id IN " +
                 "(SELECT class_id FROM Class WHERE schedule_id=?))";
         return this.getUserPreferences(SQL_SELECT, schedule_id);
     }
 
     public ArrayList<UserPreference> getUPForGroup(int group_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM UserPreference" +
+        String SQL_SELECT = "SELECT * FROM UserPreference " +
                 "WHERE group_id=?";
         return this.getUserPreferences(SQL_SELECT, group_id);
     }
 
     public ArrayList<UserPreference> getUPForUser(int user_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM UserPreference" +
+        String SQL_SELECT = "SELECT * FROM UserPreference " +
                 "WHERE user_id=?";
         return this.getUserPreferences(SQL_SELECT, user_id);
     }
