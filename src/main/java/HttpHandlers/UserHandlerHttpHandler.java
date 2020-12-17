@@ -57,6 +57,8 @@ public class UserHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.user.getProfessors();
         } else if(uri.matches("user-pref/[0-9]+")){
             htmlResponse = this.user.getUPForUser(uri.replace("user-pref/", ""));
+        } else if(uri.matches("combine/[0-9]+")){
+            htmlResponse = this.user.getScheduleProfUP(uri.replace("combine/", ""), id);
         }
 
         return htmlResponse;

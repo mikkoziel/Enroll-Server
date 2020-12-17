@@ -33,6 +33,10 @@ public class UserHandler {
     public String getUPForUser(String user_id){
         return this.userGet.getUPForUser(user_id);
     }
+
+    public String getScheduleProfUP(String schedule_id, int user_id){
+        return this.userGet.getScheduleProfUP(schedule_id, user_id);
+    }
     //----------POST----------------------------------------------------
     public String postUserPreference(String msg) {
         return this.userPost.postUserPreference(msg);

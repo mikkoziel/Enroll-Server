@@ -34,6 +34,9 @@ public class AdminHandler {
         return this.adminGet.getUsersForSchedule(schedule_id);
     }
 
+    public String getScheduleProfUS(String schedule_id, int user_id){
+        return this.adminGet.getScheduleProfUS(schedule_id, user_id);
+    }
     //----------POST----------------------------------------------------
     public String postSchedule(String msg, int id){
         return this.adminPost.postSchedule(msg, id);

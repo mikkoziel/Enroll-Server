@@ -157,5 +157,4 @@ public class DBHandler {
         return this.dbUsers.updateUser(user);
     }
 
-
 }

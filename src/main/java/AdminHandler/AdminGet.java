@@ -56,4 +56,21 @@ public class AdminGet {
             return "";
         }
     }
+
+    public String getScheduleProfUS(String schedule_id, int admin_id){
+        int schedule_id_int = Integer.parseInt(schedule_id);
+        try{
+            Schedule schedule = this.db.getScheduleAdmin(admin_id, schedule_id_int);
+            ArrayList<Professor> professors = this.db.getProfessors();
+            ArrayList<User> users = this.db.getUsersForSchedule(schedule_id_int);
+            return "{\"schedule\":" + schedule.toString() +
+                    ", \"professors\":" + professors.toString() +
+                    ", \"users\":" + users.toString() +
+                    "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
 }
