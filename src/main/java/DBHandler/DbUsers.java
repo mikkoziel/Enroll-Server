@@ -12,6 +12,27 @@ public class DbUsers {
         this.conn = conn;
     }
 
+    public ArrayList<User> getUsers() throws SQLException {
+        String SQL_SELECT = "SELECT * FROM User";
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        ResultSet result = statement.executeQuery();
+        ArrayList<User> users = new ArrayList<>();
+
+        while (result.next()) {
+            users.add(new User(
+                    result.getInt("user_id"),
+                    result.getString("name"),
+                    result.getString("surname"),
+                    result.getString("password"),
+                    result.getString("mail"),
+                    result.getBoolean("admin")
+            ));
+        }
+        return users;
+    }
+
     public ArrayList<User> getUsersForSchedule(int schedule_id) throws SQLException {
         String SQL_SELECT = "SELECT * FROM User WHERE user_id IN " +
                 "(SELECT user_id FROM UserSchedule WHERE schedule_id=?)";

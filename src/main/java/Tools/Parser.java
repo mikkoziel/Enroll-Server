@@ -60,7 +60,7 @@ public class Parser {
         return new UserSchedule(
                 us_json.getInt("user_id"),
                 us_json.getInt("schedule_int"),
-                us_json.getBoolean("admin"));
+                us_json.getBoolean("type"));
     }
 
     public Professor parseStringToProf(JSONObject prof_json){

@@ -73,4 +73,14 @@ public class AdminGet {
         }
 
     }
+
+    public String getUsers(){
+        try {
+            ArrayList<User> users = this.db.getUsers();
+            return "{\"users\":" + users.toString() + "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

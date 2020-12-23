@@ -51,9 +51,8 @@ public class AdminPost {
 
     public String postUserSchedule(String msg) {
         UserSchedule us = this.parser.parseStringToUS(new JSONObject(msg));
-        int admin = us.isAdmin() ? 1 : 0;
         return "{\"added\": " +
-                this.addUserSchedule(us.getUser_id(), us.getSchedule_int(), admin) +
+                this.addUserSchedule(us) +
                 "}";
     }
 
@@ -107,9 +106,9 @@ public class AdminPost {
     }
 
 
-    public int addUserSchedule(int user_id, int schedule_id, int admin){
+    public int addUserSchedule(UserSchedule us){
         try {
-            return this.db.addUserSchedule(user_id, schedule_id, admin);
+            return this.db.addUserSchedule(us);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
