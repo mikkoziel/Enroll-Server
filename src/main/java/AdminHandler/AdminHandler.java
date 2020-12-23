@@ -13,7 +13,7 @@ public class AdminHandler {
         this.db = new DBHandler();
         this.adminGet = new AdminGet(this.db);
         this.adminPost = new AdminPost(this.db, this.adminGet);
-        this.adminPut = new AdminPut(this.db);
+        this.adminPut = new AdminPut(this.db, this.adminGet);
         this.adminDelete = new AdminDelete(this.db);
     }
 
@@ -71,8 +71,8 @@ public class AdminHandler {
     }
 
     //----PUT-------------------------------------------------------
-    public String putSchedule(String msg){
-        return this.adminPut.putSchedule(msg);
+    public String putSchedule(String msg, int id){
+        return this.adminPut.putSchedule(msg, id);
     }
 
     public String putUserSchedule(String msg){

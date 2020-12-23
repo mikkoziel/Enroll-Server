@@ -134,7 +134,7 @@ public class DbSchedules {
         statement.setString(1, schedule.getName());
         statement.setInt(2, schedule.getSemester());
         statement.setString(3, schedule.getDescription());
-        statement.setString(4, schedule.getStatus().label);
+        statement.setString(4, String.valueOf(schedule.getStatus()));
         statement.setInt(5, schedule.getScheduleID());
 
         int i = statement.executeUpdate();

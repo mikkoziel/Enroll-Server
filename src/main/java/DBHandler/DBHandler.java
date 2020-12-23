@@ -119,8 +119,8 @@ public class DBHandler {
         return this.dbUserSchedule.addUserSchedule(us);
     }
 
-    public int updateUserSchedule(int user_id, int schedule_id, int admin) throws SQLException {
-        return this.dbUserSchedule.updateUserSchedule(user_id, schedule_id, admin);
+    public int updateUserSchedule(UserSchedule us) throws SQLException {
+        return this.dbUserSchedule.updateUserSchedule(us);
     }
 
     //----USER PREFERENCE-------------------------------------------------------
