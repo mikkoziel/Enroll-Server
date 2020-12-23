@@ -56,6 +56,8 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
         } else if(uri.equals("professors")){
             htmlResponse = this.admin.getProfessors();
+        } else if(uri.equals("users")){
+            htmlResponse = this.admin.getUsers();
         } else if(uri.matches("users/[0-9]+")){
             htmlResponse = this.admin.getUsersForSchedule(uri.replace("users/", ""));
         } else if(uri.matches("combine/[0-9]+")){
@@ -93,8 +95,8 @@ public class AdminHandlerHttpHandler implements HttpHandler {
     }
 
     private String handlePutRequest(HttpExchange httpExchange) {
-//        Headers reqHeaders = httpExchange.getRequestHeaders();
-//        int id = Integer.parseInt(reqHeaders.getFirst("id"));
+        Headers reqHeaders = httpExchange.getRequestHeaders();
+        int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
@@ -103,7 +105,7 @@ public class AdminHandlerHttpHandler implements HttpHandler {
 
         String htmlResponse = "";
         if(uri.matches("schedules/[0-9]+")){
-            htmlResponse = this.admin.putSchedule(msg);
+            htmlResponse = this.admin.putSchedule(msg, id);
         } else if(uri.equals("user-sch")){
             htmlResponse = this.admin.putUserSchedule(msg);
         } else if(uri.equals("user")){

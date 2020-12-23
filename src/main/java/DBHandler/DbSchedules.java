@@ -2,6 +2,7 @@ package DBHandler;
 
 import Model.Schedule;
 import Model.Status;
+import Model.UserSchedule;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class DbSchedules {
         try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
                 long key = generatedKeys.getLong(1);
-                this.dbUserSchedule.addUserSchedule(admin_id, (int)key, 1);
+                this.dbUserSchedule.addUserSchedule(new UserSchedule(admin_id, (int)key, true));
                 return key;
             }
             else {
@@ -133,7 +134,7 @@ public class DbSchedules {
         statement.setString(1, schedule.getName());
         statement.setInt(2, schedule.getSemester());
         statement.setString(3, schedule.getDescription());
-        statement.setString(4, schedule.getStatus().label);
+        statement.setString(4, String.valueOf(schedule.getStatus()));
         statement.setInt(5, schedule.getScheduleID());
 
         int i = statement.executeUpdate();

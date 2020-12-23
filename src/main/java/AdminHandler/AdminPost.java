@@ -10,10 +10,12 @@ import java.sql.SQLException;
 public class AdminPost {
     DBHandler db;
     Parser parser;
+    AdminGet adminGet;
 
-    public AdminPost(DBHandler db) {
+    public AdminPost(DBHandler db, AdminGet adminGet) {
         this.db = db;
         this.parser = new Parser();
+        this.adminGet = adminGet;
     }
 
     public String postSchedule(String msg, int id){
@@ -51,14 +53,20 @@ public class AdminPost {
 
     public String postUserSchedule(String msg) {
         UserSchedule us = this.parser.parseStringToUS(new JSONObject(msg));
-        int admin = us.isAdmin() ? 1 : 0;
+        int retVal = this.addUserSchedule(us);
+        if(retVal>0){
+            return this.adminGet.getUsersForSchedule(Integer.toString(us.getSchedule_int()));
+        }
         return "{\"added\": " +
-                this.addUserSchedule(us.getUser_id(), us.getSchedule_int(), admin) +
+                retVal +
                 "}";
     }
 
     public String postProfessor(String msg) {
         Professor prof = this.parser.parseStringToProf(new JSONObject(msg));
+//        if(this.addProfessor(prof)>0){
+//            return this.adminGet.
+//        }
         return "{\"professor_id\": " +
                 this.addProfessor(prof) +
                 "}";
@@ -107,9 +115,9 @@ public class AdminPost {
     }
 
 
-    public int addUserSchedule(int user_id, int schedule_id, int admin){
+    public int addUserSchedule(UserSchedule us){
         try {
-            return this.db.addUserSchedule(user_id, schedule_id, admin);
+            return this.db.addUserSchedule(us);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;

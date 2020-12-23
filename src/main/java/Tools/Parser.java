@@ -22,6 +22,18 @@ public class Parser {
         );
     }
 
+    public Schedule parseStringToScheduleWithId(String msg){
+        JSONObject jo = new JSONObject(msg);
+        return new Schedule(
+                jo.getInt("id"),
+                jo.getString("name"),
+                jo.getInt("semester"),
+                jo.getString("description"),
+                Status.valueOf(jo.getString("status")),
+                this.parseStringToClasses(jo.getJSONArray("classes"))
+        );
+    }
+
     public ArrayList<Class_obj> parseStringToClasses(JSONArray classes_json){
         ArrayList<Class_obj> classes = new ArrayList<>();
         for(int i = 0; i < classes_json.length(); i++){
@@ -59,8 +71,8 @@ public class Parser {
     public UserSchedule parseStringToUS(JSONObject us_json){
         return new UserSchedule(
                 us_json.getInt("user_id"),
-                us_json.getInt("schedule_int"),
-                us_json.getBoolean("admin"));
+                us_json.getInt("schedule_id"),
+                us_json.getBoolean("type"));
     }
 
     public Professor parseStringToProf(JSONObject prof_json){

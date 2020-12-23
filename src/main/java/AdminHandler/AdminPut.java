@@ -12,24 +12,30 @@ import java.sql.SQLException;
 public class AdminPut {
     DBHandler db;
     Parser parser;
+    AdminGet adminGet;
 
-    public AdminPut(DBHandler db) {
+    public AdminPut(DBHandler db, AdminGet adminGet) {
         this.db = db;
         this.parser = new Parser();
+        this.adminGet = adminGet;
     }
 
-    public String putSchedule(String msg){
-        Schedule schedule = this.parser.parseStringToSchedule(msg);
-        return "{\"updated\": " +
-                this.updateSchedule(schedule) +
-                "}";
+    public String putSchedule(String msg, int id){
+        Schedule schedule = this.parser.parseStringToScheduleWithId(msg);
+        int retVal = this.updateSchedule(schedule);
+        if(retVal>0){
+            return this.adminGet.getSchedule(id, String.valueOf(schedule.getScheduleID()));
+        } else {
+            return "{\"updated\": " +
+                    retVal +
+                    "}";
+        }
     }
 
     public String putUserSchedule(String msg){
         UserSchedule us = this.parser.parseStringToUS(new JSONObject(msg));
-        int admin = us.isAdmin() ? 1 : 0;
         return "{\"updated\": " +
-                this.updateUserSchedule(us.getUser_id(), us.getSchedule_int(), admin) +
+                this.updateUserSchedule(us) +
                 "}";
     }
 
@@ -49,9 +55,9 @@ public class AdminPut {
         }
     }
 
-    public int updateUserSchedule(int user_id, int schedule_id, int admin){
+    public int updateUserSchedule(UserSchedule us){
         try {
-            return this.db.updateUserSchedule(user_id, schedule_id, admin);
+            return this.db.updateUserSchedule(us);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
