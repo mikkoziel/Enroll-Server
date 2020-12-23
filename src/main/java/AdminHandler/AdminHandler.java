@@ -12,7 +12,7 @@ public class AdminHandler {
     public AdminHandler() {
         this.db = new DBHandler();
         this.adminGet = new AdminGet(this.db);
-        this.adminPost = new AdminPost(this.db);
+        this.adminPost = new AdminPost(this.db, this.adminGet);
         this.adminPut = new AdminPut(this.db);
         this.adminDelete = new AdminDelete(this.db);
     }

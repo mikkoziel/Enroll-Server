@@ -59,7 +59,7 @@ public class Parser {
     public UserSchedule parseStringToUS(JSONObject us_json){
         return new UserSchedule(
                 us_json.getInt("user_id"),
-                us_json.getInt("schedule_int"),
+                us_json.getInt("schedule_id"),
                 us_json.getBoolean("type"));
     }
 
