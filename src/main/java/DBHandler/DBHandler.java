@@ -19,6 +19,7 @@ public class DBHandler {
     private DbUserSchedule dbUserSchedule;
     private DbUserPreference dbUserPreference;
     private DbUsers dbUsers;
+    private DbEnrollment dbEnrollment;
 
     public DBHandler() {
         this.url = "jdbc:mysql://mysql.agh.edu.pl:3306" +
@@ -38,9 +39,10 @@ public class DBHandler {
         this.dbProfessors = new DbProfessors(this.conn);
         this.dbUserPreference = new DbUserPreference(this.conn);
         this.dbUsers = new DbUsers(this.conn);
+        this.dbEnrollment = new DbEnrollment(this.conn);
     }
 
-    public void connectToDB(){
+    public void connectToDB() {
         try {
             Class.forName(this.driverClass);
             this.conn = DriverManager.getConnection(this.url, this.user, this.password);
@@ -110,7 +112,7 @@ public class DBHandler {
         return this.dbProfessors.getProfessors();
     }
 
-    public int addProfessor(Professor prof) throws SQLException{
+    public int addProfessor(Professor prof) throws SQLException {
         return this.dbProfessors.addProfessor(prof);
     }
 
@@ -145,7 +147,7 @@ public class DBHandler {
     }
 
     //----USERS --------------------------------------------------------------
-    public ArrayList<User> getUsersForSchedule(int schedule_id)  throws SQLException {
+    public ArrayList<User> getUsersForSchedule(int schedule_id) throws SQLException {
         return this.dbUsers.getUsersForSchedule(schedule_id);
     }
 
@@ -161,4 +163,12 @@ public class DBHandler {
         return this.dbUsers.getUsers();
     }
 
-}
+    //----ENROLLMENT -----------------------------------------------------------
+    public int addEnroll(Enrollment enroll) throws SQLException {
+        return this.dbEnrollment.addEnroll(enroll);
+    }
+
+    public ArrayList<Enrollment> getEnroll(int enroll_id) throws SQLException {
+        return this.dbEnrollment.getEnroll(enroll_id);
+    }
+}     

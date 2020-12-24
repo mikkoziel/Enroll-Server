@@ -28,6 +28,16 @@ public class Enrollment {
         }
     }
 
+    public Enrollment(int schedule_id, String startDate, String endDate) {
+        this.schedule_id = schedule_id;
+        try {
+            this.startDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+            this.endDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     public int getEnroll_id() {
         return enroll_id;
     }
