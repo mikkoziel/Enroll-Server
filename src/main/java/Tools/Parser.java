@@ -101,7 +101,8 @@ public class Parser {
         return new Enrollment(
                 enroll_json.getInt("enroll_id"),
                 enroll_json.getInt("schedule_id"),
-
+                enroll_json.getString("startDate"),
+                enroll_json.getString("endDate")
         )
     }
 }

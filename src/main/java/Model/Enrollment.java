@@ -1,5 +1,7 @@
 package Model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Enrollment {
@@ -13,6 +15,17 @@ public class Enrollment {
         this.schedule_id = schedule_id;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Enrollment(int enroll_id, int schedule_id, String startDate, String endDate) {
+        this.enroll_id = enroll_id;
+        this.schedule_id = schedule_id;
+        try {
+            this.startDate = new SimpleDateFormat("dd/MM/yyyy").parse(startDate);
+            this.endDate = new SimpleDateFormat("dd/MM/yyyy").parse(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getEnroll_id() {
