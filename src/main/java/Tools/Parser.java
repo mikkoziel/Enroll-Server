@@ -96,4 +96,12 @@ public class Parser {
                 user_json.getString("mail"),
                 user_json.getBoolean("admin"));
     }
+
+    public Enrollment parseStringToEnroll(JSONObject enroll_json){
+        return new Enrollment(
+                enroll_json.getInt("enroll_id"),
+                enroll_json.getInt("schedule_id"),
+
+        )
+    }
 }

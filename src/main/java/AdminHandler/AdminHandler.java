@@ -83,6 +83,10 @@ public class AdminHandler {
         return this.adminPut.putUser(msg);
     }
 
+    public String putEnroll(String msg, int id){
+        return this.adminPut.putEnroll(msg, id);
+    }
+
     //----DELETE-------------------------------------------------------
     public String deleteSchedule(String uri){
         return this.adminDelete.deleteSchedule(uri);

@@ -110,6 +110,8 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.putUserSchedule(msg);
         } else if(uri.equals("user")){
             htmlResponse = this.admin.putUser(msg);
+        } else if(uri.equals("enroll")){
+            htmlResponse = this.admin.putEnroll(msg, id);
         }
 
         return htmlResponse;

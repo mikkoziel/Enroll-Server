@@ -45,6 +45,19 @@ public class AdminPut {
                 this.updateUser(user) +
                 "}";
     }
+
+    public String putEnroll(String msg, int id){
+        Schedule schedule = this.parser.parseStringToScheduleWithId(msg);
+        int retVal = this.updateSchedule(schedule);
+        System.out.println(schedule);
+        if(retVal>0){
+            return this.adminGet.getSchedule(id, String.valueOf(schedule.getScheduleID()));
+        } else {
+            return "{\"updated\": " +
+                    retVal +
+                    "}";
+        }
+    }
     //-------UPDATE--------------------------------------------------------
     public int updateSchedule(Schedule schedule){
         try {
