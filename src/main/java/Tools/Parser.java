@@ -103,6 +103,6 @@ public class Parser {
                 enroll_json.getInt("schedule_id"),
                 enroll_json.getString("startDate"),
                 enroll_json.getString("endDate")
-        )
+        );
     }
 }
