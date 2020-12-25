@@ -1,9 +1,7 @@
 package AdminHandler;
 
 import DBHandler.DBHandler;
-import Model.Schedule;
-import Model.User;
-import Model.UserSchedule;
+import Model.*;
 import Tools.Parser;
 import org.json.JSONObject;
 
@@ -47,15 +45,22 @@ public class AdminPut {
     }
 
     public String putEnroll(String msg, int id){
-        Schedule schedule = this.parser.parseStringToScheduleWithId(msg);
-        int retVal = this.updateSchedule(schedule);
-        System.out.println(schedule);
-        if(retVal>0){
-            return this.adminGet.getSchedule(id, String.valueOf(schedule.getScheduleID()));
-        } else {
-            return "{\"updated\": " +
-                    retVal +
-                    "}";
+//        Schedule schedule = this.parser.parseStringToScheduleWithId(msg);
+        Enrollment enroll = this.parser.parseStringToEnroll(new JSONObject(msg));
+        try {
+            int retVal = this.updateScheduleEnroll(enroll.getSchedule_id());
+//            System.out.println(schedule);
+            if(retVal>0){
+                    this.db.addEnroll(enroll);
+                return this.adminGet.getSchedule(id, String.valueOf(enroll.getSchedule_id()));
+            } else {
+                return "{\"updated\": " +
+                        retVal +
+                        "}";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "{\"updated\": \"Error\"";
         }
     }
     //-------UPDATE--------------------------------------------------------
@@ -80,6 +85,15 @@ public class AdminPut {
     public int updateUser(User user){
         try {
             return this.db.updateUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateScheduleEnroll(int schedule_id){
+        try {
+            return this.db.updateScheduleStatus(schedule_id, Status.ENROLLMENT);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;

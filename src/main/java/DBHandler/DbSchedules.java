@@ -142,6 +142,21 @@ public class DbSchedules {
         return i;
     }
 
+    public int updateScheduleStatus(int schedule_id, Status status) throws SQLException {
+        String SQL_UPDATE = "UPDATE Schedule " +
+                "SET status=? " +
+                "WHERE schedule_id=?";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_UPDATE);
+
+        statement.setString(1, String.valueOf(status));
+        statement.setInt(2, schedule_id);
+
+        int i = statement.executeUpdate();
+        System.out.println(i+ " records updated");
+        return i;
+    }
+
     public int deleteSchedule(int schedule_int) throws SQLException {
         String SQL_DELETE = "DELETE FROM Schedule WHERE schedule_id=?";
 

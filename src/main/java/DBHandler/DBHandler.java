@@ -81,6 +81,9 @@ public class DBHandler {
         return this.dbSchedules.deleteSchedule(schedule_id);
     }
 
+    public int updateScheduleStatus(int schedule_id, Status status) throws SQLException {
+        return this.dbSchedules.updateScheduleStatus(schedule_id, status);
+    }
     //----CLASSES-------------------------------------------------------
     public ArrayList<Class_obj> getClasses(int schedule_id) throws SQLException {
         return this.dbClasses.getClasses(schedule_id);
@@ -171,4 +174,4 @@ public class DBHandler {
     public ArrayList<Enrollment> getEnroll(int enroll_id) throws SQLException {
         return this.dbEnrollment.getEnroll(enroll_id);
     }
-}     
+}

@@ -14,7 +14,7 @@ public class DbEnrollment {
     }
 
     public int addEnroll(Enrollment enroll) throws SQLException {
-        String SQL_INSERT = "INSERT INTO Enrollment(schedule_id, startDate, endDate)" +
+        String SQL_INSERT = "INSERT INTO Enrollment(schedule_id, start_date, end_date)" +
                 " VALUES (?, ?, ?)";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT);
