@@ -54,12 +54,12 @@ public class Enrollment {
         return endDate;
     }
 
-    public java.sql.Date getStartDateSQL() {
-        return new java.sql.Date(startDate.getTime());
+    public java.sql.Timestamp getStartDateSQL() {
+        return new java.sql.Timestamp(startDate.getTime());
     }
 
-    public java.sql.Date getEndDateSQL() {
-        return new java.sql.Date(endDate.getTime());
+    public java.sql.Timestamp getEndDateSQL() {
+        return new java.sql.Timestamp(endDate.getTime());
     }
 
     @Override

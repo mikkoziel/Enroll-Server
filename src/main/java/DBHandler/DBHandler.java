@@ -110,7 +110,12 @@ public class DBHandler {
         return this.dbGroups.deleteGroup(group_id);
     }
 
-    //----PROFESSORS-------------------------------------------------------
+    public ArrayList<Group> getGroupsForSchedule(int schedule_id) throws SQLException {
+        return this.dbGroups.getGroupsForSchedule(schedule_id);
+    }
+
+
+        //----PROFESSORS-------------------------------------------------------
     public ArrayList<Professor> getProfessors() throws SQLException {
         return this.dbProfessors.getProfessors();
     }

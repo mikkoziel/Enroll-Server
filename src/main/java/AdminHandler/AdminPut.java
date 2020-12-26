@@ -6,6 +6,7 @@ import Tools.Parser;
 import org.json.JSONObject;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AdminPut {
     DBHandler db;
@@ -45,13 +46,19 @@ public class AdminPut {
     }
 
     public String putEnroll(String msg, int id){
-//        Schedule schedule = this.parser.parseStringToScheduleWithId(msg);
         Enrollment enroll = this.parser.parseStringToEnroll(new JSONObject(msg));
         try {
             int retVal = this.updateScheduleEnroll(enroll.getSchedule_id());
-//            System.out.println(schedule);
             if(retVal>0){
-                    this.db.addEnroll(enroll);
+                this.db.addEnroll(enroll);
+                ArrayList<User> users = this.db.getUsersForSchedule(enroll.getSchedule_id());
+                ArrayList<Group> groups = this.db.getGroupsForSchedule(enroll.getSchedule_id());
+                for(User user: users){
+                    for(Group group: groups){
+                        UserPreference up = new UserPreference(user.getUserId(), group.getGroupId(), 0);
+                        this.db.addUserPreference(up);
+                    }
+                }
                 return this.adminGet.getSchedule(id, String.valueOf(enroll.getSchedule_id()));
             } else {
                 return "{\"updated\": " +

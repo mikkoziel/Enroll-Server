@@ -20,8 +20,8 @@ public class DbEnrollment {
         PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT);
 
         statement.setInt(1, enroll.getSchedule_id());
-        statement.setDate(2, enroll.getStartDateSQL());
-        statement.setDate(3, enroll.getEndDateSQL());
+        statement.setTimestamp(2, enroll.getStartDateSQL());
+        statement.setTimestamp(3, enroll.getEndDateSQL());
 
         int i = statement.executeUpdate();
         System.out.println(i+ " records inserted");

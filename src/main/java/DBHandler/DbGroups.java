@@ -38,6 +38,30 @@ public class DbGroups {
         return groups;
     }
 
+    public ArrayList<Group> getGroupsForSchedule(int schedule_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM Groups WHERE class_id IN " +
+                "(SELECT class_id FROM Class WHERE schedule_id=?)";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setInt(1, schedule_id);
+
+        ResultSet result = statement.executeQuery();
+        ArrayList<Group> groups = new ArrayList<>();
+
+        while (result.next()) {
+            groups.add(new Group(
+                    result.getInt("group_id"),
+                    result.getInt("day"),
+                    LocalTime.parse(result.getString("start")),
+                    LocalTime.parse(result.getString("end")),
+                    result.getInt("professor_id")
+            ));
+        }
+        return groups;
+    }
+
     public long addGroup(Group group, int class_id) throws SQLException {
         String SQL_INSERT = "INSERT INTO Groups(day, start, end, class_id, professor_id)" +
                 " VALUES (?, ?, ?, ?, ?)";

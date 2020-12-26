@@ -20,7 +20,7 @@ public class DbUserPreference {
 
         statement.setInt(1, up.getUser_id());
         statement.setInt(2, up.getGroup_id());
-        statement.setInt(3, up.getGroup_id());
+        statement.setInt(3, up.getPoints());
 
         int i = statement.executeUpdate();
         System.out.println(i+ " records inserted");
