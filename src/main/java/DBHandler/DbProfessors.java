@@ -24,21 +24,23 @@ public class DbProfessors {
             professors.add(new Professor(
                     result.getInt("professor_id"),
                     result.getString("name"),
-                    result.getString("surname")
+                    result.getString("surname"),
+                    result.getString("title")
             ));
         }
         return professors;
     }
 
     public int addProfessor(Professor prof) throws SQLException{
-        String SQL_INSERT = "INSERT INTO Professor(name, surname)" +
-                " VALUES (?, ?)";
+        String SQL_INSERT = "INSERT INTO Professor(name, surname, title)" +
+                " VALUES (?, ?, ?)";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
                 Statement.RETURN_GENERATED_KEYS);
 
         statement.setString(1, prof.getName());
         statement.setString(2, prof.getSurname());
+        statement.setString(2, prof.getTitle());
 
         int affectedRows = statement.executeUpdate();
 

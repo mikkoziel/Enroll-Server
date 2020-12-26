@@ -78,7 +78,8 @@ public class Parser {
     public Professor parseStringToProf(JSONObject prof_json){
         return new Professor(
                 prof_json.getString("name"),
-                prof_json.getString("surname"));
+                prof_json.getString("surname"),
+                prof_json.getString("title"));
     }
 
     public UserPreference parseStringToUP(JSONObject up_json){
