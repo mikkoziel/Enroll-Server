@@ -31,7 +31,8 @@ public class DbGroups {
                     result.getInt("day"),
                     LocalTime.parse(result.getString("start")),
                     LocalTime.parse(result.getString("end")),
-                    result.getInt("professor_id")
+                    result.getInt("professor_id"),
+                    result.getString("type")
             );
             groups.add(tmp);
         }
@@ -56,15 +57,16 @@ public class DbGroups {
                     result.getInt("day"),
                     LocalTime.parse(result.getString("start")),
                     LocalTime.parse(result.getString("end")),
-                    result.getInt("professor_id")
+                    result.getInt("professor_id"),
+                    result.getString("type")
             ));
         }
         return groups;
     }
 
     public long addGroup(Group group, int class_id) throws SQLException {
-        String SQL_INSERT = "INSERT INTO Groups(day, start, end, class_id, professor_id)" +
-                " VALUES (?, ?, ?, ?, ?)";
+        String SQL_INSERT = "INSERT INTO Groups(day, start, end, class_id, professor_id, type)" +
+                " VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
                 Statement.RETURN_GENERATED_KEYS);
@@ -74,6 +76,7 @@ public class DbGroups {
         statement.setString(3, group.getEnd().toString());
         statement.setInt(4, class_id);
         statement.setInt(5, group.getProfessor_id());
+        statement.setString(6, group.getType());
 
         int affectedRows = statement.executeUpdate();
 

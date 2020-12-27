@@ -45,9 +45,13 @@ public class AdminPost {
     }
 
     public String postGroup(String uri, String msg, int id){
-        int class_id = Integer.parseInt(uri.split("/")[2]);
+        int class_id = Integer.parseInt(uri.split("/")[1]);
         Group group = this.parser.parseStringToGroup(new JSONObject(msg));
         long group_id = this.addGroup(group, class_id);
+        if(group_id>0){
+            group.setGroupId(Math.toIntExact(group_id));
+            return group.toString();
+        }
         return "{\"group_id\": " + group_id + "}";
     }
 
@@ -64,12 +68,12 @@ public class AdminPost {
 
     public String postProfessor(String msg) {
         Professor prof = this.parser.parseStringToProf(new JSONObject(msg));
-//        if(this.addProfessor(prof)>0){
-//            return this.adminGet.
-//        }
-        return "{\"professor_id\": " +
-                this.addProfessor(prof) +
-                "}";
+        int retVal = this.addProfessor(prof);
+        if(retVal>0){
+            prof.setProfessor_id(retVal);
+            return prof.toString();
+        }
+        return "{\"professor_id\": 0}";
     }
 
     public String postUserPreference(String msg) {

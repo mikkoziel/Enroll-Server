@@ -40,7 +40,7 @@ public class DbProfessors {
 
         statement.setString(1, prof.getName());
         statement.setString(2, prof.getSurname());
-        statement.setString(2, prof.getTitle());
+        statement.setString(3, prof.getTitle());
 
         int affectedRows = statement.executeUpdate();
 

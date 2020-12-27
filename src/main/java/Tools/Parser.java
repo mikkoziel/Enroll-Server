@@ -60,11 +60,14 @@ public class Parser {
     }
 
     public Group parseStringToGroup(JSONObject group_json){
+        JSONObject start = group_json.getJSONObject("start");
+        JSONObject end = group_json.getJSONObject("end");
         return new Group(
                 group_json.getInt("day"),
-                LocalTime.parse(group_json.getString("start")),
-                LocalTime.parse(group_json.getString("end")),
-                group_json.getInt("professor_id")
+                LocalTime.of(start.getInt("hour"), start.getInt("minute")),
+                LocalTime.of(end.getInt("hour"), end.getInt("minute")),
+                group_json.getInt("professor_id"),
+                group_json.getString("type")
         );
     }
 
