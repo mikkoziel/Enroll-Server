@@ -40,6 +40,10 @@ public class Schedule {
         return scheduleID;
     }
 
+    public void setScheduleID(int scheduleID) {
+        this.scheduleID = scheduleID;
+    }
+
     public String getName() {
         return name;
     }

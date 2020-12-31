@@ -89,8 +89,16 @@ public class DBHandler {
         return this.dbClasses.getClasses(schedule_id);
     }
 
+    public Class_obj getClass(int class_id) throws SQLException {
+        return this.dbClasses.getClass(class_id);
+    }
+
     public long addClass(Class_obj class_, int schedule_id) throws SQLException {
         return this.dbClasses.addClass(class_, schedule_id);
+    }
+
+    public int updateClass(Class_obj class_, int schedule_id) throws SQLException {
+        return this.dbClasses.updateClass(class_, schedule_id);
     }
 
     public int deleteClass(int class_id) throws SQLException {
@@ -106,6 +114,10 @@ public class DBHandler {
         return this.dbGroups.addGroup(group, class_id);
     }
 
+    public int updateGroup(Group group, int class_id) throws SQLException {
+        return this.dbGroups.updateGroup(group, class_id);
+    }
+
     public int deleteGroup(int group_id) throws SQLException {
         return this.dbGroups.deleteGroup(group_id);
     }
@@ -113,7 +125,6 @@ public class DBHandler {
     public ArrayList<Group> getGroupsForSchedule(int schedule_id) throws SQLException {
         return this.dbGroups.getGroupsForSchedule(schedule_id);
     }
-
 
         //----PROFESSORS-------------------------------------------------------
     public ArrayList<Professor> getProfessors() throws SQLException {

@@ -75,6 +75,14 @@ public class AdminHandler {
         return this.adminPut.putSchedule(msg, id);
     }
 
+    public String putClass(String uri, String msg, int id){
+        return this.adminPut.putClass(uri, msg, id);
+    }
+
+    public String putGroup(String uri, String msg, int id){
+        return this.adminPut.putGroup(uri, msg, id);
+    }
+
     public String putUserSchedule(String msg){
         return this.adminPut.putUserSchedule(msg);
     }

@@ -31,6 +31,37 @@ public class AdminPut {
         }
     }
 
+    public String putClass(String uri, String msg, int id){
+        Class_obj class_ = this.parser.parseStringToClassWithId(new JSONObject(msg));
+        int schedule_id = Integer.parseInt(uri);
+        int retVal = this.updateClass(class_, schedule_id);
+        if(retVal>0){
+            try {
+                class_ = this.db.getClass(class_.getClassId());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return class_.toString();
+        } else {
+            return "{\"updated\": " +
+                    retVal +
+                    "}";
+        }
+    }
+
+    public String putGroup(String uri, String msg, int id){
+        Group group = this.parser.parseStringToGroupWithId(new JSONObject(msg));
+        int class_id = Integer.parseInt(uri);
+        int retVal = this.updateGroup(group, class_id);
+        if(retVal>0){
+            return group.toString();
+        } else {
+            return "{\"updated\": " +
+                    retVal +
+                    "}";
+        }
+    }
+
     public String putUserSchedule(String msg){
         UserSchedule us = this.parser.parseStringToUS(new JSONObject(msg));
         return "{\"updated\": " +
@@ -74,6 +105,24 @@ public class AdminPut {
     public int updateSchedule(Schedule schedule){
         try {
             return this.db.updateSchedule(schedule);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateClass(Class_obj class_, int schedule_id){
+        try {
+            return this.db.updateClass(class_, schedule_id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateGroup(Group group, int class_id){
+        try {
+            return this.db.updateGroup(group, class_id);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;

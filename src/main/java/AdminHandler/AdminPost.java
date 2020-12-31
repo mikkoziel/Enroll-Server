@@ -30,7 +30,8 @@ public class AdminPost {
                 }
             });
         }
-        return "{\"schedule_id\": " + schedule_id + "}";
+        schedule.setScheduleID(Math.toIntExact(schedule_id));
+        return schedule.toString();
     }
 
     public String postClass(String uri, String msg, int id){
@@ -41,7 +42,7 @@ public class AdminPost {
             class_.getGroups().forEach((group ->
                     this.addGroup(group, (int)class_id)));
         }
-        return "{\"class_id\": " + class_id + "}";
+        return class_.toString();
     }
 
     public String postGroup(String uri, String msg, int id){
@@ -52,7 +53,7 @@ public class AdminPost {
             group.setGroupId(Math.toIntExact(group_id));
             return group.toString();
         }
-        return "{\"group_id\": " + group_id + "}";
+        return group.toString();
     }
 
     public String postUserSchedule(String msg) {

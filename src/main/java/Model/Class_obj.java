@@ -5,22 +5,26 @@ import java.util.ArrayList;
 public class Class_obj {
     int classId;
     String name;
+    String full_name;
     ArrayList<Group> groups;
 
-    public Class_obj(int classId, String name, ArrayList<Group> groups){
+    public Class_obj(int classId, String name, String full_name, ArrayList<Group> groups){
         this.classId = classId;
         this.name = name;
+        this.full_name = full_name;
         this.groups = groups;
     }
 
-    public Class_obj(String name, ArrayList<Group> groups){
+    public Class_obj(String name, String full_name, ArrayList<Group> groups){
         this.name = name;
+        this.full_name = full_name;
         this.groups = groups;
     }
 
-    public Class_obj(int classId, String name){
+    public Class_obj(int classId, String name, String full_name){
         this.classId = classId;
         this.name = name;
+        this.full_name = full_name;
         this.groups = new ArrayList<Group>();
     }
 
@@ -40,6 +44,10 @@ public class Class_obj {
         return name;
     }
 
+    public String getFull_name() {
+        return full_name;
+    }
+
     public ArrayList<Group> getGroups() {
         return groups;
     }
@@ -48,6 +56,7 @@ public class Class_obj {
     public String toString() {
         return "{\"classId\":" + classId +
                 ", \"name\":\"" + name +
+                "\", \"full_name\":\"" + full_name +
                 "\", \"groups\":" + groups.toString() +
                 "}";
     }

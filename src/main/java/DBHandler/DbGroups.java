@@ -1,5 +1,6 @@
 package DBHandler;
 
+import Model.Class_obj;
 import Model.Group;
 
 import java.sql.*;
@@ -92,6 +93,26 @@ public class DbGroups {
                 throw new SQLException("Creating schedule failed, no ID obtained.");
             }
         }
+    }
+
+    public int updateGroup(Group group, int class_id) throws SQLException {
+        String SQL_UPDATE = "UPDATE Groups " +
+                "SET class_id=?, day=?, start=?, end=?, type=?, professor_id=? " +
+                "WHERE group_id=?";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_UPDATE);
+
+        statement.setInt(1, class_id);
+        statement.setInt(2, group.getDay());
+        statement.setString(3, group.getStart().toString());
+        statement.setString(4, group.getEnd().toString());
+        statement.setString(5, group.getType());
+        statement.setInt(6, group.getProfessor_id());
+        statement.setInt(7, group.getGroupId());
+
+        int i = statement.executeUpdate();
+        System.out.println(i+ " records updated");
+        return i;
     }
 
     public int deleteGroup(int group_id) throws SQLException {

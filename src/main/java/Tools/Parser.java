@@ -46,6 +46,16 @@ public class Parser {
     public Class_obj parseStringToClass(JSONObject class_json){
         return new Class_obj(
                 class_json.getString("name"),
+                class_json.getString("full_name"),
+                this.parseStringToGroups(class_json.getJSONArray("groups"))
+        );
+    }
+
+    public Class_obj parseStringToClassWithId(JSONObject class_json){
+        return new Class_obj(
+                class_json.getInt("id"),
+                class_json.getString("name"),
+                class_json.getString("full_name"),
                 this.parseStringToGroups(class_json.getJSONArray("groups"))
         );
     }
@@ -63,6 +73,19 @@ public class Parser {
         JSONObject start = group_json.getJSONObject("start");
         JSONObject end = group_json.getJSONObject("end");
         return new Group(
+                group_json.getInt("day"),
+                LocalTime.of(start.getInt("hour"), start.getInt("minute")),
+                LocalTime.of(end.getInt("hour"), end.getInt("minute")),
+                group_json.getInt("professor_id"),
+                group_json.getString("type")
+        );
+    }
+
+    public Group parseStringToGroupWithId(JSONObject group_json){
+        JSONObject start = group_json.getJSONObject("start");
+        JSONObject end = group_json.getJSONObject("end");
+        return new Group(
+                group_json.getInt("id"),
                 group_json.getInt("day"),
                 LocalTime.of(start.getInt("hour"), start.getInt("minute")),
                 LocalTime.of(end.getInt("hour"), end.getInt("minute")),

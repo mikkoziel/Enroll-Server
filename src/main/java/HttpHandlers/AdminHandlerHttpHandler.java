@@ -106,6 +106,10 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         String htmlResponse = "";
         if(uri.matches("schedules/[0-9]+")){
             htmlResponse = this.admin.putSchedule(msg, id);
+        } else if(uri.matches("classes/[0-9]+")){
+            htmlResponse = this.admin.putClass(uri.replace("classes/", ""), msg, id);
+        } else if(uri.matches("groups/[0-9]+")){
+            htmlResponse = this.admin.putGroup(uri.replace("groups/", ""), msg, id);
         } else if(uri.equals("user-sch")){
             htmlResponse = this.admin.putUserSchedule(msg);
         } else if(uri.equals("user")){

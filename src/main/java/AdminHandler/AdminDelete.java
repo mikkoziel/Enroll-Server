@@ -1,6 +1,8 @@
 package AdminHandler;
 
 import DBHandler.DBHandler;
+import Model.Class_obj;
+import Model.Group;
 
 import java.sql.SQLException;
 
@@ -26,8 +28,13 @@ public class AdminDelete {
     public String deleteClass(String uri){
         int class_id = Integer.parseInt(uri.replace("classes/", ""));
         try {
+            Class_obj class_ = this.db.getClass(class_id);
+            for(Group group: class_.getGroups()){
+                this.db.deleteGroup(group.getGroupId());
+            }
+            int retVal = this.db.deleteClass(class_id);
             return "{\"deleted\": " +
-                    this.db.deleteClass(class_id) +
+                     retVal +
                     "}";
         } catch (SQLException e) {
             e.printStackTrace();
