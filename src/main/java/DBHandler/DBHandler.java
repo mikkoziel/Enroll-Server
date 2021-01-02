@@ -20,6 +20,8 @@ public class DBHandler {
     private DbUserPreference dbUserPreference;
     private DbUsers dbUsers;
     private DbEnrollment dbEnrollment;
+    private DbFieldOfStudy dbFieldOfStudy;
+    private DbUserField dbUserField;
 
     public DBHandler() {
         this.url = "jdbc:mysql://mysql.agh.edu.pl:3306" +
@@ -40,6 +42,8 @@ public class DBHandler {
         this.dbUserPreference = new DbUserPreference(this.conn);
         this.dbUsers = new DbUsers(this.conn);
         this.dbEnrollment = new DbEnrollment(this.conn);
+        this.dbFieldOfStudy = new DbFieldOfStudy(this.conn);
+        this.dbUserField = new DbUserField(this.conn);
     }
 
     public void connectToDB() {
