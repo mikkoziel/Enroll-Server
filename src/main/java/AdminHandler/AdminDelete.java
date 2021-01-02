@@ -3,8 +3,11 @@ package AdminHandler;
 import DBHandler.DBHandler;
 import Model.Class_obj;
 import Model.Group;
+import Model.Schedule;
+import Model.UserSchedule;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AdminDelete {
     DBHandler db;
@@ -16,8 +19,13 @@ public class AdminDelete {
     public String deleteSchedule(String uri){
         int schedule_id = Integer.parseInt(uri.replace("schedules/", ""));
         try {
+            ArrayList<UserSchedule> uss = this.db.getUserSchedule(schedule_id);
+            for(UserSchedule us: uss){
+                this.db.deleteUserSchedule(us.getSchedule_id(), us.getUser_id());
+            }
+            int retVal  =this.db.deleteSchedule(schedule_id);
             return "{\"deleted\": " +
-                    this.db.deleteSchedule(schedule_id) +
+                    retVal +
                     "}";
         } catch (SQLException e) {
             e.printStackTrace();

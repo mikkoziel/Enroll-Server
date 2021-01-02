@@ -60,7 +60,7 @@ public class AdminPost {
         UserSchedule us = this.parser.parseStringToUS(new JSONObject(msg));
         int retVal = this.addUserSchedule(us);
         if(retVal>0){
-            return this.adminGet.getUsersForSchedule(Integer.toString(us.getSchedule_int()));
+            return this.adminGet.getUsersForSchedule(Integer.toString(us.getSchedule_id()));
         }
         return "{\"added\": " +
                 retVal +

@@ -126,7 +126,7 @@ public class DBHandler {
         return this.dbGroups.getGroupsForSchedule(schedule_id);
     }
 
-        //----PROFESSORS-------------------------------------------------------
+    //----PROFESSORS-------------------------------------------------------
     public ArrayList<Professor> getProfessors() throws SQLException {
         return this.dbProfessors.getProfessors();
     }
@@ -136,12 +136,20 @@ public class DBHandler {
     }
 
     //----USER SCHEDULE-------------------------------------------------------
+    public ArrayList<UserSchedule> getUserSchedule(int schedule_id) throws SQLException {
+        return this.dbUserSchedule.getUserSchedule(schedule_id);
+    }
+
     public int addUserSchedule(UserSchedule us) throws SQLException {
         return this.dbUserSchedule.addUserSchedule(us);
     }
 
     public int updateUserSchedule(UserSchedule us) throws SQLException {
         return this.dbUserSchedule.updateUserSchedule(us);
+    }
+
+    public int deleteUserSchedule(int schedule_id, int user_id) throws SQLException {
+        return this.dbUserSchedule.deleteUserSchedule(schedule_id, user_id);
     }
 
     //----USER PREFERENCE-------------------------------------------------------

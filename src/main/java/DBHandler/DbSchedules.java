@@ -157,12 +157,12 @@ public class DbSchedules {
         return i;
     }
 
-    public int deleteSchedule(int schedule_int) throws SQLException {
+    public int deleteSchedule(int schedule_id) throws SQLException {
         String SQL_DELETE = "DELETE FROM Schedule WHERE schedule_id=?";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_DELETE);
 
-        statement.setInt(1, schedule_int);
+        statement.setInt(1, schedule_id);
 
         int i = statement.executeUpdate();
         System.out.println(i+ " records deleted");
