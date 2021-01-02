@@ -202,4 +202,13 @@ public class DBHandler {
     public ArrayList<Enrollment> getEnroll(int enroll_id) throws SQLException {
         return this.dbEnrollment.getEnroll(enroll_id);
     }
+
+    //----USER FIELD -----------------------------------------------------------
+    public int addUserField(UserField uf) throws SQLException {
+        return this.dbUserField.addUserField(uf);
+    }
+
+    public int updateUserField(UserField uf) throws SQLException {
+        return this.dbUserField.updateUserField(uf);
+    }
 }
