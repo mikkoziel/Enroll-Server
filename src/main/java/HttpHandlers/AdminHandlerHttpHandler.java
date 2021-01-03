@@ -96,6 +96,10 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.postUserPreference(msg);
         } else if(uri.equals("user")){
             htmlResponse = this.admin.postUser(msg);
+        } else if(uri.equals("fos")){
+            htmlResponse = this.admin.postFoS(msg, id);
+        } else if(uri.equals("user-field")){
+            htmlResponse = this.admin.postUserField(msg);
         }
         return htmlResponse;
     }
@@ -122,6 +126,10 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.putUser(msg);
         } else if(uri.equals("enroll")){
             htmlResponse = this.admin.putEnroll(msg, id);
+        } else if(uri.equals("fos")){
+            htmlResponse = this.admin.putFoS(msg);
+        } else if(uri.equals("user-field")){
+            htmlResponse = this.admin.putUserField(msg);
         }
 
         return htmlResponse;

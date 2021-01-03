@@ -82,6 +82,13 @@ public class AdminHandler {
         return  this.adminPost.postUser(msg);
     }
 
+    public String postFoS(String msg, int admin_id) {
+        return  this.adminPost.postFoS(msg, admin_id);
+    }
+
+    public String postUserField(String msg){
+        return this.adminPost.postUserField(msg);
+    }
     //----PUT-------------------------------------------------------
     public String putSchedule(String msg, int id){
         return this.adminPut.putSchedule(msg, id);
@@ -107,6 +114,14 @@ public class AdminHandler {
         return this.adminPut.putEnroll(msg, id);
     }
 
+    public String putFoS(String msg){
+        return this.adminPut.putFoS(msg);
+    }
+
+    public String putUserField(String msg){
+        return this.adminPut.putUserField(msg);
+    }
+    
     //----DELETE-------------------------------------------------------
     public String deleteSchedule(String uri){
         return this.adminDelete.deleteSchedule(uri);

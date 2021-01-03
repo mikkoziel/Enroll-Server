@@ -43,4 +43,18 @@ public class DbUserField {
         System.out.println(i+ " records updated");
         return i;
     }
+
+    public int deleteUserField(UserField uf) throws SQLException {
+        String SQL_DELETE = "DELETE FROM UserField WHERE " +
+                "field_id=? And user_id=?";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_DELETE);
+
+        statement.setInt(1, uf.getField_id());
+        statement.setInt(2, uf.getUser_id());
+
+        int i = statement.executeUpdate();
+        System.out.println(i+ " records deleted");
+        return i;
+    }
 }

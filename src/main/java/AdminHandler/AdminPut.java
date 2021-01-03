@@ -101,6 +101,20 @@ public class AdminPut {
             return "{\"updated\": \"Error\"";
         }
     }
+
+    public String putFoS(String msg){
+        FieldOfStudy fos = this.parser.parseStringToFoSWithId(new JSONObject(msg));
+        return "{\"updated\": " +
+                this.updateFoS(fos) +
+                "}";
+    }
+
+    public String putUserField(String msg){
+        UserField uf = this.parser.parseStringToUF(new JSONObject(msg));
+        return "{\"updated\": " +
+                this.updateUserField(uf) +
+                "}";
+    }
     //-------UPDATE--------------------------------------------------------
     public int updateSchedule(Schedule schedule){
         try {
@@ -150,6 +164,24 @@ public class AdminPut {
     public int updateScheduleEnroll(int schedule_id){
         try {
             return this.db.updateScheduleStatus(schedule_id, Status.ENROLLMENT);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateFoS(FieldOfStudy fos){
+        try {
+            return this.db.updateFoS(fos);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateUserField(UserField uf){
+        try {
+            return this.db.updateUserField(uf);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;

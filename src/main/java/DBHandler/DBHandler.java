@@ -88,6 +88,7 @@ public class DBHandler {
     public int updateScheduleStatus(int schedule_id, Status status) throws SQLException {
         return this.dbSchedules.updateScheduleStatus(schedule_id, status);
     }
+
     //----CLASSES-------------------------------------------------------
     public ArrayList<Class_obj> getClasses(int schedule_id) throws SQLException {
         return this.dbClasses.getClasses(schedule_id);
@@ -216,6 +217,10 @@ public class DBHandler {
         return this.dbUserField.updateUserField(uf);
     }
 
+    public int deleteUserField(UserField uf) throws SQLException {
+        return this.dbUserField.deleteUserField(uf);
+    }
+
     //----FIELD OF STUDY -----------------------------------------------------------
     public ArrayList<FieldOfStudy> getFieldsForId(int user_id) throws SQLException {
         return this.dbFieldOfStudy.getFieldsForId(user_id);
@@ -223,5 +228,17 @@ public class DBHandler {
 
     public FieldOfStudy getField(int field_id) throws SQLException {
         return this.dbFieldOfStudy.getField(field_id);
+    }
+
+    public int addFoS(FieldOfStudy fos) throws SQLException {
+        return this.dbFieldOfStudy.addFoS(fos);
+    }
+
+    public int updateFoS(FieldOfStudy fos) throws SQLException {
+        return this.dbFieldOfStudy.updateFoS(fos);
+    }
+
+    public int deleteFoS(int field_id) throws SQLException {
+        return this.dbFieldOfStudy.deleteFoS(field_id);
     }
 }

@@ -4,6 +4,7 @@ import Model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -130,6 +131,33 @@ public class Parser {
                 enroll_json.getInt("schedule_id"),
                 enroll_json.getString("startDate"),
                 enroll_json.getString("endDate")
+        );
+    }
+
+    public FieldOfStudy parseStringToFoS(JSONObject fos_json){
+        return new FieldOfStudy(
+                fos_json.getString("name"),
+                fos_json.getString("short_name"),
+                fos_json.getString("start_year"),
+                fos_json.getInt("cycle")
+        );
+    }
+
+    public FieldOfStudy parseStringToFoSWithId(JSONObject fos_json){
+        return new FieldOfStudy(
+                fos_json.getInt("field_id"),
+                fos_json.getString("name"),
+                fos_json.getString("short_name"),
+                fos_json.getString("start_year"),
+                fos_json.getInt("cycle")
+        );
+    }
+
+    public UserField parseStringToUF(JSONObject uf){
+        return new UserField(
+                uf.getInt("user_id"),
+                uf.getInt("field_id"),
+                UserType.valueOf(uf.getString("type"))
         );
     }
 }

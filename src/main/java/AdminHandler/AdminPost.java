@@ -5,6 +5,7 @@ import Model.*;
 import Tools.Parser;
 import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
 
 public class AdminPost {
@@ -90,6 +91,25 @@ public class AdminPost {
                 this.addUser(user) +
                 "}";
     }
+
+    public String postFoS(String msg, int admin_id){
+        FieldOfStudy fos = this.parser.parseStringToFoS(new JSONObject(msg));
+        int retVal = this.addFoS(fos, admin_id);
+        if(retVal>0){
+            fos.setField_id(retVal);
+            return fos.toString();
+        }
+        return "{\"field_id\": 0}";
+    }
+
+    public String postUserField(String msg){
+        UserField uf = this.parser.parseStringToUF(new JSONObject(msg));
+        int retVal = this.addUserField(uf);
+        if(retVal>0){
+            return uf.toString();
+        }
+        return "{\"field_id\": 0}";
+    }
     //-------ADD--------------------------------------------------------
     public long addSchedule(int admin_id, Schedule schedule){
         try {
@@ -150,6 +170,27 @@ public class AdminPost {
     public int addUser(User user){
         try {
             return this.db.addUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int addFoS(FieldOfStudy fos, int admin_id) {
+        try {
+            int retVal = this.db.addFoS(fos);
+            UserField uf = new UserField(admin_id, retVal, UserType.ADMIN);
+            this.db.addUserField(uf);
+            return retVal;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int addUserField(UserField uf){
+        try {
+            return this.db.addUserField(uf);
         } catch (SQLException e) {
             e.printStackTrace();
             return 0;
