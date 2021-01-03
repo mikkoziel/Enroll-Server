@@ -62,6 +62,10 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.getUsersForSchedule(uri.replace("users/", ""));
         } else if(uri.matches("combine/[0-9]+")){
             htmlResponse = this.admin.getScheduleProfUS(uri.replace("combine/", ""), id);
+        } else if(uri.equals("fields")){
+            htmlResponse = this.admin.getFieldsForId(id);
+        } else if(uri.equals("fields-schedules")){
+            htmlResponse = this.admin.getFieldsSchedules(id);
         }
         return htmlResponse;
     }
@@ -145,6 +149,7 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS");
         httpExchange.getResponseHeaders().add("Access-Control-Allow-Origin","*");
 
+//        this.getLength(htmlResponse);
         // Create http response
         httpExchange.sendResponseHeaders(200, htmlResponse.length());
         OutputStream outputStream = httpExchange.getResponseBody();
@@ -170,6 +175,15 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             e.printStackTrace();
         }
         return message;
+    }
+
+    private void getLength(String string){
+        int length = 0;
+        for(char letter: string.toCharArray()){
+            length++;
+        }
+        System.out.println(string.length());
+        System.out.println(length);
     }
 
 }

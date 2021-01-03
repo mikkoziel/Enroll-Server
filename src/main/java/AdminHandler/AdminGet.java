@@ -1,6 +1,7 @@
 package AdminHandler;
 
 import DBHandler.DBHandler;
+import Model.FieldOfStudy;
 import Model.Professor;
 import Model.Schedule;
 import Model.User;
@@ -78,6 +79,28 @@ public class AdminGet {
         try {
             ArrayList<User> users = this.db.getUsers();
             return "{\"users\":" + users.toString() + "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String getFieldsForId(int user_id){
+        try {
+            ArrayList<FieldOfStudy> fields = this.db.getFieldsForId(user_id);
+            return "{\"fields\":" + fields.toString() + "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String getFieldsSchedules(int user_id){
+        try {
+            ArrayList<Schedule> schedules = this.db.getSchedulesAdmin(user_id);
+            ArrayList<FieldOfStudy> fields = this.db.getFieldsForId(user_id);
+            return "{\"schedules\":" + schedules.toString() + ", " +
+                    "\"fields\":" + fields.toString() + "}";
         } catch (SQLException e) {
             e.printStackTrace();
             return "";

@@ -9,13 +9,13 @@ public class FieldOfStudy {
     public FieldOfStudy(int field_id, String name, String short_name, String start_year){
         this.field_id = field_id;
         this.name = name;
-        this.short_name = start_year;
+        this.short_name = short_name;
         this.start_year = start_year;
     }
 
     public FieldOfStudy(String name, String short_name, String start_year){
         this.name = name;
-        this.short_name = start_year;
+        this.short_name = short_name;
         this.start_year = start_year;
     }
 
@@ -41,7 +41,7 @@ public class FieldOfStudy {
 
     @Override
     public String toString() {
-        return "{\"field_id\": " + field_id +
+        return "{\"field_id\":" + field_id +
                 ", \"name\":\"" + name +
                 "\", \"short_name\":\"" + short_name +
                 "\", \"start_year\":\"" + start_year +

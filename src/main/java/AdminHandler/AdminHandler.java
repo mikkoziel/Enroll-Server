@@ -41,6 +41,14 @@ public class AdminHandler {
     public String getUsers(){
         return this.adminGet.getUsers();
     }
+
+    public String getFieldsForId(int user_id){
+        return this.adminGet.getFieldsForId(user_id);
+    }
+
+    public String getFieldsSchedules(int user_id){
+        return this.adminGet.getFieldsSchedules(user_id);
+    }
     //----------POST----------------------------------------------------
     public String postSchedule(String msg, int id){
         return this.adminPost.postSchedule(msg, id);

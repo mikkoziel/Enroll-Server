@@ -211,4 +211,9 @@ public class DBHandler {
     public int updateUserField(UserField uf) throws SQLException {
         return this.dbUserField.updateUserField(uf);
     }
+
+    //----FIELD OF STUDY -----------------------------------------------------------
+    public ArrayList<FieldOfStudy> getFieldsForId(int user_id) throws SQLException {
+        return this.dbFieldOfStudy.getFieldsForId(user_id);
+    }
 }
