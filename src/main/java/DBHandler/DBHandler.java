@@ -194,6 +194,10 @@ public class DBHandler {
         return this.dbUsers.getUsers();
     }
 
+    public ArrayList<User> getUsersForFoS(int field_id) throws SQLException {
+        return this.dbUsers.getUsersForFoS(field_id);
+    }
+
     //----ENROLLMENT -----------------------------------------------------------
     public int addEnroll(Enrollment enroll) throws SQLException {
         return this.dbEnrollment.addEnroll(enroll);
@@ -215,5 +219,9 @@ public class DBHandler {
     //----FIELD OF STUDY -----------------------------------------------------------
     public ArrayList<FieldOfStudy> getFieldsForId(int user_id) throws SQLException {
         return this.dbFieldOfStudy.getFieldsForId(user_id);
+    }
+
+    public FieldOfStudy getField(int field_id) throws SQLException {
+        return this.dbFieldOfStudy.getField(field_id);
     }
 }

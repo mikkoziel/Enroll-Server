@@ -106,4 +106,17 @@ public class AdminGet {
             return "";
         }
     }
+
+    public String getFieldsDetails(String field_id){
+        int field_id_int = Integer.parseInt(field_id);
+        try {
+            FieldOfStudy field = this.db.getField(field_id_int);
+            ArrayList<User> users = this.db.getUsersForFoS(field_id_int);
+            return "{\"field\":" + field.toString() +
+                    ", \"users\":" + users.toString() + "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }

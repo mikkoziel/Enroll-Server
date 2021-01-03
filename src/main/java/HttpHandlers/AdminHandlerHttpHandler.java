@@ -66,6 +66,8 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.getFieldsForId(id);
         } else if(uri.equals("fields-schedules")){
             htmlResponse = this.admin.getFieldsSchedules(id);
+        } else if(uri.matches("field-details/[0-9]+")){
+            htmlResponse = this.admin.getFieldsDetails(uri.replace("field-details/", ""));
         }
         return htmlResponse;
     }

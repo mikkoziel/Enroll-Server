@@ -75,8 +75,8 @@ public class Schedule {
     public String toString() {
         return "{\"scheduleID\":" + scheduleID +
                 ", \"name\":\"" + name +
-                "\", \"semester\":\"" + semester +
-                "\", \"description\":\"" + description +
+                "\", \"semester\":" + semester +
+                ", \"description\":\"" + description +
                 "\", \"status\":\"" + status.label +
                 "\", \"classes\":" + classes.toString() +
                 "}";

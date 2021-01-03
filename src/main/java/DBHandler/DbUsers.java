@@ -57,6 +57,29 @@ public class DbUsers {
         return users;
     }
 
+    public ArrayList<User> getUsersForFoS(int field_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM User WHERE user_id IN " +
+                "(SELECT user_id FROM UserField WHERE field_id=?)";
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT);
+
+        statement.setInt(1, field_id);
+
+        ResultSet result = statement.executeQuery();
+        ArrayList<User> users = new ArrayList<>();
+
+        while (result.next()) {
+            users.add(new User(
+                    result.getInt("user_id"),
+                    result.getString("name"),
+                    result.getString("surname"),
+                    result.getString("password"),
+                    result.getString("mail"),
+                    result.getBoolean("admin")
+            ));
+        }
+        return users;
+    }
+
     public int addUser(User user) throws SQLException {
         String SQL_INSERT = "INSERT INTO User(name, surname, password, mail, admin)" +
                 " VALUES (?, ?, ?, ?, ?)";

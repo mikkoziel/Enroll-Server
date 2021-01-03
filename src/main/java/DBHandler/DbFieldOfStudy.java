@@ -28,9 +28,32 @@ public class DbFieldOfStudy {
                     result.getInt("field_id"),
                     result.getString("name"),
                     result.getString("short_name"),
-                    result.getString("start_year")
+                    result.getString("start_year"),
+                    result.getInt("cycle")
             ));
         }
         return fields;
+    }
+
+    public FieldOfStudy getField(int field_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM FieldOfStudy WHERE field_id=?";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT);
+
+        statement.setInt(1, field_id);
+
+        ResultSet result = statement.executeQuery();
+        FieldOfStudy field= null;
+
+        while (result.next()) {
+            field = new FieldOfStudy(
+                    result.getInt("field_id"),
+                    result.getString("name"),
+                    result.getString("short_name"),
+                    result.getString("start_year"),
+                    result.getInt("cycle")
+            );
+        }
+        return field;
     }
 }
