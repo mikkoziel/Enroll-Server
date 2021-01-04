@@ -1,6 +1,7 @@
 package HttpHandlers;
 
 import AdminHandler.AdminHandler;
+import Tools.ServerScheduler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -10,11 +11,12 @@ import java.io.*;
 public class AdminHandlerHttpHandler implements HttpHandler {
     String context;
     AdminHandler admin;
+    ServerScheduler scheduler;
 
-
-    public AdminHandlerHttpHandler(){
+    public AdminHandlerHttpHandler(ServerScheduler scheduler){
         this.context = "/admin-handler/";
-        this.admin = new AdminHandler();
+        this.admin = new AdminHandler(scheduler);
+        this.scheduler = scheduler;
     }
 
     @Override

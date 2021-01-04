@@ -1,16 +1,21 @@
 package AdminHandler;
 
 import DBHandler.DBHandler;
+import Tools.ServerScheduler;
 
 public class AdminHandler {
      DBHandler db;
+     ServerScheduler scheduler;
+
      AdminGet adminGet;
      AdminPost adminPost;
      AdminPut adminPut;
      AdminDelete adminDelete;
 
-    public AdminHandler() {
+    public AdminHandler(ServerScheduler scheduler) {
         this.db = new DBHandler();
+        this.scheduler = scheduler;
+
         this.adminGet = new AdminGet(this.db);
         this.adminPost = new AdminPost(this.db, this.adminGet);
         this.adminPut = new AdminPut(this.db, this.adminGet);
@@ -111,7 +116,7 @@ public class AdminHandler {
     }
 
     public String putEnroll(String msg, int id){
-        return this.adminPut.putEnroll(msg, id);
+        return this.adminPut.putEnroll(this.scheduler, msg, id);
     }
 
     public String putFoS(String msg){

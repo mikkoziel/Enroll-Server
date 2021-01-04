@@ -3,6 +3,7 @@ package AdminHandler;
 import DBHandler.DBHandler;
 import Model.*;
 import Tools.Parser;
+import Tools.ServerScheduler;
 import org.json.JSONObject;
 
 import java.sql.SQLException;
@@ -80,7 +81,7 @@ public class AdminPut {
                 "}";
     }
 
-    public String putEnroll(String msg, int id){
+    public String putEnroll(ServerScheduler scheduler, String msg, int id){
         Enrollment enroll = this.parser.parseStringToEnroll(new JSONObject(msg));
         try {
             int retVal = this.updateScheduleEnroll(enroll.getSchedule_id());
@@ -94,6 +95,7 @@ public class AdminPut {
                         this.db.addUserPreference(up);
                     }
                 }
+                scheduler.addEnrollJob(enroll);
                 return this.adminGet.getSchedule(id, String.valueOf(enroll.getSchedule_id()));
             } else {
                 return "{\"updated\": " +
