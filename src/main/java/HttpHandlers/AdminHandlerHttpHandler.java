@@ -151,9 +151,9 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.deleteGroup(uri);
         } else if(uri.matches("fos/[0-9]+")) {
             htmlResponse = this.admin.deleteFoS(uri);
-        } else if(uri.equals("user-field")) {
+        } else if(uri.matches("user-field/[0-9]+")) {
             htmlResponse = this.admin.deleteUserField(uri.replace("user-field/", ""), id);
-        } else if(uri.equals("user-sch")) {
+        } else if(uri.matches("user-sch/[0-9]+")) {
             htmlResponse = this.admin.deleteUserSchedule(uri.replace("user-sch/", ""), id);
         }
         return htmlResponse;
