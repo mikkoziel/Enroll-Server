@@ -32,7 +32,7 @@ public class UserHandlerHttpHandler implements HttpHandler {
                 htmlResponse = handlePutRequest(httpExchange);
                 break;
             case "OPTIONS":
-                htmlResponse = handleOptionsRequest(httpExchange);
+                htmlResponse = handleOptionsRequest();
                 break;
         }
         System.out.println(htmlResponse);
@@ -97,7 +97,7 @@ public class UserHandlerHttpHandler implements HttpHandler {
         return htmlResponse;
     }
 
-    private String handleOptionsRequest(HttpExchange httpExchange) {
+    private String handleOptionsRequest() {
         return "";
     }
 
@@ -119,12 +119,12 @@ public class UserHandlerHttpHandler implements HttpHandler {
         String message = null;
         try (InputStream in = httpExchange.getRequestBody()) {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            StringBuilder msgbuilder = new StringBuilder();
+            StringBuilder msgBuilder = new StringBuilder();
             int c;
             while ((c = br.read()) > -1) {
-                msgbuilder.append((char) c);
+                msgBuilder.append((char) c);
             }
-            message = msgbuilder.toString();
+            message = msgBuilder.toString();
             System.out.println("Message: " + message);
 
         } catch (IOException e) {

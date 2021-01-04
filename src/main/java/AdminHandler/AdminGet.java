@@ -58,15 +58,17 @@ public class AdminGet {
         }
     }
 
-    public String getScheduleProfUS(String schedule_id, int admin_id){
+    public String getScheduleDetails(String schedule_id, int admin_id){
         int schedule_id_int = Integer.parseInt(schedule_id);
         try{
             Schedule schedule = this.db.getScheduleAdmin(admin_id, schedule_id_int);
             ArrayList<Professor> professors = this.db.getProfessors();
             ArrayList<User> users = this.db.getUsersForSchedule(schedule_id_int);
+            ArrayList<User> requests = this.db.getRequestsForSchedule(schedule_id_int);
             return "{\"schedule\":" + schedule.toString() +
                     ", \"professors\":" + professors.toString() +
                     ", \"users\":" + users.toString() +
+                    ", \"requests\":" + requests.toString() +
                     "}";
         } catch (SQLException e) {
             e.printStackTrace();
@@ -107,13 +109,26 @@ public class AdminGet {
         }
     }
 
+    public String getUsersForFoS(String field_id){
+        int field_id_int = Integer.parseInt(field_id);
+        try {
+            ArrayList<User> users = this.db.getUsersForFoS(field_id_int);
+            return "{\"users\":" + users.toString() + "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     public String getFieldsDetails(String field_id){
         int field_id_int = Integer.parseInt(field_id);
         try {
             FieldOfStudy field = this.db.getField(field_id_int);
             ArrayList<User> users = this.db.getUsersForFoS(field_id_int);
+            ArrayList<User> requests = this.db.getRequestsForFoS(field_id_int);
             return "{\"field\":" + field.toString() +
-                    ", \"users\":" + users.toString() + "}";
+                    ", \"users\":" + users.toString() +
+                    ", \"requests\":" + requests.toString() + "}";
         } catch (SQLException e) {
             e.printStackTrace();
             return "";

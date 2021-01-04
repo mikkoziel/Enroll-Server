@@ -1,7 +1,7 @@
 package DBHandler;
 
-import Model.Class_obj;
 import Model.UserSchedule;
+import Model.UserType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -27,21 +27,21 @@ public class DbUserSchedule {
             uss.add(new UserSchedule(
                     result.getInt("user_id"),
                     result.getInt("schedule_id"),
-                    result.getBoolean("admin")
+                    UserType.valueOf(result.getString("type"))
             ));
         }
         return uss;
     }
 
     public int addUserSchedule(UserSchedule us) throws SQLException {
-        String SQL_INSERT = "INSERT INTO UserSchedule(user_id, schedule_id, admin)" +
+        String SQL_INSERT = "INSERT INTO UserSchedule(user_id, schedule_id, type)" +
                 " VALUES (?, ?, ?)";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT);
 
         statement.setInt(1, us.getUser_id());
         statement.setInt(2, us.getSchedule_id());
-        statement.setInt(3, us.isAdmin()? 1:0);
+        statement.setString(3, us.getType().label);
 
         int i = statement.executeUpdate();
         System.out.println(i+ " records inserted");
@@ -49,12 +49,13 @@ public class DbUserSchedule {
     }
 
     public int updateUserSchedule(UserSchedule us) throws SQLException {
-        String SQL_UPDATE = "UPDATE UserSchedule(admin)" +
-                " VALUES (?) WHERE user_id=? AND schedule_id=?";
+        String SQL_UPDATE = "UPDATE UserSchedule " +
+                " SET type=?" +
+                " WHERE user_id=? AND schedule_id=?";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_UPDATE);
 
-        statement.setInt(1, us.isAdmin() ? 1 : 0);
+        statement.setString(1, us.getType().label);
         statement.setInt(2, us.getUser_id());
         statement.setInt(3, us.getSchedule_id());
 
@@ -63,14 +64,14 @@ public class DbUserSchedule {
         return i;
     }
 
-    public int deleteUserSchedule(int schedule_id, int user_id) throws SQLException {
+    public int deleteUserSchedule(UserSchedule us) throws SQLException {
         String SQL_DELETE = "DELETE FROM UserSchedule " +
                 "WHERE schedule_id=? AND user_id=?";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_DELETE);
 
-        statement.setInt(1, schedule_id);
-        statement.setInt(2, user_id);
+        statement.setInt(1, us.getSchedule_id());
+        statement.setInt(2, us.getUser_id());
 
         int i = statement.executeUpdate();
         System.out.println(i+ " records deleted");

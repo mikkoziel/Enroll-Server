@@ -31,7 +31,7 @@ public class AdminPut {
         }
     }
 
-    public String putClass(String uri, String msg, int id){
+    public String putClass(String uri, String msg){
         Class_obj class_ = this.parser.parseStringToClassWithId(new JSONObject(msg));
         int schedule_id = Integer.parseInt(uri);
         int retVal = this.updateClass(class_, schedule_id);
@@ -49,7 +49,7 @@ public class AdminPut {
         }
     }
 
-    public String putGroup(String uri, String msg, int id){
+    public String putGroup(String uri, String msg){
         Group group = this.parser.parseStringToGroupWithId(new JSONObject(msg));
         int class_id = Integer.parseInt(uri);
         int retVal = this.updateGroup(group, class_id);
@@ -64,8 +64,12 @@ public class AdminPut {
 
     public String putUserSchedule(String msg){
         UserSchedule us = this.parser.parseStringToUS(new JSONObject(msg));
+        int retVal = this.updateUserSchedule(us);
+        if(retVal>0){
+            return this.adminGet.getUsersForSchedule(Integer.toString(us.getSchedule_id()));
+        }
         return "{\"updated\": " +
-                this.updateUserSchedule(us) +
+                retVal +
                 "}";
     }
 
@@ -104,15 +108,23 @@ public class AdminPut {
 
     public String putFoS(String msg){
         FieldOfStudy fos = this.parser.parseStringToFoSWithId(new JSONObject(msg));
+        int retVal = this.updateFoS(fos);
+        if(retVal>0){
+            return fos.toString();
+        }
         return "{\"updated\": " +
-                this.updateFoS(fos) +
+                 retVal +
                 "}";
     }
 
     public String putUserField(String msg){
         UserField uf = this.parser.parseStringToUF(new JSONObject(msg));
+        int retVal = this.updateUserField(uf);
+        if(retVal>0){
+            return this.adminGet.getUsersForFoS(Integer.toString(uf.getField_id()));
+        }
         return "{\"updated\": " +
-                this.updateUserField(uf) +
+                retVal +
                 "}";
     }
     //-------UPDATE--------------------------------------------------------

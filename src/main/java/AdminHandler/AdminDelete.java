@@ -1,19 +1,20 @@
 package AdminHandler;
 
 import DBHandler.DBHandler;
-import Model.Class_obj;
-import Model.Group;
-import Model.Schedule;
-import Model.UserSchedule;
+import Model.*;
+import Tools.Parser;
+import org.json.JSONObject;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class AdminDelete {
     DBHandler db;
+    Parser parser;
 
     public AdminDelete(DBHandler db) {
         this.db = db;
+        this.parser = new Parser();
     }
 
     public String deleteSchedule(String uri){
@@ -21,7 +22,7 @@ public class AdminDelete {
         try {
             ArrayList<UserSchedule> uss = this.db.getUserSchedule(schedule_id);
             for(UserSchedule us: uss){
-                this.db.deleteUserSchedule(us.getSchedule_id(), us.getUser_id());
+                this.db.deleteUserSchedule(us);
             }
             int retVal  =this.db.deleteSchedule(schedule_id);
             return "{\"deleted\": " +
@@ -55,6 +56,54 @@ public class AdminDelete {
         try {
             return "{\"deleted\": " +
                     this.db.deleteGroup(group_id) +
+                    "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String deleteFoS(String uri){
+        int field_id = Integer.parseInt(uri.replace("fos/", ""));
+        try {
+            ArrayList<User> users = this.db.getUsersForFoS(field_id);
+            for(User user: users){
+                UserField uf = new UserField(
+                        user.getUserId(),
+                        field_id,
+                        null
+                );
+                this.db.deleteUserField(uf);
+            }
+            int retVal = this.db.deleteFoS(field_id) ;
+            return "{\"deleted\": " +
+                    retVal +
+                    "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String deleteUserField(String uri, int id){
+        int field_id = Integer.parseInt(uri);
+        UserField uf = new UserField(id, field_id, null);
+        try {
+            return "{\"deleted\": " +
+                    this.db.deleteUserField(uf) +
+                    "}";
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String deleteUserSchedule(String uri, int id){
+        int schedule_id = Integer.parseInt(uri);
+        UserSchedule us = new UserSchedule(id, schedule_id, null);
+        try {
+            return "{\"deleted\": " +
+                    this.db.deleteUserSchedule(us) +
                     "}";
         } catch (SQLException e) {
             e.printStackTrace();

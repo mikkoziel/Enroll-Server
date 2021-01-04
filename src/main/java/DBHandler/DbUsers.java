@@ -35,11 +35,37 @@ public class DbUsers {
 
     public ArrayList<User> getUsersForSchedule(int schedule_id) throws SQLException {
         String SQL_SELECT = "SELECT * FROM User WHERE user_id IN " +
-                "(SELECT user_id FROM UserSchedule WHERE schedule_id=?)";
+                "(SELECT user_id FROM UserSchedule WHERE schedule_id=? AND type<>?)";
         PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
                 Statement.RETURN_GENERATED_KEYS);
 
         statement.setInt(1, schedule_id);
+        statement.setString(2, "REQUEST");
+
+        ResultSet result = statement.executeQuery();
+        ArrayList<User> users = new ArrayList<>();
+
+        while (result.next()) {
+            users.add(new User(
+                    result.getInt("user_id"),
+                    result.getString("name"),
+                    result.getString("surname"),
+                    result.getString("password"),
+                    result.getString("mail"),
+                    result.getBoolean("admin")
+            ));
+        }
+        return users;
+    }
+
+    public ArrayList<User> getRequestsForSchedule(int schedule_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM User WHERE user_id IN " +
+                "(SELECT user_id FROM UserSchedule WHERE schedule_id=? AND type=?)";
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT,
+                Statement.RETURN_GENERATED_KEYS);
+
+        statement.setInt(1, schedule_id);
+        statement.setString(2, "REQUEST");
 
         ResultSet result = statement.executeQuery();
         ArrayList<User> users = new ArrayList<>();
@@ -59,10 +85,36 @@ public class DbUsers {
 
     public ArrayList<User> getUsersForFoS(int field_id) throws SQLException {
         String SQL_SELECT = "SELECT * FROM User WHERE user_id IN " +
-                "(SELECT user_id FROM UserField WHERE field_id=?)";
+                "(SELECT user_id FROM UserField WHERE field_id=? AND type<>?)";
         PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT);
 
         statement.setInt(1, field_id);
+        statement.setString(2, "REQUEST");
+
+        ResultSet result = statement.executeQuery();
+        ArrayList<User> users = new ArrayList<>();
+
+        while (result.next()) {
+            users.add(new User(
+                    result.getInt("user_id"),
+                    result.getString("name"),
+                    result.getString("surname"),
+                    result.getString("password"),
+                    result.getString("mail"),
+                    result.getBoolean("admin")
+            ));
+        }
+        return users;
+    }
+
+    public ArrayList<User> getRequestsForFoS(int field_id) throws SQLException {
+        String SQL_SELECT = "SELECT * FROM User WHERE user_id IN " +
+                "(SELECT user_id FROM UserField WHERE field_id=? AND type=?)";
+
+        PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT);
+
+        statement.setInt(1, field_id);
+        statement.setString(2, "REQUEST");
 
         ResultSet result = statement.executeQuery();
         ArrayList<User> users = new ArrayList<>();

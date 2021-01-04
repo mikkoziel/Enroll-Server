@@ -61,7 +61,7 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         } else if(uri.matches("users/[0-9]+")){
             htmlResponse = this.admin.getUsersForSchedule(uri.replace("users/", ""));
         } else if(uri.matches("combine/[0-9]+")){
-            htmlResponse = this.admin.getScheduleProfUS(uri.replace("combine/", ""), id);
+            htmlResponse = this.admin.getScheduleDetails(uri.replace("combine/", ""), id);
         } else if(uri.equals("fields")){
             htmlResponse = this.admin.getFieldsForId(id);
         } else if(uri.equals("fields-schedules")){
@@ -85,9 +85,9 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         if(uri.equals("schedules")){
             htmlResponse = this.admin.postSchedule(msg, id);
         } else if(uri.matches("schedules/[0-9]+")){
-            htmlResponse = this.admin.postClass(uri, msg, id);
+            htmlResponse = this.admin.postClass(uri, msg);
         } else if(uri.matches("classes/[0-9]+")){
-            htmlResponse = this.admin.postGroup(uri, msg, id);
+            htmlResponse = this.admin.postGroup(uri, msg);
         } else if(uri.equals("user-sch")){
             htmlResponse = this.admin.postUserSchedule(msg);
         } else if(uri.equals("prof")){
@@ -117,9 +117,9 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         if(uri.matches("schedules/[0-9]+")){
             htmlResponse = this.admin.putSchedule(msg, id);
         } else if(uri.matches("classes/[0-9]+")){
-            htmlResponse = this.admin.putClass(uri.replace("classes/", ""), msg, id);
+            htmlResponse = this.admin.putClass(uri.replace("classes/", ""), msg);
         } else if(uri.matches("groups/[0-9]+")){
-            htmlResponse = this.admin.putGroup(uri.replace("groups/", ""), msg, id);
+            htmlResponse = this.admin.putGroup(uri.replace("groups/", ""), msg);
         } else if(uri.equals("user-sch")){
             htmlResponse = this.admin.putUserSchedule(msg);
         } else if(uri.equals("user")){
@@ -136,8 +136,11 @@ public class AdminHandlerHttpHandler implements HttpHandler {
     }
 
     private String handleDeleteRequest(HttpExchange httpExchange) {
+        Headers reqHeaders = httpExchange.getRequestHeaders();
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context,"");
+
+        int id = Integer.parseInt(reqHeaders.getFirst("id"));
 
         String htmlResponse = "";
         if(uri.matches("schedules/[0-9]+")) {
@@ -146,6 +149,12 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.deleteClass(uri);
         } else if(uri.matches("groups/[0-9]+")) {
             htmlResponse = this.admin.deleteGroup(uri);
+        } else if(uri.matches("fos/[0-9]+")) {
+            htmlResponse = this.admin.deleteFoS(uri);
+        } else if(uri.equals("user-field")) {
+            htmlResponse = this.admin.deleteUserField(uri.replace("user-field/", ""), id);
+        } else if(uri.equals("user-sch")) {
+            htmlResponse = this.admin.deleteUserSchedule(uri.replace("user-sch/", ""), id);
         }
         return htmlResponse;
     }
@@ -173,27 +182,18 @@ public class AdminHandlerHttpHandler implements HttpHandler {
         String message = null;
         try (InputStream in = httpExchange.getRequestBody()) {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            StringBuilder msgbuilder = new StringBuilder();
+            StringBuilder msgBuilder = new StringBuilder();
             int c;
             while ((c = br.read()) > -1) {
-                msgbuilder.append((char) c);
+                msgBuilder.append((char) c);
             }
-            message = msgbuilder.toString();
+            message = msgBuilder.toString();
             System.out.println("Message: " + message);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         return message;
-    }
-
-    private void getLength(String string){
-        int length = 0;
-        for(char letter: string.toCharArray()){
-            length++;
-        }
-        System.out.println(string.length());
-        System.out.println(length);
     }
 
 }

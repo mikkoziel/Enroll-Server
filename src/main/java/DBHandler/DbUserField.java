@@ -30,8 +30,9 @@ public class DbUserField {
     }
 
     public int updateUserField(UserField uf) throws SQLException {
-        String SQL_UPDATE = "UPDATE UserField(type)" +
-                " VALUES (?) WHERE user_id=? AND field_id=?";
+        String SQL_UPDATE = "UPDATE UserField " +
+                "SET type=? " +
+                "WHERE user_id=? AND field_id=?";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_UPDATE);
 

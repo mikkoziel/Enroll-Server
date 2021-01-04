@@ -34,8 +34,8 @@ public class AdminHandler {
         return this.adminGet.getUsersForSchedule(schedule_id);
     }
 
-    public String getScheduleProfUS(String schedule_id, int user_id){
-        return this.adminGet.getScheduleProfUS(schedule_id, user_id);
+    public String getScheduleDetails(String schedule_id, int user_id){
+        return this.adminGet.getScheduleDetails(schedule_id, user_id);
     }
 
     public String getUsers(){
@@ -58,12 +58,12 @@ public class AdminHandler {
         return this.adminPost.postSchedule(msg, id);
     }
 
-    public String postClass(String uri, String msg, int id){
-        return this.adminPost.postClass(uri, msg, id);
+    public String postClass(String uri, String msg){
+        return this.adminPost.postClass(uri, msg);
     }
 
-    public String postGroup(String uri, String msg, int id){
-        return this.adminPost.postGroup(uri, msg, id);
+    public String postGroup(String uri, String msg){
+        return this.adminPost.postGroup(uri, msg);
     }
 
     public String postUserSchedule(String msg){
@@ -94,12 +94,12 @@ public class AdminHandler {
         return this.adminPut.putSchedule(msg, id);
     }
 
-    public String putClass(String uri, String msg, int id){
-        return this.adminPut.putClass(uri, msg, id);
+    public String putClass(String uri, String msg){
+        return this.adminPut.putClass(uri, msg);
     }
 
-    public String putGroup(String uri, String msg, int id){
-        return this.adminPut.putGroup(uri, msg, id);
+    public String putGroup(String uri, String msg){
+        return this.adminPut.putGroup(uri, msg);
     }
 
     public String putUserSchedule(String msg){
@@ -121,7 +121,7 @@ public class AdminHandler {
     public String putUserField(String msg){
         return this.adminPut.putUserField(msg);
     }
-    
+
     //----DELETE-------------------------------------------------------
     public String deleteSchedule(String uri){
         return this.adminDelete.deleteSchedule(uri);
@@ -133,5 +133,17 @@ public class AdminHandler {
 
     public String deleteGroup(String uri){
         return this.adminDelete.deleteGroup(uri);
+    }
+
+    public String deleteFoS(String uri){
+        return this.adminDelete.deleteFoS(uri);
+    }
+
+    public String deleteUserField(String uri, int id){
+        return this.adminDelete.deleteUserField(uri, id);
+    }
+
+    public String deleteUserSchedule(String uri, int id){
+        return this.adminDelete.deleteUserSchedule(uri, id);
     }
 }

@@ -4,7 +4,6 @@ import Model.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -19,7 +18,8 @@ public class Parser {
                 jo.getInt("semester"),
                 jo.getString("description"),
                 Status.valueOf(jo.getString("status")),
-                this.parseStringToClasses(jo.getJSONArray("classes"))
+                this.parseStringToClasses(jo.getJSONArray("classes")),
+                jo.getInt("field_id")
         );
     }
 
@@ -31,7 +31,8 @@ public class Parser {
                 jo.getInt("semester"),
                 jo.getString("description"),
                 Status.valueOf(jo.getString("status")),
-                this.parseStringToClasses(jo.getJSONArray("classes"))
+                this.parseStringToClasses(jo.getJSONArray("classes")),
+                jo.getInt("field_id")
         );
     }
 
@@ -99,7 +100,7 @@ public class Parser {
         return new UserSchedule(
                 us_json.getInt("user_id"),
                 us_json.getInt("schedule_id"),
-                us_json.getBoolean("type"));
+                UserType.valueOf(us_json.getString("type")));
     }
 
     public Professor parseStringToProf(JSONObject prof_json){

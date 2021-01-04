@@ -3,12 +3,12 @@ package Model;
 public class UserSchedule {
     private int user_id;
     private int schedule_id;
-    private boolean admin;
+    private UserType type;
 
-    public UserSchedule(int user_id, int schedule_id, boolean admin){
+    public UserSchedule(int user_id, int schedule_id, UserType type){
         this.user_id = user_id;
         this.schedule_id = schedule_id;
-        this.admin = admin;
+        this.type = type;
     }
 
     public int getUser_id() {
@@ -19,15 +19,15 @@ public class UserSchedule {
         return schedule_id;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public UserType getType() {
+        return type;
     }
 
     @Override
     public String toString() {
         return "{\"user_id\": " + user_id +
                 ", \"schedule_id\": " + schedule_id +
-                ", \"admin\": " + admin +
-                '}';
+                ", \"type\": \"" + type.label +
+                "\"}";
     }
 }

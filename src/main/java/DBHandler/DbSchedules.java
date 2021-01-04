@@ -3,6 +3,7 @@ package DBHandler;
 import Model.Schedule;
 import Model.Status;
 import Model.UserSchedule;
+import Model.UserType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 public class DbSchedules {
     Connection conn;
     DbClasses dbClasses;
-    private DbUserSchedule dbUserSchedule;
+    private final DbUserSchedule dbUserSchedule;
 
     public DbSchedules(Connection conn, DbClasses dbClasses, DbUserSchedule dbUserSchedule){
         this.conn = conn;
@@ -27,7 +28,7 @@ public class DbSchedules {
 
     public ArrayList<Schedule> getSchedulesAdmin(int admin_id) throws SQLException {
         String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
-                "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND admin=1)";
+                "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND type='ADMIN')";
         return this.getSchedules(admin_id, SQL_SELECT);
     }
 
@@ -47,7 +48,8 @@ public class DbSchedules {
                     result.getString("name"),
                     result.getInt("semester"),
                     result.getString("description"),
-                    Status.valueOf(result.getString("status"))
+                    Status.valueOf(result.getString("status")),
+                    result.getInt("field_id")
             );
             tmp.setClasses(this.dbClasses.getClasses(schedule_id));
 
@@ -59,8 +61,8 @@ public class DbSchedules {
 
     //----SCHEDULE-------------------------------------------------------
     public long addSchedule(int admin_id, Schedule schedule) throws SQLException {
-        String SQL_INSERT = "INSERT INTO Schedule(name, semester, description, status)" +
-                " VALUES (?, ?, ?, ?)";
+        String SQL_INSERT = "INSERT INTO Schedule(name, semester, description, status, field_id)" +
+                " VALUES (?, ?, ?, ?, ?)";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_INSERT,
                 Statement.RETURN_GENERATED_KEYS);
@@ -69,6 +71,7 @@ public class DbSchedules {
         statement.setInt(2, schedule.getSemester());
         statement.setString(3, schedule.getDescription());
         statement.setString(4, String.valueOf(schedule.getStatus()));
+        statement.setInt(5, schedule.getField_id());
 
         int affectedRows = statement.executeUpdate();
 
@@ -79,7 +82,7 @@ public class DbSchedules {
         try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
                 long key = generatedKeys.getLong(1);
-                this.dbUserSchedule.addUserSchedule(new UserSchedule(admin_id, (int)key, true));
+                this.dbUserSchedule.addUserSchedule(new UserSchedule(admin_id, (int)key, UserType.valueOf("ADMIN")));
                 return key;
             }
             else {
@@ -96,7 +99,7 @@ public class DbSchedules {
 
     public Schedule getScheduleAdmin(int user_id, int schedule_id) throws SQLException {
         String SQL_SELECT = "SELECT * FROM Schedule WHERE schedule_id IN " +
-                "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND admin=1 AND schedule_id=?)";
+                "(SELECT schedule_id FROM UserSchedule WHERE user_id=? AND type='ADMIN' AND schedule_id=?)";
         return this.getSchedule(user_id, schedule_id, SQL_SELECT);
     }
 
@@ -117,7 +120,8 @@ public class DbSchedules {
                     result.getString("name"),
                     result.getInt("semester"),
                     result.getString("description"),
-                    Status.valueOf(result.getString("status"))
+                    Status.valueOf(result.getString("status")),
+                    result.getInt("field_id")
             );
             schedule.setClasses(this.dbClasses.getClasses(schedule_id_));
         }
@@ -126,7 +130,7 @@ public class DbSchedules {
 
     public int updateSchedule(Schedule schedule) throws SQLException {
         String SQL_UPDATE = "UPDATE Schedule " +
-                "SET name=?, semester=?, description=?, status=? " +
+                "SET name=?, semester=?, description=?, status=?, field_id=? " +
                 "WHERE schedule_id=?";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_UPDATE);
@@ -135,7 +139,8 @@ public class DbSchedules {
         statement.setInt(2, schedule.getSemester());
         statement.setString(3, schedule.getDescription());
         statement.setString(4, String.valueOf(schedule.getStatus()));
-        statement.setInt(5, schedule.getScheduleID());
+        statement.setInt(5, schedule.getField_id());
+        statement.setInt(6, schedule.getScheduleID());
 
         int i = statement.executeUpdate();
         System.out.println(i+ " records updated");

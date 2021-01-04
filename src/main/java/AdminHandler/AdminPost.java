@@ -5,7 +5,6 @@ import Model.*;
 import Tools.Parser;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
 import java.sql.SQLException;
 
 public class AdminPost {
@@ -35,7 +34,7 @@ public class AdminPost {
         return schedule.toString();
     }
 
-    public String postClass(String uri, String msg, int id){
+    public String postClass(String uri, String msg){
         int schedule_id = Integer.parseInt(uri.replace("schedules/", ""));
         Class_obj class_ = this.parser.parseStringToClass(new JSONObject(msg));
         long class_id = this.addClass(class_, schedule_id);
@@ -46,7 +45,7 @@ public class AdminPost {
         return class_.toString();
     }
 
-    public String postGroup(String uri, String msg, int id){
+    public String postGroup(String uri, String msg){
         int class_id = Integer.parseInt(uri.split("/")[1]);
         Group group = this.parser.parseStringToGroup(new JSONObject(msg));
         long group_id = this.addGroup(group, class_id);
@@ -106,7 +105,7 @@ public class AdminPost {
         UserField uf = this.parser.parseStringToUF(new JSONObject(msg));
         int retVal = this.addUserField(uf);
         if(retVal>0){
-            return uf.toString();
+            return this.adminGet.getUsersForFoS(Integer.toString(uf.getField_id()));
         }
         return "{\"field_id\": 0}";
     }

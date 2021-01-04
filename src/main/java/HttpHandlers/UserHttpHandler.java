@@ -1,6 +1,5 @@
 package HttpHandlers;
 
-import UserHandler.UserHandler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -26,10 +25,10 @@ public class UserHttpHandler implements HttpHandler {
                 htmlResponse = handlePostRequest(httpExchange);
                 break;
             case "PUT":
-                htmlResponse = handlePutRequest(httpExchange);
+                htmlResponse = handlePutRequest();
                 break;
             case "OPTIONS":
-                htmlResponse = handleOptionsRequest(httpExchange);
+                htmlResponse = handleOptionsRequest();
                 break;
         }
         System.out.println(htmlResponse);
@@ -45,33 +44,33 @@ public class UserHttpHandler implements HttpHandler {
         String uri = httpExchange.getRequestURI()
                 .toString().replace(this.context, "");
 
-        if (uri.equals("schedules")) {
+//        if (uri.equals("schedules")) {
 //            htmlResponse = this.user.getSchedules(id);
-        } else if (uri.matches("schedules/[0-9]+")) {
+//        } else if (uri.matches("schedules/[0-9]+")) {
 //            htmlResponse = this.admin.getSchedule(id, uri.replace("schedules/", ""));
-        }
+//        }
 //        System.out.println(uri);
         return htmlResponse;
     }
 
     private String handlePostRequest(HttpExchange httpExchange) {
         String htmlResponse = "";
-        Headers reqHeaders = httpExchange.getRequestHeaders();
-        int id = Integer.parseInt(reqHeaders.getFirst("id"));
-
-        String uri = httpExchange.getRequestURI()
-                .toString().replace(this.context, "");
-
-        String msg = this.parseMsg(httpExchange);
+//        Headers reqHeaders = httpExchange.getRequestHeaders();
+//        int id = Integer.parseInt(reqHeaders.getFirst("id"));
+//
+//        String uri = httpExchange.getRequestURI()
+//                .toString().replace(this.context, "");
+//
+//        String msg = this.parseMsg(httpExchange);
 
         return htmlResponse;
     }
 
-    private String handlePutRequest(HttpExchange httpExchange) {
+    private String handlePutRequest() {
         return "";
     }
 
-    private String handleOptionsRequest(HttpExchange httpExchange) {
+    private String handleOptionsRequest() {
         return "";
     }
 
@@ -93,12 +92,12 @@ public class UserHttpHandler implements HttpHandler {
         String message = null;
         try (InputStream in = httpExchange.getRequestBody()) {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            StringBuilder msgbuilder = new StringBuilder();
+            StringBuilder msgBuilder = new StringBuilder();
             int c;
             while ((c = br.read()) > -1) {
-                msgbuilder.append((char) c);
+                msgBuilder.append((char) c);
             }
-            message = msgbuilder.toString();
+            message = msgBuilder.toString();
             System.out.println("Message: " + message);
 
         } catch (IOException e) {

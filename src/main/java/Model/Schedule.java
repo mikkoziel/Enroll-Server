@@ -9,31 +9,35 @@ public class Schedule {
     String description;
     Status status;
     ArrayList<Class_obj> classes;
+    int field_id;
 
-    public Schedule(int scheduleID, String name, int semester, String desc, Status status, ArrayList<Class_obj> classes){
+    public Schedule(int scheduleID, String name, int semester, String desc, Status status, ArrayList<Class_obj> classes, int field_id){
         this.scheduleID = scheduleID;
         this.name = name;
         this.semester = semester;
         this.description = desc;
         this.status = status;
         this.classes = classes;
+        this.field_id = field_id;
     }
 
-    public Schedule(String name, int semester, String desc, Status status, ArrayList<Class_obj> classes){
+    public Schedule(String name, int semester, String desc, Status status, ArrayList<Class_obj> classes, int field_id){
         this.name = name;
         this.semester = semester;
         this.description = desc;
         this.status = status;
         this.classes = classes;
+        this.field_id = field_id;
     }
 
-    public Schedule(int scheduleID, String name, int semester, String desc, Status status){
+    public Schedule(int scheduleID, String name, int semester, String desc, Status status, int field_id){
         this.scheduleID = scheduleID;
         this.name = name;
         this.semester = semester;
         this.description = desc;
         this.status = status;
         this.classes = new ArrayList<Class_obj>();
+        this.field_id = field_id;
     }
 
     public int getScheduleID() {
@@ -68,6 +72,10 @@ public class Schedule {
         this.classes.add(class_obj);
     }
 
+    public int getField_id() {
+        return field_id;
+    }
+
     public void setClasses(ArrayList<Class_obj> classes){
         this.classes = classes;
     }
@@ -79,6 +87,7 @@ public class Schedule {
                 ", \"description\":\"" + description +
                 "\", \"status\":\"" + status.label +
                 "\", \"classes\":" + classes.toString() +
+                ", \"field_id\":" + field_id +
                 "}";
     }
 }

@@ -153,8 +153,8 @@ public class DBHandler {
         return this.dbUserSchedule.updateUserSchedule(us);
     }
 
-    public int deleteUserSchedule(int schedule_id, int user_id) throws SQLException {
-        return this.dbUserSchedule.deleteUserSchedule(schedule_id, user_id);
+    public int deleteUserSchedule(UserSchedule us) throws SQLException {
+        return this.dbUserSchedule.deleteUserSchedule(us);
     }
 
     //----USER PREFERENCE-------------------------------------------------------
@@ -183,6 +183,10 @@ public class DBHandler {
         return this.dbUsers.getUsersForSchedule(schedule_id);
     }
 
+    public ArrayList<User> getRequestsForSchedule(int schedule_id) throws SQLException {
+        return this.dbUsers.getRequestsForSchedule(schedule_id);
+    }
+
     public int addUser(User user) throws SQLException {
         return this.dbUsers.addUser(user);
     }
@@ -199,7 +203,10 @@ public class DBHandler {
         return this.dbUsers.getUsersForFoS(field_id);
     }
 
-    //----ENROLLMENT -----------------------------------------------------------
+    public ArrayList<User> getRequestsForFoS(int field_id) throws SQLException {
+        return this.dbUsers.getRequestsForFoS(field_id);
+    }
+        //----ENROLLMENT -----------------------------------------------------------
     public int addEnroll(Enrollment enroll) throws SQLException {
         return this.dbEnrollment.addEnroll(enroll);
     }

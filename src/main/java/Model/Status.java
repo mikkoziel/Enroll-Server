@@ -5,11 +5,12 @@ public enum Status {
     ENROLLMENT("ENROLLMENT"),
     PROCESSING("PROCESSING"),
     ACTIVE("ACTIVE"),
-    INACTIVE("INACTIVE");
+    INACTIVE("INACTIVE"),
+    DELETED("DELETED");
 
     public final String label;
 
-    private Status(String label) {
+    Status(String label) {
         this.label = label;
     }
 }
