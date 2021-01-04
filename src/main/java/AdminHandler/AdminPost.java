@@ -3,6 +3,7 @@ package AdminHandler;
 import DBHandler.DBHandler;
 import Model.*;
 import Tools.Parser;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.sql.SQLException;
@@ -21,6 +22,13 @@ public class AdminPost {
     public String postSchedule(String msg, int id){
         Schedule schedule = this.parser.parseStringToSchedule(msg);
         long schedule_id = this.addSchedule(id, schedule);
+        this.populateSchedule(schedule, schedule_id);
+
+        schedule.setScheduleID(Math.toIntExact(schedule_id));
+        return schedule.toString();
+    }
+
+    public void populateSchedule(Schedule schedule, long schedule_id){
         if(!schedule.getClasses().isEmpty()){
             schedule.getClasses().forEach((class_) ->{
                 long class_id = this.addClass(class_, (int)schedule_id);
@@ -30,8 +38,6 @@ public class AdminPost {
                 }
             });
         }
-        schedule.setScheduleID(Math.toIntExact(schedule_id));
-        return schedule.toString();
     }
 
     public String postClass(String uri, String msg){
@@ -108,6 +114,37 @@ public class AdminPost {
             return this.adminGet.getUsersForFoS(Integer.toString(uf.getField_id()));
         }
         return "{\"field_id\": 0}";
+    }
+
+    public String postCopyOfSchedule(String msg, int id){
+        JSONObject data = new JSONObject(msg);
+        JSONObject schedule_json = data.getJSONObject("schedule");
+        Schedule schedule = this.parser.parseStringToSchedule(schedule_json.toString());
+        long schedule_id = this.addSchedule(id, schedule);
+        this.populateSchedule(schedule, schedule_id);
+        schedule.setScheduleID(Math.toIntExact(schedule_id));
+
+        JSONArray users = data.getJSONArray("users");
+        for(Object user: users){
+            User user_obj = this.parser.parseStringToUserWithId((JSONObject) user);
+            UserSchedule us = new UserSchedule(user_obj.getUserId(),
+                    schedule.getScheduleID(),
+                    UserType.valueOf("STUDENT"));
+            this.addUserSchedule(us);
+        }
+
+        JSONArray requests = data.getJSONArray("requests");
+        for(Object user: requests){
+            User user_obj = this.parser.parseStringToUser((JSONObject) user);
+            UserSchedule us = new UserSchedule(user_obj.getUserId(),
+                    schedule.getScheduleID(),
+                    UserType.valueOf("REQUEST"));
+            this.addUserSchedule(us);
+        }
+
+        return "{\"schedule_id\": " +
+                schedule_id +
+                "}";
     }
     //-------ADD--------------------------------------------------------
     public long addSchedule(int admin_id, Schedule schedule){

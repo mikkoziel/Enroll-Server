@@ -102,6 +102,8 @@ public class AdminHandlerHttpHandler implements HttpHandler {
             htmlResponse = this.admin.postFoS(msg, id);
         } else if(uri.equals("user-field")){
             htmlResponse = this.admin.postUserField(msg);
+        } else if(uri.equals("copy-sch")){
+            htmlResponse = this.admin.postCopyOfSchedule(msg, id);
         }
         return htmlResponse;
     }

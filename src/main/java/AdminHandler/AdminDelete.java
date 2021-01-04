@@ -24,6 +24,10 @@ public class AdminDelete {
             for(UserSchedule us: uss){
                 this.db.deleteUserSchedule(us);
             }
+            ArrayList<Class_obj> classes = this.db.getClasses(schedule_id);
+            for(Class_obj class_: classes){
+                this.deleteClass("classes/" + class_.getClassId());
+            }
             int retVal  =this.db.deleteSchedule(schedule_id);
             return "{\"deleted\": " +
                     retVal +

@@ -14,7 +14,7 @@ public class DbUserSchedule {
     }
 
     public ArrayList<UserSchedule> getUserSchedule(int schedule_id) throws SQLException {
-        String SQL_SELECT = "SELECT * FROM UserSchedule WHERE schedule_id =? ";
+        String SQL_SELECT = "SELECT * FROM UserSchedule WHERE schedule_id =?";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_SELECT);
 

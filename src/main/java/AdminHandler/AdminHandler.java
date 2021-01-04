@@ -94,6 +94,10 @@ public class AdminHandler {
     public String postUserField(String msg){
         return this.adminPost.postUserField(msg);
     }
+
+    public String postCopyOfSchedule(String msg, int id){
+        return this.adminPost.postCopyOfSchedule(msg, id);
+    }
     //----PUT-------------------------------------------------------
     public String putSchedule(String msg, int id){
         return this.adminPut.putSchedule(msg, id);

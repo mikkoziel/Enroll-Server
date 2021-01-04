@@ -72,15 +72,28 @@ public class Parser {
     }
 
     public Group parseStringToGroup(JSONObject group_json){
-        JSONObject start = group_json.getJSONObject("start");
-        JSONObject end = group_json.getJSONObject("end");
-        return new Group(
-                group_json.getInt("day"),
-                LocalTime.of(start.getInt("hour"), start.getInt("minute")),
-                LocalTime.of(end.getInt("hour"), end.getInt("minute")),
-                group_json.getInt("professor_id"),
-                group_json.getString("type")
-        );
+        JSONObject start = group_json.optJSONObject("start");
+        JSONObject end = group_json.optJSONObject("end");
+        if(start!=null && end!=null) {
+            return new Group(
+                    group_json.getInt("day"),
+                    LocalTime.of(start.getInt("hour"), start.getInt("minute")),
+                    LocalTime.of(end.getInt("hour"), end.getInt("minute")),
+                    group_json.getInt("professor_id"),
+                    group_json.getString("type")
+            );
+        } else {
+            String start_obj = group_json.optString("start");
+            String end_obj = group_json.optString("end");
+
+            return new Group(
+                    group_json.getInt("day"),
+                    LocalTime.parse(start_obj),
+                    LocalTime.parse(end_obj),
+                    group_json.getInt("professor_id"),
+                    group_json.getString("type")
+            );
+        }
     }
 
     public Group parseStringToGroupWithId(JSONObject group_json){
@@ -121,7 +134,17 @@ public class Parser {
         return new User(
                 user_json.getString("name"),
                 user_json.getString("surname"),
-                user_json.getString("password"),
+//                user_json.getString("password"),
+                user_json.getString("mail"),
+                user_json.getBoolean("admin"));
+    }
+
+    public User parseStringToUserWithId(JSONObject user_json){
+        return new User(
+                user_json.getInt("id"),
+                user_json.getString("name"),
+                user_json.getString("surname"),
+//                user_json.getString("password"),
                 user_json.getString("mail"),
                 user_json.getBoolean("admin"));
     }
