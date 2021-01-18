@@ -2,20 +2,23 @@
 import HttpHandlers.AdminHandlerHttpHandler;
 import HttpHandlers.UserHandlerHttpHandler;
 import HttpHandlers.UserHttpHandler;
+import GeneticAlgorithm.SchedulePlanner;
 import Tools.ServerScheduler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.sql.SQLException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class ServerMain {
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
         System.out.println("Hello World");
         ServerScheduler scheduler = createScheduler();
         createServer(scheduler);
+        SchedulePlanner schedulePlanner = new SchedulePlanner();
     }
 
     private static void createServer(ServerScheduler scheduler){
