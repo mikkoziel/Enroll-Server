@@ -26,7 +26,7 @@ public class GeneticAlgorithm {
     }
 
     public boolean isTerminationConditionMet(Population population) {
-        return population.getFittest(0).getFitness() == 1.0; // w zaleznosci od preferencji
+        return population.getFittest(0).getFitness() >= 1.0; // w zaleznosci od preferencji
 //        return population.getFittest(0).getFitness() >= 0.0;
 //        return population.getFittest(0).getFitness()  == 6.0;
     }
