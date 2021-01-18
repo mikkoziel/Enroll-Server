@@ -28,12 +28,13 @@ public class DbUserPreference {
     }
 
     public int updateUserPreference(UserPreference up) throws SQLException {
-        String SQL_UPDATE = "UPDATE UserPreference(points)" +
-                " VALUES (?) WHERE user_id=? AND group_id=?";
+        String SQL_UPDATE = "UPDATE UserPreference " +
+                "SET points=? " +
+                "WHERE user_id=? AND group_id=?";
 
         PreparedStatement statement = this.conn.prepareStatement(SQL_UPDATE);
 
-        statement.setInt(1, up.getGroup_id());
+        statement.setInt(1, up.getPoints());
         statement.setInt(2, up.getUser_id());
         statement.setInt(3, up.getGroup_id());
 

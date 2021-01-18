@@ -90,7 +90,7 @@ public class UserHandlerHttpHandler implements HttpHandler {
         String msg = this.parseMsg(httpExchange);
 
         String htmlResponse = "";
-        if(uri.equals("user-sch")){
+        if(uri.equals("user-pref")){
             htmlResponse = this.user.putUserPreference(msg);
         }
 

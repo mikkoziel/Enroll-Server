@@ -1,5 +1,6 @@
 package Tools;
 
+import SchedulePlanner.SchedulePlanner;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -13,6 +14,8 @@ public class EnrollJob implements Job {
 //        float myFloatValue = dataMap.getFloat("myFloatValue");
 
 //        System.out.println("Job says: " + jobSays + ", and val is: " + myFloatValue);
-        System.out.println("Hello world enorll starts");
+        System.out.println("Hello world enroll starts");
+        SchedulePlanner schedulePlanner = new SchedulePlanner();
+        schedulePlanner.run();
     }
 }
