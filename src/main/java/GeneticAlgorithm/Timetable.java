@@ -1,5 +1,6 @@
 package GeneticAlgorithm;
 
+import java.time.LocalTime;
 import java.util.*;
 
 public class Timetable {
@@ -289,10 +290,26 @@ public class Timetable {
                 map(a -> this.timeslots.values().stream().filter(b -> b.getTimeslotId() == a).
                         findFirst().get().getDayAndHourDetails()).toArray();
 
+
         Set<DayAndHouDetails> duplicateNameSet = new HashSet<DayAndHouDetails>();
 
         for (int i = 0; i < objects2.length - 1; i++)
             for (int j = i + 1; j < objects2.length; j++) {
+                DayAndHouDetails dayAndHouDetails1 = (DayAndHouDetails) objects2[i];
+                DayAndHouDetails dayAndHouDetails2 = (DayAndHouDetails) objects2[j];
+                int day1 = dayAndHouDetails1.getDay();
+                LocalTime startHour1 = dayAndHouDetails1.getStartHour();
+                LocalTime endHour1 = dayAndHouDetails1.getEndHour();
+
+                int day2 = dayAndHouDetails2.getDay();
+                LocalTime startHour2 = dayAndHouDetails2.getStartHour();
+                LocalTime endHour2 = dayAndHouDetails2.getEndHour();
+
+
+                if(day1 == (day2) && startHour1.equals(startHour2) && endHour1.equals(endHour2)){
+                    duplicateNameSet.add((DayAndHouDetails) objects2[j]);
+                }
+
                 if (objects2[i].equals(objects2[j])) {
                     duplicateNameSet.add((DayAndHouDetails) objects2[j]);
                 }

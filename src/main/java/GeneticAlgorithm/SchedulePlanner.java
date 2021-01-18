@@ -14,7 +14,5 @@ public class SchedulePlanner {
         DBHandler dbHandler = new DBHandler();
         ArrayList<Class_obj> classes = dbHandler.getClasses(1);
         ArrayList<Professor> professors = dbHandler.getProfessors();
-        System.out.println("Professors:: "+ professors);
-        System.out.println("Paulina: "+ classes);
     }
 }
