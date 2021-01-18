@@ -25,8 +25,8 @@ public class GeneticAlgorithm {
         return (generationsCount > maxGenerations);
     }
 
-    public boolean isTerminationConditionMet(Population population) {
-        return population.getFittest(0).getFitness() >= 1.0; // w zaleznosci od preferencji
+    public boolean isTerminationConditionMet(Population population, int generationsCount, int maxGenerations) {
+        return population.getFittest(0).getFitness() >= 0.0 && generationsCount == maxGenerations; // w zaleznosci od preferencji
 //        return population.getFittest(0).getFitness() >= 0.0;
 //        return population.getFittest(0).getFitness()  == 6.0;
     }

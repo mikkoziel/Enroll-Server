@@ -28,7 +28,7 @@ public class TimetableGA {
 
         // Start evolution loop
         while (ga.isTerminationConditionMet(generation, 1000) == false
-                && ga.isTerminationConditionMet(population) == false) {
+                && ga.isTerminationConditionMet(population, generation, 1000) == false) {
             // Print fitness
             // System.out.println("G" + generation + " Best fitness: " + population.getFittest(0).getFitness());
 
@@ -91,7 +91,7 @@ public class TimetableGA {
         DBHandler dbHandler = new DBHandler();
         ArrayList<Professor> professors = dbHandler.getProfessors();
         for(Professor p: professors){
-            System.out.println(p);
+            //System.out.println(p);
             timetable.addProfessor(p.getProfessor_id(), p.getName(), p.getSurname(), p.getTitle());
         }
 
@@ -112,7 +112,7 @@ public class TimetableGA {
             ArrayList<Group> groups = dbHandler.getGroups(class_obj.getClassId()); // trzeba do wszystkich class id
             for (Group group : groups) {
                 if(group.getType().equals("LABORATORY")){
-                    System.out.println(group);
+                    //System.out.println(group);
                     timetable.addTimeslot(index, new DayAndHouDetails(group.getDay(), group.getStart(), group.getEnd()), class_obj.getClassId() ,group.getProfessor_id(),4 );
                     index++;
                 }
